@@ -190,35 +190,6 @@ def get_credentials(creds,file_name):
     return creds
 
 
-def search_file(file_name):
-    # Call the Drive v3 API
-    results = service.files().list(q = "name = '%s' and trashed = false" % file_name,
-        pageSize=10, fields="files(id, name, parents, webViewLink, owners)").execute()
-    items = results.get('files', [])
-
-    if not items:
-        print('No files found.')
-        return
-    print('Files:')
-    for item in items:
-        print(u'{0} ({1})'.format(item['name'], item['id']))
-
-    if len(items) > 1:
-        print("Multiple files found with the same name. Please specify the file ID.")
-        return
-
-    return items[0]
-
-if __name__ == '__main__':
-
-    creds = get_credentials(None, 'credentials.json')
-    service = build('drive', 'v3', credentials=creds)
-
-    #----------- Search for folder ------------
-
-    # by name
-    f1 = search_folder(folder_name = 'Application Layer')
-    print(f1)
 
     print("--------------------------")
     # by id 

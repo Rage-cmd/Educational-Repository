@@ -113,7 +113,7 @@ def create_folder(folder_name, parent_folder_id, fields = "id, name"):
 
     Parameters:
         folder_name (str): Name of the folder to create.
-        parent_folder_id (str): Dictionary containing the details of the created folder.
+        parent_folder_id (str): List containing the IDs of the parent folder.
 
     Returns:
         The file metadata of the created folder as a dictionary according to the fields argument given.
@@ -143,7 +143,7 @@ def upload_file(file_name, file_path, parent_folder_id, fields = "id, name"):
     Parameters:
         file_name (str): Name of the file to upload.
         file_path (str): Path (in the local disk) of the file to be uploaded.
-        parent_folder_id (str): Parent folder ID in which the file is to be uploaded.
+        parent_folder_id (str): List of the parent folder ID in which the file is to be uploaded.
 
     Returns:
         Dictionary containing the details of the uploaded file.

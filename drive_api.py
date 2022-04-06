@@ -57,10 +57,7 @@ def search_folder(folder_name = None, folder_id = None, fields = "id, name", ver
             ids = [results.get('id')]
 
         else:
-            raise Exception("No folder name or ID passed.")
-        
-        # Call the Drive v3 API
-        items = results.get('files', [])
+            raise Exception("Please specify either folder name or folder ID.")
 
         # if not items:
         #     print('No files found.')
@@ -170,14 +167,6 @@ def download_file(file_id,file_name):
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
-    done = False
-    while done is False:
-        status, done = downloader.next_chunk()
-        print ("Download %d%%." % int(status.progress() * 100))
-    with io.open(file_name, 'wb') as f:
-        fh.seek(0)
-        f.write(fh.read())
-    print ("File Downloaded!")
 
 
 def get_credentials(creds,file_name):

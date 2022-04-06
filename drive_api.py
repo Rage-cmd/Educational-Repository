@@ -74,10 +74,36 @@ def search_folder(folder_name = None, folder_id = None, fields = "id, name", ver
 
     return (ids, results)
 
+
 def remove_folder(folder_id):
+    """
+    Removes the folder specified.
+
+    Parameters:
+        folder_id (str): ID of the folder to be removed.
+    
+    Returns:
+        None
+    
+    Raises:
+        Exception: If the folder is not found.
+    """
     service.files().delete(fileId=folder_id).execute()
 
+
 def remove_file(file_id):
+    """
+    Removes the file specified.
+
+    Parameters:
+        file_id (str): ID of the file to be removed.
+    
+    Returns:
+        None
+    
+    Raises:
+        Exception: If the file is not found.
+    """
     service.files().delete(fileId=file_id).execute()
 
 
@@ -163,13 +189,60 @@ def upload_file(file_name, file_path, parent_folder_id, fields = "id, name"):
     return file.get('id')
 
 
-def download_file(file_id,file_name):
+def download_file(file_id, file_name, file_path = "./"):
+    """
+    Downloads a file from the Google Drive using the file ID.
+
+    Parameters:
+        file_id (str): File ID of the file to be downloaded.
+        file_name (str): Name of the file to be downloaded.
+        file_path (str): Path (in the local disk) to store the downloaded file. The default is the current directory.
+
+    Returns:
+        None
+    
+    Raises:
+        Exception: If the file is not found.
+    """
+
+    # Call the Drive v3 API with the file ID
     request = service.files().get_media(fileId=file_id)
+
+    # Create a file in the current directory to store the downloaded file
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
 
+    # Download the file in chunks and write to the current directory
 
-def get_credentials(creds,file_name):
+    try:
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            print ("Download %d%%." % int(status.progress() * 100))
+        with io.open(file_path + file_name, 'wb') as f:
+            fh.seek(0)
+            f.write(fh.read())
+        print ("File Downloaded!")
+
+    except HttpError as error:
+        print(f'Cannot Download. An error occurred: {error}')
+
+
+def get_credentials(file_name):
+    """
+    Gets valid user credentials from storage. If nothing has been stored, or if the stored credentials are invalid, the OAuth2 flow 
+    is completed to obtain the new credentials. 
+
+    Parameters:
+        file_name (str): Name of the file containing the client secret.
+
+    Returns:
+        Credentials, the obtained credential.
+    
+    Raises:
+        Exception: If the credentials are not valid.
+    """
+
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
@@ -190,11 +263,50 @@ def get_credentials(creds,file_name):
     return creds
 
 
+def search_file(file_name = None, file_id = None, fields = "id, name", verbose = "False"):
+    """
+    Searches for a file in the Google Drive using the file name or file ID. If the file is found, the file ID is returned. 
 
+    Parameters:
+        file_name (str): Name of the file to be searched. Default is None.
+        file_id (str): File ID of the file to be searched. Default is None.
+        fields (str): Fields to be returned. Default is "id, name".
+        verbose (str): If True, prints the response. Default is False.
 
+    Returns:
+        A tuple containing the file ID and the fields queried.
+    
+    Raises:
+        Exception: If the file is not found.
+    """
 
+    try:
+        results = None
+        ids = None
+        # Call the Drive v3 API
+        if file_name:
+            fields = "files(" + fields + ")"
+            query = "name = '%s' and mimeType != 'application/vnd.google-apps.folder' and trashed = false" % file_name,
+            results = service.files().list(q = query, fields=fields).execute()
+            ids = [item['id'] for item in results.get('files', [])]
 
+        elif file_id:
+            results = service.files().get(fileId = file_id, fields=fields).execute()
+            ids = [results['id']]
 
+        else:
+            raise Exception("Please specify either file name or file ID.")
 
+    except HttpError as error:
+        print(f'Cannot Search. An error occurred: {error}')
+    
+    if verbose:
+        print(json.dumps(results, indent=4, sort_keys=True))
 
+    return (ids, results)
 
+if __name__ == '__main__':
+    
+    creds = get_credentials('credentials.json')
+    service = build('drive', 'v3', credentials=creds)
+    #some comment

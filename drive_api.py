@@ -191,36 +191,10 @@ def get_credentials(creds,file_name):
 
 
 
-    print("--------------------------")
-    # by id 
-    f1 = search_folder(folder_id = '1r6JXAFjnmliezL23pf0FePbuJpUJyl-e', fields = "id, name, parents, webViewLink, owners")
-    print(f1)
 
-    # f2 = search_folder(folder_id = '1wdvE8Kb6-DgkhueUl6UzRmbPAm5G34E3')
-    # print(f2)
-    #-------------------------------------------
 
-    #----- Create folder in root directory------
-    # create_folder('Networking', None)
-    #-------------------------------------------
 
-    #----- Create folder in non-root folder-----
-    # f2 = search_folder('Networking')
-    # create_folder('Application Layer', [f2])
 
-    # f2 = create_folder('Hoffman Encoding', ['1r6JXAFjnmliezL23pf0FePbuJpUJyl-e'], fields = "id, name, parents, webViewLink, owners")
-    # print(f2)
-    #-------------------------------------------
 
-    #------------- Upload a file ---------------
-    f3 = search_folder('Cyber Security')
-    uploaded_file_id = upload_file('big_cat_video.mp4', '/Users/rajeevgoyal/Downloads/videos/big_cat_video.mp4', f3[0])
-    #-------------------------------------------
 
-    # f = search_file('limgrave.jpg')
-    # print(f.get('id'))
-    # download_file(f.get('id'), 'limgrave.jpg')
-    # download_file("limgrave.jpg","downloaded_limgrave.jpg")
 
-    # f = search_folder('Security')
-    # upload_file('cat_video.mp4', '/Users/rajeevgoyal/Downloads/videos/cat_video.mp4', f)

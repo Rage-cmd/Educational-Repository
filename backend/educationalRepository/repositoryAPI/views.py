@@ -15,7 +15,7 @@ from rest_framework.parsers import JSONParser
 
 class UserView(views.APIView):
     def get(self, request):
-        cursor = findAllDocument("test_db", "users_col", None)
+        cursor = findAllDocument("test_db", "users_col", {'user_points': 100})
         user_data = []
         for doc in cursor:
             user_data.append(doc)

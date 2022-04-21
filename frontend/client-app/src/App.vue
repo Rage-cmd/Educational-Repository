@@ -38,20 +38,23 @@
     </v-app-bar>
 
     <v-main>
-      <UserData/>
+      <userData/>
+      <postData/>
     </v-main>
   </v-app>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld';
-import UserData from './components/userData.vue';
+import userData from './components/userData.vue';
+import postData from './components/postData.vue';
 
 export default {
   name: 'App',
 
   components: {
-    UserData
+    userData,
+    postData
 },
 
   data: () => ({

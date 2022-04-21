@@ -1,15 +1,35 @@
+from unittest.util import _MAX_LENGTH
 from rest_framework import serializers, routers, viewsets
 
 class UserSerializer(serializers.Serializer):
-    user_name = serializers.CharField(max_length=100)
-    user_email = serializers.EmailField(max_length=100)
-    user_password = serializers.CharField(max_length=100)
-    user_access_level = serializers.CharField(max_length=100)
-    user_status = serializers.CharField(max_length=100)
-    user_posts = serializers.ListField(child=serializers.CharField(max_length=100))
-    user_comments = serializers.ListField(child=serializers.CharField(max_length=100))
-    user_points = serializers.IntegerField()
-    user_profile_picture = serializers.CharField(max_length=100)
-    user_no_of_bans = serializers.IntegerField()
-    user_is_banned = serializers.BooleanField()
+    id = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100)
+    email = serializers.EmailField(max_length=100)
+    password = serializers.CharField(max_length=100)
+    access_level = serializers.CharField(max_length=100)
+    status = serializers.CharField(max_length=100)
+    posts = serializers.ListField(child=serializers.CharField(max_length=100))
+    comments = serializers.ListField(child=serializers.CharField(max_length=100))
+    points = serializers.IntegerField()
+    profile_picture = serializers.CharField(max_length=100)
+    no_of_bans = serializers.IntegerField()
+    is_banned = serializers.BooleanField()
+
+class PostSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=100)
+    author = serializers.CharField(max_length=100)
+    type = serializers.CharField(max_length=100)
+    time = serializers.TimeField()
+    tags = serializers.ListField(child=serializers.CharField(max_length=100))
+    caption = serializers.CharField(max_length=100)
+    text = serializers.CharField(max_length=100)
+    options = serializers.ListField(required = False, child=serializers.CharField(max_length=100))
+    image_url = serializers.CharField(required = False, max_length=100)
+    video_url = serializers.CharField(required = False,max_length=100)
+    upvotes = serializers.IntegerField()
+    is_accepted = serializers.BooleanField()
+    reports = serializers.IntegerField()
+    comments = serializers.ListField(child=serializers.CharField(max_length=100))
+
+
     

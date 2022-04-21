@@ -1,0 +1,6 @@
+# ignore python cache files
+*.pyc
+
+# ignore OS related files
+*.DS_Store
+

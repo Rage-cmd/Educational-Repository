@@ -30,6 +30,11 @@ def findAllDocument(Database, collection, filterObject):
     object = col.find(filterObject)
     return object
 
+def deleteDocument(Database, collection, filterObject):
+    col = getCollection(Database, collection)
+    object = col.delete_one(filterObject)
+    return object
+
 # saveDocument("test_db","test_col",{"name":"asda", "age":10})
 # print(findAllDocument("test_db", "test_col", {"name":"asda"}))
 

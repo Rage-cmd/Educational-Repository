@@ -55,11 +55,34 @@ posts = [
         'text': 'This is a test post',
         'author': 'u2',
         'upvotes': 35,
-        'image_url': 'https://example.com/image.png',
-        'is_accepted': False,
+        'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'is_answered': False,
         'comments': ['c13', 'c66'],
         'reports': 2
     },
+]
+
+comments = [
+    {
+        'id': 'c13',
+        'author': 'u2',
+        'post_id': 'p12',
+        'time': '2020-01-01T00:00:00Z',
+        'text': 'This is a test comment',
+        'upvotes': 35,
+        'reports': 2,
+        'is_verified': True
+    },
+    {
+        'id': 'c66',
+        'author': 'u3',
+        'post_id': 'p12',
+        'time': '2020-01-01T00:00:00Z',
+        'text': 'This is the second test comment',
+        'upvotes': 3,
+        'reports': 0,
+        'is_verified': False
+    }
 ]
 
 # delete database
@@ -68,8 +91,10 @@ deleteDatabase("test_db")
 test_db = createDatabase("test_db")
 user_collection = getCollection("test_db","users_collection")
 post_collection = getCollection("test_db","posts_collection")
+comments_collection = getCollection("test_db","comments_collection")
 
 saveMultipleDocuments("test_db", "users_collection", users)
 saveMultipleDocuments("test_db", "posts_collection", posts)
+saveMultipleDocuments("test_db", "comments_collection", comments)
 
 

@@ -27,9 +27,19 @@ class PostSerializer(serializers.Serializer):
     image_url = serializers.CharField(required = False, max_length=100)
     video_url = serializers.CharField(required = False,max_length=100)
     upvotes = serializers.IntegerField()
-    is_accepted = serializers.BooleanField()
+    is_answered = serializers.BooleanField()
     reports = serializers.IntegerField()
     comments = serializers.ListField(child=serializers.CharField(max_length=100))
 
+class CommentSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=100)
+    author = serializers.CharField(max_length=100)
+    post_id = serializers.CharField(max_length=100)
+    time = serializers.TimeField()
+    text = serializers.CharField(max_length=100)
+    upvotes = serializers.IntegerField()
+    reports = serializers.IntegerField()
+    is_verified = serializers.BooleanField()
+    
 
     

@@ -47,4 +47,9 @@ class MainTreeSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     children_tags = serializers.ListField(child=serializers.CharField(max_length=100))
     children_posts = serializers.ListField(child=serializers.CharField(max_length=100))
+
+class TagTreeSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100)
+    path_to_tag = serializers.ListField(child=serializers.CharField(max_length=100))
     

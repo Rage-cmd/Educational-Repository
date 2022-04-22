@@ -2,7 +2,7 @@
   <v-card
     :loading="loading"
     class="mx-auto my-12"
-    max-width="900"
+    max-width="700"
   >
     <template slot="progress">
       <v-progress-linear
@@ -22,7 +22,7 @@
     </v-card-text>
 
 
-    <iframe width="100%" height="500" src="https://www.youtube.com/embed/tgB1wUcmbbw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <iframe width="100%" height="400" src="https://www.youtube.com/embed/tgB1wUcmbbw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
 
 
@@ -58,10 +58,6 @@
       icon>
           <v-icon>mdi-bookmark-outline</v-icon>
       </v-btn>     
-
-        <div class="grey--text ms-4">
-          4.5 (413)
-        </div>
       </v-row>
 
       <div class="my-4 text-subtitle-1 font-weight-bold">
@@ -131,13 +127,6 @@ export default {
   created: function(){
       this.description = this.getDescription(this.postModel);
   },
-
-  watcher: {
-      fullDescription(){
-          console.log("Reached here")
-          this.description = this.getDescription();
-      }
-  }
 
 }
 </script>

@@ -13,7 +13,7 @@
     </template>
 
 
-    <v-card-title>Sample Post</v-card-title>
+    <v-card-title>{{postModel.title}}</v-card-title>
     
     
     <v-card-text secondary-title>
@@ -22,8 +22,10 @@
     </v-card-text>
 
 
-    <iframe width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
+
+    <v-img v-if="postModel.postType === 'MCQ'" :src="postModel.imgURL" width="100%"></v-img>
 
 
     <v-card-text>
@@ -71,7 +73,6 @@
 
     <v-card-text>
       <v-chip-group
-        v-model="selection"
         active-class="deep-purple accent-4 white--text"
         column
       >
@@ -98,6 +99,7 @@ export default {
       return{
         fullDescription:false,
         description:"",
+        loading:false,
       }
   },
   props:{

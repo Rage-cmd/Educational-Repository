@@ -40,6 +40,11 @@ class CommentSerializer(serializers.Serializer):
     upvotes = serializers.IntegerField()
     reports = serializers.IntegerField()
     is_verified = serializers.BooleanField()
-    
 
+class MainTreeSerializer(serializers.Serializer):
+    tree_type = serializers.CharField(max_length=100)
+    id = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100)
+    children_tags = serializers.ListField(child=serializers.CharField(max_length=100))
+    children_posts = serializers.ListField(child=serializers.CharField(max_length=100))
     

@@ -18,6 +18,7 @@ serializers = {
     'users_collection' : UserSerializer,
     'posts_collection' : PostSerializer,
     'comments_collection': CommentSerializer,
+    'main_tree_collection': MainTreeSerializer
 }
 
 class GenericView(views.APIView):

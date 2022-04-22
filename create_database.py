@@ -42,7 +42,35 @@ users = [
         'profile_picture': 'https://example.com/profile3.png',
         'no_of_bans': 0,
         'is_banned': False
-    }
+    },
+    {
+        'id': 'u5',
+        'name': 'Henry Sullivan',
+        'email': 'user4@example.com',
+        'password': 'password',
+        'access_level': 'moderator',
+        'status': 'active',
+        'posts': ['p19', 'p34'],
+        'comments': ['c55', 'c69'],
+        'points': 100,
+        'profile_picture': 'https://example.com/profile4.png',
+        'no_of_bans': 0,
+        'is_banned': False
+    },
+    {
+        'id': 'u6',
+        'name': 'John Smith',
+        'email': 'user5@example.com',
+        'password': 'password',
+        'access_level': 'admin',
+        'status': 'active',
+        'posts': ['p20', 'p35'],
+        'comments': ['c56', 'c70'],
+        'points': 100,
+        'profile_picture': 'https://example.com/profile5.png',
+        'no_of_bans': 0,
+        'is_banned': False
+    },
 ]
 
 posts = [
@@ -60,6 +88,13 @@ posts = [
         'comments': ['c13', 'c66'],
         'reports': 2
     },
+    {
+        'id': 'p52',
+        'type': 'text',
+        'time': '2020-01-01T00:00:00Z',
+        'tags': ['t4', 't5'],
+        'caption': ''
+    }
 ]
 
 comments = [

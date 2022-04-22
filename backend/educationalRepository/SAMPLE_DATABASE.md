@@ -57,9 +57,9 @@ No. of posts: 6
 
 Post IDs: [p1, p2, p3, p4, p5, p6]
 
-### Authors vs posts: 
+### Authors vs posts
 
-```
+
 | Author | Posts     |
 | ------ | --------- |
 | u1     | [p1, p2,] |
@@ -67,11 +67,11 @@ Post IDs: [p1, p2, p3, p4, p5, p6]
 | u3     | [p4]      |
 | u4     | [p5]      |
 | u5     | [p6]      |
-``` 
 
-### Posts vs Parent Tags: 
 
-```
+### Posts vs Parent Tags
+
+
 | Post | Parent Tag  |
 | -----| ----------- |
 | p1   | [tag2]      |
@@ -80,4 +80,3 @@ Post IDs: [p1, p2, p3, p4, p5, p6]
 | p4   | [tag5,]     |
 | p5   | [tag5,]     |
 | p6   | [tag5,]     |
-```

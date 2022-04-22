@@ -68,7 +68,11 @@
         Description
       </div>
 
-      <div>{{description}}
+      <div>
+          {{description}}
+          <!-- <v-btn text @click="fullDescription=true">read more..</v-btn> -->
+          <a href="javascript:void(0)" @click="toggleDescription(postModel)" v-if="!fullDescription"> read more...</a>
+          <!-- <a href="javascript:void(0)" @click="toggleDescription(postModel)"> </a> -->
       </div>
     </v-card-text>
 
@@ -117,10 +121,22 @@ export default {
           else{
               return postModel.description.substring(0,250)
           }
+      },
+
+      toggleDescription(postModel){
+            this.fullDescription = !this.fullDescription;
+            this.description = this.getDescription(postModel);
       }
   },
   created: function(){
       this.description = this.getDescription(this.postModel);
+  },
+
+  watcher: {
+      fullDescription(){
+          console.log("Reached here")
+          this.description = this.getDescription();
+      }
   }
 
 }

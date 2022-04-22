@@ -79,7 +79,7 @@ posts = [
         'type': 'text',
         'time': '2020-01-01T00:00:00Z',
         'tags': ['t4', 't5'],
-        'caption': 'This is a caption',
+        'caption': 'P1 Caption',
         'text': 'This is a test post',
         'author': 'u2',
         'upvotes': 35,
@@ -214,77 +214,77 @@ tags = [
 
 main_tree = [
     {
-        'id': 'm1',
+        'id': 't1',
         'name': 'Main 1',
         'type': 'tag',
         'children_tags': ['t2', 't3'],
         'children_posts': []
     },
     {
-        'id': 'm2',
+        'id': 't2',
         'name': 'Main 2',
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p1', 'p2']
     },
     {
-        'id': 'm3',
+        'id': 't3',
         'name': 'Main 3',
         'type': 'tag',
         'children_tags': ['t4', 't5'],
         'children_posts': []
     },
     {
-        'id': 'm4',
+        'id': 't4',
         'name': 'Main 4',
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p3']
     },
     {
-        'id': 'm5',
+        'id': 't5',
         'name': 'Main 5',
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p4', 'p5', 'p6']
     },
     {
-        'id': 'm6',
+        'id': 'p1',
         'name': 'Main 6',
         'type': 'post', 
         'children_tags': [],
         'children_posts': []
     },
     {
-        'id': 'm7',
+        'id': 'p2',
         'name': 'Main 7',
         'type': 'post',
         'children_tags': [],
         'children_posts': []
     },
     {
-        'id': 'm8',
+        'id': 'p3',
         'name': 'Main 8',
         'type': 'post',
         'children_tags': [],
         'children_posts': []
     },
     {
-        'id': 'm9',
+        'id': 'p4',
         'name': 'Main 9',
         'type': 'post',
         'children_tags': [],
         'children_posts': []
     },
     {
-        'id': 'm10',
+        'id': 'p5',
         'name': 'Main 10',
         'type': 'post',
         'children_tags': [],
         'children_posts': []
     },
     {
-        'id': 'm11',
+        'id': 'p6',
         'name': 'Main 11',
         'type': 'post',
         'children_tags': [],

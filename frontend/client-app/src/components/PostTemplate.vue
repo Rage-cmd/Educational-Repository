@@ -22,7 +22,7 @@
     </v-card-text>
 
 
-    <iframe width="100%" height="400" src="https://www.youtube.com/embed/tgB1wUcmbbw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <iframe width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
 
 
@@ -46,12 +46,7 @@
           <v-icon>mdi-comment-outline</v-icon>
       </v-btn>    
 
-      <v-btn
-      v-if="postModel.verifiedPost"
-      class="ma-2"
-      icon>
-      <v-icon color="green">mdi-check-bold</v-icon>
-      </v-btn>   
+      <v-icon color="green" v-if="postModel.verifiedPost">mdi-check-bold</v-icon>   
 
       <v-btn
       class="ma-2"

@@ -1,7 +1,26 @@
 <template>
 
     <v-app >
-        <NavBar/>        
+        <NavBar/>
+        <v-container>    
+        </v-container>
+        <v-container>
+            <v-tabs
+                v-model="selectedTab"
+                color="primary"
+                slider-color="primary"
+                mt-4
+                fixed-tabs
+            >
+                <v-tab>
+                    Most Recent
+                </v-tab>
+
+                <v-tab>
+                    Most Upvoted
+                </v-tab>
+            </v-tabs>
+        </v-container>        
         <PostTemplate :postModel="sampleVideoPostData"/>
         <PostTemplate :postModel="sampleMCQPostData"/>
     </v-app>

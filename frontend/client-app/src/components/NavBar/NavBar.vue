@@ -6,7 +6,6 @@
             dark
             elevate-on-scroll
             absolute
-            scroll-target="#scrolling-techniques-7"
             >
                 <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -15,7 +14,6 @@
                    <v-btn      
                    v-for="opt in navBarOptions" :key="opt"
                    color="primary"
-                   flat
                    elevation="0"
                     >
                         {{opt}}

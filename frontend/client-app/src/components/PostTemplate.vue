@@ -86,6 +86,21 @@
       </v-chip-group>
     </v-card-text>
 
+    <v-card-text>
+      <!-- <v-card>
+        
+      <v-row>
+        <v-list>
+          <v-col :cols="6">
+            <v-list-item v-for="opt in postModel.options" :key="opt">
+              {{opt}}
+            </v-list-item>
+          </v-col>
+        </v-list>
+      </v-row>
+      </v-card> -->
+    </v-card-text>
+
   </v-card>
 </template>
 

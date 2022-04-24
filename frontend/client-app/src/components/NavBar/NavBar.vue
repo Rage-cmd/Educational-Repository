@@ -19,16 +19,37 @@
                         {{opt}}
                     </v-btn>
             <!-- </v-row> -->
-                
+
+             <v-form pt-1>
+                 <v-row mt-3>
+                    <v-col :cols=3 >
+                        <v-container mt-5>
+                            
+                        <v-select
+                        :items="items"
+                        ></v-select>   
+                        </v-container>
+                    </v-col>
+                 <v-col :cols=9>
+                     <v-container mt-6>
+                         
+                        <v-autocomplete 
+                        mr-2
+                        chips
+                        small-chips
+                        dense
+                        multiple
+                        :items="suggestionOptions"
+                        ></v-autocomplete>
+                     </v-container>
+                 </v-col>
+                 </v-row>
+             </v-form>
+            
             <v-spacer></v-spacer>
-
-                <v-btn icon>
-                    <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                    <v-icon>mdi-logout</v-icon>
-                </v-btn>
+            <v-btn icon>
+                <v-icon>mdi-logout</v-icon>
+            </v-btn>
             </v-app-bar>
 
             <v-navigation-drawer
@@ -73,7 +94,9 @@ export default {
         },
         drawer: false,
         group: null,
-        navBarOptions:["Home","Notifications","Your Uploads","Watchlist"]
+        navBarOptions:["Home","Notifications"],
+        items:["Child Search","Tag","Post"],
+        suggestionOptions:["CN","OS", "Lingo"],
     })
 }
 </script>

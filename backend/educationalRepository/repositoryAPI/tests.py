@@ -15,7 +15,16 @@ from Suggestion.suggestions import *
 # for post in posts:
 #     print(post['caption'])
 
-suggested_posts = post_suggestions('4')
+# suggested_posts = post_suggestions('4')
 
-for post in suggested_posts:
-    print(post['caption'])
+# for post in suggested_posts:
+#     print(post['caption'])
+
+node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":'t5'})
+n_posts, n_tags = neighbour_suggestions([node])
+
+for node in n_posts:
+    print(node['caption'])
+
+for node in n_tags:
+    print(node['name'])

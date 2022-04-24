@@ -13,16 +13,27 @@
                 fixed-tabs
             >
                 <v-tab>
-                    Most Recent
+                    Most Recent 
                 </v-tab>
+               
 
                 <v-tab>
                     Most Upvoted
                 </v-tab>
+                    
+                    <v-tab-item>
+                        <PostTemplate :postModel="sampleVideoPostData"/>
+                        <PostTemplate :postModel="sampleMCQPostData"/>
+                    </v-tab-item>
+                    
+                    <v-tab-item>
+                        <PostTemplate :postModel="sampleVideoPostData"/>
+                        <PostTemplate :postModel="sampleMCQPostData"/>
+                        
+                    </v-tab-item>
             </v-tabs>
         </v-container>        
-        <PostTemplate :postModel="sampleVideoPostData"/>
-        <PostTemplate :postModel="sampleMCQPostData"/>
+        
     </v-app>
 </template>
 

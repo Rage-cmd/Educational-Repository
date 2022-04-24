@@ -32,3 +32,11 @@ def tag_ID_search(tag_id):
         result.append(mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post['id']}))
     return result
     
+# def neighbour_search(node):
+#     if node['type'] == 'tag':
+#         post_
+#     post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":node_id})
+#     result = []
+#     for tag in post['tags']:
+#         result.append(tag_ID_search(tag))
+#     return result

@@ -18,7 +18,7 @@
     
     <v-card-text secondary-title>
         <v-icon small>mdi-account</v-icon>
-        sample_user
+        {{postModel.username}}
     </v-card-text>
 
 

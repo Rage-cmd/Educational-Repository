@@ -48,9 +48,10 @@
              </v-form>
             
             <v-spacer></v-spacer>
-            <v-btn icon>
+            <!-- <v-btn icon>
                 <v-icon>mdi-bell-outline</v-icon>
-            </v-btn>
+            </v-btn> -->
+            <NotificationDialog/>
             <v-btn icon>
                 <v-icon>mdi-logout</v-icon>
             </v-btn>
@@ -88,7 +89,13 @@
 </template>
 
 <script>
+
+import NotificationDialog from "../../components/NavBar/NotificationDialog.vue"
+
 export default {
+    components:{
+        NotificationDialog,
+    },
     setup() {
         
     },

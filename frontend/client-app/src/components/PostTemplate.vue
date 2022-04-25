@@ -39,7 +39,7 @@
         icon
         color="blue lighten-2"
       >
-        <v-icon>mdi-thumb-up</v-icon>
+        <v-icon>mdi-thumb-up-outline</v-icon>
       </v-btn>
 
       <v-btn

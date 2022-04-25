@@ -179,7 +179,7 @@ posts = [
 
 comments = [
     {
-        'id': 'c13',
+        'id': 'c1',
         'author': 'u2',
         'post_id': 'p12',
         'time': '2020-01-01T00:00:00Z',
@@ -189,7 +189,7 @@ comments = [
         'is_verified': True
     },
     {
-        'id': 'c66',
+        'id': 'c2',
         'author': 'u3',
         'post_id': 'p12',
         'time': '2020-01-01T00:00:00Z',

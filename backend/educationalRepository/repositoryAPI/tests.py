@@ -31,12 +31,33 @@ from User.userUtilities import *
 # for node in n_tags:
 #     print(node['name'])
 
-saved_posts = get_posts('u5','saved')
+# saved_posts = get_posts('u5','saved')
 
-for post in saved_posts:
-    print(post['caption'])
+# for post in saved_posts:
+#     print(post['caption'])
 
-uploaded_posts = get_posts('u5','uploads')
+# uploaded_posts = get_posts('u5','uploads')
 
-for post in uploaded_posts:
-    print(post['caption'])
+# for post in uploaded_posts:
+#     print(post['caption'])
+
+
+# print(like_post('u2','p3'))
+# user_2 = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'})
+# liked_posts = user_2["liked_posts"]
+# print(liked_posts)
+
+# post_3 = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":'p3'})
+# print(post_3['upvotes'])
+
+# save_post('u2','p2')
+# user_2 = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'})
+# saved_posts = user_2["saved_posts"]
+# print(saved_posts)
+
+comment_doc = comment_post('u2', 'p2', 'This is my first Comment!')
+user_2 = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'})
+comments = user_2["comments"]
+print(comments)
+
+print(comment_doc)

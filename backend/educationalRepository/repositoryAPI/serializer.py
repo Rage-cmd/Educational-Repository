@@ -30,6 +30,7 @@ class PostSerializer(serializers.Serializer):
     video_url = serializers.CharField(required = False,max_length=100)
     upvotes = serializers.IntegerField()
     is_answered = serializers.BooleanField()
+    is_approved = serializers.BooleanField()
     reports = serializers.IntegerField()
     comments = serializers.ListField(child=serializers.CharField(max_length=100))
 

@@ -4,12 +4,11 @@
         <NavBar/>
         <v-container>    
         </v-container>
-        <v-container>
+        <v-container mt-6>
             <v-tabs
                 v-model="selectedTab"
                 color="primary"
                 slider-color="primary"
-                mt-4
                 fixed-tabs
             >
                 <v-tab>

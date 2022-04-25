@@ -20,22 +20,22 @@
                     </v-btn>
             <!-- </v-row> -->
 
-             <v-form pt-1>
-                 <v-row mt-3>
-                    <v-col :cols=3 >
+            
+
+             <v-form>
+                 <v-row>
+                    <v-col :cols=4 >
                         <v-container mt-5>
-                            
                         <v-select
                         :items="items"
                         v-model="searchFilter"
                         ></v-select>   
                         </v-container>
                     </v-col>
-                 <v-col :cols=9>
-                     <v-container mt-6>
+                 <v-col :cols=8>
+                     <v-container mt-6 height="10">
                          
                         <v-autocomplete 
-                        mr-2
                         chips
                         small-chips
                         dense
@@ -48,6 +48,9 @@
              </v-form>
             
             <v-spacer></v-spacer>
+            <v-btn icon>
+                <v-icon>mdi-bell-outline</v-icon>
+            </v-btn>
             <v-btn icon>
                 <v-icon>mdi-logout</v-icon>
             </v-btn>
@@ -95,7 +98,7 @@ export default {
         },
         drawer: false,
         group: null,
-        navBarOptions:["Home","Notifications"],
+        navBarOptions:["Home"],
         items:["Child Search","Tag","Post"],
         suggestionOptions:["CN","OS", "Lingo"],
         searchFilter:"",

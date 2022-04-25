@@ -12,8 +12,8 @@ def getCollection(Database, collection):
 def saveSingleDocument(Database, collection, object):
     db = client[Database]
     col = db[collection]
-    objectId = col.insert_one(object).inserted_id
-    return objectId
+    col.insert_one(object)
+    return object['id']
 
 def saveMultipleDocuments(Database, collections, objects):
     col = getCollection(Database,collections)
@@ -41,5 +41,40 @@ def deleteDatabase(Database):
 def createDatabase(Database):
     db = client[Database]
     return db
+
+def getNextSequenceValue(Database, collection):
+    """
+    Gets the next sequential value of the collection.
+
+    :param Database: The database to be used
+    :param collection: The collection to be used
+    :return: The next sequential value
+    
+    Example:
+        getNextSequentialValue("test_db", "users_collection")
+    """
+    col = getCollection(Database, collection)
+    object = col.find().sort([("id", pymongo.DESCENDING)]).limit(1)
+    for doc in object:
+        return int(doc["id"][1:]) + 1
+    return 1
+
+def updateDocument(Database, collection, filterObject, updateObject):
+    """
+    Updates a document in the collection. If the document does not exist, it will be created.
+
+    :param Database: The database to be used
+    :param collection: The collection to be used
+    :param filterObject: The filter object to be used
+    :param updateObject: The update object to be used
+    :return: The objectId of the updated document
+    
+    Example:
+        updateDocument("test_db", "users_collection", {"id": "u1"}, {"$set": {"name": "test"}})
+    """
+    col = getCollection(Database, collection)
+    object = col.update_one(filterObject, updateObject)
+    return object
+
 
 client = MongoClient()

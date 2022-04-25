@@ -1,5 +1,8 @@
+import datetime
+
 import sys
 sys.path.append("..")
+
 
 import databaseInterfaces.mongoDB_interface as mongoDB_interface
 
@@ -91,9 +94,9 @@ def like_post(user_id, post_id):
             user["liked_posts"].append(post_id)
             post['upvotes'] += 1
 
-        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},user)
-        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},post)
-    
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"liked_posts":user["liked_posts"]}})
+        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"upvotes":post['upvotes']}})
+
         return True
     
     except:
@@ -123,9 +126,46 @@ def save_post(user_id, post_id):
         else:
             user["saved_posts"].append(post_id)
 
-        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},user)
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"saved_posts":user["saved_posts"]}})
 
         return True
     except:
         return False
 
+
+def comment_post(user_id, post_id, comment_text):
+    """
+    Comment on a post. The function expects a user id, a post id and a comment text. 
+    Parameters:
+        user_id (str) : The user id of the user.
+        post_id (str) : The id of the post.
+        comment_text (str) : The text of the comment.
+
+    Returns:
+        success (bool) : A boolean value.
+
+    """
+    # try:
+    user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+    post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
+
+    comment_doc = {
+        "id": 'c' + str(mongoDB_interface.getNextSequenceValue("test_db","comments_collection")),
+        "author": user_id,
+        "post_id": post_id,
+        "time": datetime.datetime.now(),
+        "text": comment_text,
+        "upvotes": 0,
+        "reports": 0,
+        "is_verified": False
+    }
+
+    comment_id = mongoDB_interface.saveSingleDocument("test_db","comments_collection",comment_doc)
+
+    post['comments'].append(comment_id)
+    mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"comments":post['comments']}})
+
+    user['comments'].append(comment_id)
+    mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
+
+    return comment_doc

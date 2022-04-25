@@ -10,6 +10,8 @@ class UserSerializer(serializers.Serializer):
     status = serializers.CharField(max_length=100)
     posts = serializers.ListField(child=serializers.CharField(max_length=100))
     comments = serializers.ListField(child=serializers.CharField(max_length=100))
+    saved_posts = serializers.ListField(child=serializers.CharField(max_length=100))
+    liked_posts = serializers.ListField(child=serializers.CharField(max_length=100))
     points = serializers.IntegerField()
     profile_picture = serializers.CharField(max_length=100)
     no_of_bans = serializers.IntegerField()

@@ -23,13 +23,13 @@ def get_posts(user_id, post_type="uploads"):
     """
     
     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
-    
+
     if post_type == "uploads":
         post_ids = user["posts"]
     elif post_type == "likes":
         post_ids = user["liked_posts"]
     else:
-        post_id = user["saved_posts"]
+        post_ids = user["saved_posts"]
     
     user_posts = []
     for post_id in post_ids:

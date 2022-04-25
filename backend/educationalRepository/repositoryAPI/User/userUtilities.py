@@ -169,3 +169,82 @@ def comment_post(user_id, post_id, comment_text):
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
 
     return comment_doc
+
+
+
+# to be implemented
+# def delete_post(user_id, post_id):
+#     """
+#     Delete a post. The function expects a user id and a post id. 
+    
+#     The function returns a boolean value.
+
+#     Parameters:
+#         user_id (str) : The user id of the user.
+#         post_id (str) : The id of the post.
+
+
+#     """
+#     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+
+#     user["posts"].remove(post_id)
+#     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
+
+#     mongoDB_interface.deleteDocument("test_db","posts_collection",{"id":post_id})
+
+
+def delete_comment(user_id, comment_id):
+    """
+    Delete a comment. The function expects a user id and a comment id. 
+    
+    The function returns a boolean value.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+        comment_id (str) : The id of the comment.
+
+    Returns:
+        success (bool) : True if the comment was deleted, False otherwise.
+
+    """
+    try:
+        user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        comment = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
+        post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":comment["post_id"]})
+
+        user["comments"].remove(comment_id)
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user["comments"]}})
+
+        post["comments"].remove(comment_id)
+        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":comment["post_id"]},{"$set": {"comments":post["comments"]}})
+
+        mongoDB_interface.deleteDocument("test_db","comments_collection",{"id":comment_id})
+        return True
+    except:
+        return False
+
+
+def edit_comment(user_id, comment_id, comment_text):
+    """
+    Edit a comment. The function expects a user id, a comment id and a comment text. 
+    
+    The function returns a boolean value.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+        comment_id (str) : The id of the comment.
+        comment_text (str) : The text of the comment.
+
+    Returns:
+        success (bool) : True if the comment was edited successfully. False otherwise.
+
+    """
+    try:
+        comment = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
+        comment["text"] = comment_text
+        mongoDB_interface.updateDocument("test_db","comments_collection",{"id":comment_id},{"$set": {"text":comment["text"]}})
+        return True
+
+    except:
+        return False
+    

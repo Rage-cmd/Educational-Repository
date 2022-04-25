@@ -55,9 +55,20 @@ from User.userUtilities import *
 # saved_posts = user_2["saved_posts"]
 # print(saved_posts)
 
-comment_doc = comment_post('u2', 'p2', 'This is my first Comment!')
-user_2 = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'})
-comments = user_2["comments"]
-print(comments)
+# comment_doc = comment_post('u2', 'p2', 'This is my first Comment!')
+# user_2 = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'})
+# comments = user_2["comments"]
+# print(comments)
 
-print(comment_doc)
+
+# delete_comment('u2', 'c5')
+# user_2 = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'})
+# comments = user_2["comments"]
+# print(comments)
+
+# print("BEFORE: ")
+# comment_6 = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":'c6'})
+# print(comment_6['text'])
+# edit_comment('u2', 'c6', 'THE CONTENT OF THE COMMENT HAS BEEN EDITED AGAINNNNN!')
+# comment_6 = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":'c6'})
+# print(comment_6['text'])

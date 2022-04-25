@@ -27,6 +27,7 @@
                             
                         <v-select
                         :items="items"
+                        v-model="searchFilter"
                         ></v-select>   
                         </v-container>
                     </v-col>
@@ -97,6 +98,10 @@ export default {
         navBarOptions:["Home","Notifications"],
         items:["Child Search","Tag","Post"],
         suggestionOptions:["CN","OS", "Lingo"],
-    })
+        searchFilter:"",
+    }),
+    created: function(){
+        this.searchFilter=this.items[0];
+    }
 }
 </script>

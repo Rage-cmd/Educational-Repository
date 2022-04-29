@@ -294,12 +294,13 @@ def upload_post(user_id, post_details):
         "reports": 0,
     }
 
-    parent_folder = post_details['tags'][-1]
     
     # if new_tag is not None create a new tag
     if "new_tag" in post_details:
         new_tag_id = insert_tag(post_details["new_tag"], post_details["tags"])
         post_doc["tags"].append(new_tag_id)
+    
+    parent_folder = post_details['tags'][-1]
     
     drive_id = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parent_folder})["drive_id"]
     uploaded_file_id = None
@@ -326,7 +327,7 @@ def upload_post(user_id, post_details):
 
 
     mongoDB_interface.saveSingleDocument("test_db","posts_collection",post_doc)
-    mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parent_folder},{"$push": {"children":post_doc["id"]}})
+    mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parent_folder},{"$push": {"children_posts":post_doc["id"]}})
 
     maintree_child_doc = {
         "id": post_doc["id"],
@@ -374,7 +375,7 @@ def insert_tag(tag_name, parents):
 
         parent_folder_id = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parents[-1]})["drive_id"]
 
-        file = drive_api.create_folder(tag_name,parent_folder_id)
+        file = drive_api.create_folder(tag_name,[parent_folder_id])
 
         main_tree_node_doc = {
             "id": tag_id,

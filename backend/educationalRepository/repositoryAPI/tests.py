@@ -6,6 +6,18 @@ from Search.searchAlgorithms import *
 from Suggestion.suggestions import *
 from User.userUtilities import *
 
+def print_main():
+    main_tree = mongoDB_interface.findAllDocument("test_db","maintree_collection",{})
+    for node in main_tree:
+        if node["type"] == "tag":
+            print(node['id'], "--->", node["children_posts"], node["children_tags"])
+
+
+def print_tag():
+    tag_tree = mongoDB_interface.findAllDocument("test_db","tagtree_collection",{})
+    for node in tag_tree:
+        print(node['id'], "--->", node["path_to_tag"])
+
 # post = post_ID_search('p12')
 # print(post)
 
@@ -74,18 +86,44 @@ from User.userUtilities import *
 # print(comment_6['text'])
 
 
-print("BEFORE---------------------\n")
-print(mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":'t1'}))
+# print("BEFORE---------------------\n")
+# print_main()
+# post_details = {
+#     'type': 'image',
+#     'caption': 'This is my first post!',
+#     'tags':['t1'],
+#     'text': "How are you all guys doing?!",
+#     "image_url": "/Users/rajeevgoyal/Downloads/images/cat_sleep.jpg"
+# }
+
+# upload_post('u2',post_details=post_details)
+
+# print("AFTER---------------------\n")
+# print_main()
+
+
 
 post_details = {
     'type': 'image',
     'caption': 'This is my first post!',
     'tags':['t1'],
     'text': "How are you all guys doing?!",
-    "image_url": "/Users/rajeevgoyal/Downloads/images/cat_sleep.jpg"
+    "image_url": "/Users/rajeevgoyal/Downloads/images/cat_sleep.jpg",
+    "new_tag": 't9'
 }
+print_main()
+print("--")
+print_tag()
 
-upload_post('u2',post_details=post_details)
+
+upload_post('u2', post_details=post_details)
 
 print("AFTER---------------------\n")
-print(mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":'t1'}))
+print_main()
+print("--")
+print_tag()
+
+print("\n\n")
+
+print(mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'}))
+

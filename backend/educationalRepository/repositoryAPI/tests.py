@@ -72,3 +72,20 @@ from User.userUtilities import *
 # edit_comment('u2', 'c6', 'THE CONTENT OF THE COMMENT HAS BEEN EDITED AGAINNNNN!')
 # comment_6 = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":'c6'})
 # print(comment_6['text'])
+
+
+print("BEFORE---------------------\n")
+print(mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":'t1'}))
+
+post_details = {
+    'type': 'image',
+    'caption': 'This is my first post!',
+    'tags':['t1'],
+    'text': "How are you all guys doing?!",
+    "image_url": "/Users/rajeevgoyal/Downloads/images/cat_sleep.jpg"
+}
+
+upload_post('u2',post_details=post_details)
+
+print("AFTER---------------------\n")
+print(mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":'t1'}))

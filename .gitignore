@@ -4,3 +4,4 @@
 # ignore OS related files
 *.DS_Store
 
+token.json

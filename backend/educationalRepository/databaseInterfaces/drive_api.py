@@ -143,7 +143,7 @@ def upload_file(file_name, file_path, parent_folder_id, fields = "id, name"):
     Parameters:
         file_name (str): Name of the file to upload.
         file_path (str): Path (in the local disk) of the file to be uploaded.
-        parent_folder_id (str): List of the parent folder ID in which the file is to be uploaded.
+        parent_folder_id (List): List of the parent folder ID in which the file is to be uploaded.
 
     Returns:
         Dictionary containing the details of the uploaded file.
@@ -186,7 +186,7 @@ def upload_file(file_name, file_path, parent_folder_id, fields = "id, name"):
 
     print("File Response:", json.dumps(file, indent=4, sort_keys=True))
     print ('File ID: %s' % file.get('id'))
-    return file.get('id')
+    return file
 
 
 def download_file(file_id, file_name, file_path = "./"):
@@ -246,6 +246,8 @@ def get_credentials(file_name):
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
+    creds = None
+
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
 
@@ -305,8 +307,7 @@ def search_file(file_name = None, file_id = None, fields = "id, name", verbose =
 
     return (ids, results)
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     
-    creds = get_credentials('credentials.json')
-    service = build('drive', 'v3', credentials=creds)
-    #some comment
+creds = get_credentials('/Users/rajeevgoyal/Academics/Sem 8/Educational Repository/OAuth keys/credentials.json')
+service = build('drive', 'v3', credentials=creds)

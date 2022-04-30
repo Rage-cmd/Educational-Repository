@@ -1,7 +1,7 @@
 <template>
 
     <v-app >
-        <NavBar/>
+        <!-- <NavBar/> -->
         <v-container>    
         </v-container>
         <v-container mt-6>
@@ -38,7 +38,7 @@
 
 <script>
 import PostTemplate from "../components/PostTemplate.vue";
-import NavBar from "../components/NavBar/NavBar.vue";
+// import NavBar from "../components/NavBar/NavBar.vue";
 
 export default ({
     setup() {
@@ -46,7 +46,7 @@ export default ({
     },
     components:{
         PostTemplate,
-        NavBar,
+        // NavBar,
     },
     data: ()=>({
         sampleVideoPostData:{

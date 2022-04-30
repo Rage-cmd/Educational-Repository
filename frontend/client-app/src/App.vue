@@ -39,9 +39,10 @@
     </v-app-bar> -->
 
     <v-main>
+      <NavBar :sideMenu="sideMenuMap[user.user_level]" @sideMenuSelect="sideMenuSelectHandler"/>
 
-      <HomeScreen v-if="currentScreen=='HomeScreen'" />
-      <PendingApprovalsScreen v-if="currentScreen == 'PendingApprovalsScreen'" />
+      <HomeScreen v-if="currentScreen=='Home'" :currentScreen="currentScreen" />
+      <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
       
 
     </v-main>
@@ -52,6 +53,7 @@
 // import HelloWorld from './components/HelloWorld';
 import HomeScreen from './components/HomeScreen.vue';
 import PendingApprovalsScreen from './components/Moderator/PendingApprovalsScreen.vue'
+import NavBar from './components/NavBar/NavBar.vue'
 
 
 export default {
@@ -60,10 +62,26 @@ export default {
   components: {
     HomeScreen,
     PendingApprovalsScreen,
+    NavBar,
 },
 
   data: () => ({
-    currentScreen:"HomeScreen",
+    user:{
+      "username":"sample_user",
+      "user_level":"Moderator",
+    },
+    currentScreen:"Home",
+    sideMenuMap:{
+      "Moderator":["Your Uploads","My Profile","Notifications","Stats", "Watchlist","Pending Approvals","Reported Users","Banned Users"],
+      "user":["Your Uploads","My Profile","Notifications","Stats", "Watchlist"],
+    }
   }),
+  methods:{
+    sideMenuSelectHandler(opt){
+      // console.log("selected opt:" + opt);
+      this.currentScreen = opt;
+
+    }
+  }
 };
 </script>

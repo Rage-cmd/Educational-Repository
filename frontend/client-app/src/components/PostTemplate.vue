@@ -86,7 +86,7 @@
       </v-chip-group>
     </v-card-text>
 
-    <v-card-actions v-if="currentScreen=='PendingApprovals'">
+    <v-card-actions v-if="currentScreen=='Pending Approvals'">
       <v-btn rounded color="success" width="48%">
         <v-icon>mdi-check-bold</v-icon>
         Accept
@@ -136,6 +136,7 @@ export default {
   },
   created: function(){
       this.description = this.getDescription(this.postModel);
+      console.log(this.currentScreen);
   },
 
 }

@@ -1,12 +1,11 @@
 <template>
 
     <v-app >
-        <NavBar/>
         <v-container>    
         </v-container>
         <v-container mt-6>
-            <PostTemplate :postModel="sampleMCQPostData"/>
-            <PostTemplate :postModel="sampleVideoPostData"/>
+            <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/>
+            <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/>
                         
         </v-container>        
         
@@ -15,7 +14,6 @@
 
 <script>
 import PostTemplate from "../../components/PostTemplate.vue" ;
-import NavBar from "../../components/NavBar/NavBar.vue";
 
 export default ({
     setup() {
@@ -23,7 +21,9 @@ export default ({
     },
     components:{
         PostTemplate,
-        NavBar,
+    },
+    props:{
+        currentScreen:String,
     },
     data: ()=>({
         sampleVideoPostData:{

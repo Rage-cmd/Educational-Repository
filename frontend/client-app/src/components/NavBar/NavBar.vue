@@ -66,21 +66,11 @@
                     nav
                 >
                     <v-list-item-group
-                    v-model="group"
+                    v-model="sideMenuSelection"
                     active-class="deep-purple--text text--accent-4"
                     >
-                    <v-list-item>
-                        <v-list-item-icon>
-                        <v-icon>mdi-home</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>Home</v-list-item-title>
-                    </v-list-item>
-
-                    <v-list-item>
-                        <v-list-item-icon>
-                        <v-icon>mdi-account</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>Account</v-list-item-title>
+                    <v-list-item v-for="opt in sideMenu" :key="opt" @click="$emit('sideMenuSelect',opt)">
+                        <v-list-item-title>{{opt}}</v-list-item-title>
                     </v-list-item>
                     </v-list-item-group>
                 </v-list>
@@ -99,12 +89,15 @@ export default {
     setup() {
         
     },
+    props:{
+        sideMenu:Array,
+    },
     data:()=>({
         userDetails:{
             "username":"Siddharth",
         },
         drawer: false,
-        group: null,
+        sideMenuSelection: null,
         navBarOptions:["Home"],
         items:["Child Search","Tag","Post"],
         suggestionOptions:["CN","OS", "Lingo"],
@@ -112,6 +105,8 @@ export default {
     }),
     created: function(){
         this.searchFilter=this.items[0];
+    },
+    methods:{
     }
 }
 </script>

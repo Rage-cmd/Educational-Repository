@@ -42,7 +42,10 @@
       <NavBar :sideMenu="sideMenuMap[user.user_level]" @sideMenuSelect="sideMenuSelectHandler"/>
 
       <HomeScreen v-if="currentScreen=='Home'" :currentScreen="currentScreen" />
-      <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
+      <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
+       -->
+
+      <PostsList v-else :currentScreen="currentScreen"/>
       
 
     </v-main>
@@ -52,17 +55,18 @@
 <script>
 // import HelloWorld from './components/HelloWorld';
 import HomeScreen from './components/HomeScreen.vue';
-import PendingApprovalsScreen from './components/Moderator/PendingApprovalsScreen.vue'
+// import PendingApprovalsScreen from './components/Moderator/PendingApprovalsScreen.vue'
 import NavBar from './components/NavBar/NavBar.vue'
-
+import PostsList from './components/PostsList.vue'
 
 export default {
   name: 'App',
 
   components: {
     HomeScreen,
-    PendingApprovalsScreen,
+    // PendingApprovalsScreen,
     NavBar,
+    PostsList,
 },
 
   data: () => ({

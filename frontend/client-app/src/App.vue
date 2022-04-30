@@ -68,7 +68,7 @@ export default {
   data: () => ({
     user:{
       "username":"sample_user",
-      "user_level":"user",
+      "user_level":"Moderator",
     },
     currentScreen:"Home",
     sideMenuMap:{

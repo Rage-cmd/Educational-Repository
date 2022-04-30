@@ -68,12 +68,12 @@ export default {
   data: () => ({
     user:{
       "username":"sample_user",
-      "user_level":"Moderator",
+      "user_level":"user",
     },
     currentScreen:"Home",
     sideMenuMap:{
-      "Moderator":["Your Uploads","My Profile","Notifications","Stats", "Watchlist","Pending Approvals","Reported Users","Banned Users"],
-      "user":["Your Uploads","My Profile","Notifications","Stats", "Watchlist"],
+      "Moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Reported Users","Banned Users"],
+      "user":["Your Uploads","My Profile", "Watchlist"],
     }
   }),
   methods:{

@@ -40,7 +40,10 @@
 
     <v-main>
 
-      <HomeScreen />
+      <HomeScreen v-if="currentScreen=='HomeScreen'" />
+      <PendingApprovalsScreen v-if="currentScreen == 'PendingApprovalsScreen'" />
+      
+
     </v-main>
   </v-app>
 </template>
@@ -48,16 +51,19 @@
 <script>
 // import HelloWorld from './components/HelloWorld';
 import HomeScreen from './components/HomeScreen.vue';
+import PendingApprovalsScreen from './components/Moderator/PendingApprovalsScreen.vue'
+
 
 export default {
   name: 'App',
 
   components: {
     HomeScreen,
+    PendingApprovalsScreen,
 },
 
   data: () => ({
-    
+    currentScreen:"HomeScreen",
   }),
 };
 </script>

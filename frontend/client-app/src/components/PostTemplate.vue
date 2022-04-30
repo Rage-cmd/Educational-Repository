@@ -86,20 +86,17 @@
       </v-chip-group>
     </v-card-text>
 
-    <v-card-text>
-      <!-- <v-card>
-        
-      <v-row>
-        <v-list>
-          <v-col :cols="6">
-            <v-list-item v-for="opt in postModel.options" :key="opt">
-              {{opt}}
-            </v-list-item>
-          </v-col>
-        </v-list>
-      </v-row>
-      </v-card> -->
-    </v-card-text>
+    <v-card-actions v-if="currentScreen=='PendingApprovals'">
+      <v-btn rounded color="success" width="48%">
+        <v-icon>mdi-check-bold</v-icon>
+        Accept
+      </v-btn>
+      
+      <v-btn rounded color="error" width="48%">
+        <v-icon>mdi-alpha-x</v-icon>
+        Reject
+      </v-btn>
+    </v-card-actions>
 
   </v-card>
 </template>
@@ -119,6 +116,7 @@ export default {
   },
   props:{
       postModel:Object,
+      currentScreen:String,
   },
 
   methods:{

@@ -13,20 +13,12 @@
 
       <PostsList v-if="currentScreen=='Watchlist' && !hideall" :currentScreen="currentScreen"/>
 
-      <v-btn
-                v-show="!hidden && !hideall"
-                color="pink"
-                dark
-                fixed
-                bottom
-                right
-                fab
-              >
-                <v-icon>mdi-plus</v-icon>
-      </v-btn>
-
-      <UploadScreen />
+      <CreateUploadDialog/>
       
+
+      <!-- <UploadVideoPostScreen />
+      <TagCreationScreen />
+       -->
 
     </v-main>
   </v-app>
@@ -38,17 +30,21 @@ import HomeScreen from './components/HomeScreen.vue';
 // import PendingApprovalsScreen from './components/Moderator/PendingApprovalsScreen.vue'
 import NavBar from './components/NavBar/NavBar.vue';
 import PostsList from './components/PostsList.vue';
-import UploadScreen from './components/CreationScreens/UploadScreen.vue';
+import CreateUploadDialog from './components/CreateUploadDialog.vue';
+// import UploadVideoPostScreen from './components/CreationScreens/UploadVideoPostScreen.vue';
+// import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 
 export default {
   name: 'App',
 
   components: {
     HomeScreen,
-    UploadScreen,
+    // UploadVideoPostScreen,
     // PendingApprovalsScreen,
+    CreateUploadDialog,
     NavBar,
     PostsList,
+    // TagCreationScreen,
 },
 
   data: () => ({

@@ -7,15 +7,18 @@
                 <v-text-field
                     width="20%"
                     label="Title"
+                    required
                 ></v-text-field>
 
                 <v-file-input
-                    accept="image/*"
+                    accept="video/*"
                     label="Video File"
+                    required
                 ></v-file-input>
 
                 <v-textarea
                     outlined
+                    required
                     name="input-7-4"
                     label="Description"
                 ></v-textarea>
@@ -29,7 +32,7 @@
                         label="Tags"
                         ></v-autocomplete>
             
-            </v-form>
+            
             <v-card-actions class="d-flex justify-center">
             <v-btn
                 color="primary"
@@ -38,6 +41,7 @@
                 Post
             </v-btn>
             </v-card-actions>
+            </v-form>
             
         </v-card-text>
     </v-card>

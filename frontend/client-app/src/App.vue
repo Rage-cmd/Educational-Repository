@@ -46,6 +46,18 @@
        -->
 
       <PostsList v-else :currentScreen="currentScreen"/>
+
+      <v-btn
+                v-show="!hidden"
+                color="pink"
+                dark
+                fixed
+                bottom
+                right
+                fab
+              >
+                <v-icon>mdi-plus</v-icon>
+      </v-btn>
       
 
     </v-main>

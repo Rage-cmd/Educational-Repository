@@ -38,8 +38,10 @@
         text
         icon
         color="blue lighten-2"
+        @click="thumbsupBtnHandler()"
       >
-        <v-icon>mdi-thumb-up-outline</v-icon>
+        <v-icon v-if="!thumbsupFilled">mdi-thumb-up-outline</v-icon>
+        <v-icon v-else>mdi-thumb-up</v-icon>
       </v-btn>
 
       <v-btn
@@ -52,8 +54,11 @@
 
       <v-btn
       class="ma-2"
-      icon>
-          <v-icon>mdi-bookmark-outline</v-icon>
+      icon
+      @click="bookmarkHandler()"
+      >
+          <v-icon v-if="!bookmarkFilled">mdi-bookmark-outline</v-icon>
+          <v-icon v-else>mdi-bookmark</v-icon>
       </v-btn>     
       </v-row>
 
@@ -112,6 +117,8 @@ export default {
         fullDescription:false,
         description:"",
         loading:false,
+        thumbsupFilled:false,
+        bookmarkFilled:false,
       }
   },
   props:{
@@ -132,6 +139,12 @@ export default {
       toggleDescription(postModel){
             this.fullDescription = !this.fullDescription;
             this.description = this.getDescription(postModel);
+      },
+      thumbsupBtnHandler(){
+        this.thumbsupFilled = !this.thumbsupFilled;
+      },
+      bookmarkHandler(){
+        this.bookmarkFilled = !this.bookmarkFilled;
       }
   },
   created: function(){

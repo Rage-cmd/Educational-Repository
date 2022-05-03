@@ -7,13 +7,13 @@
       <v-container >
         
       </v-container>
-      <HomeScreen v-if="currentScreen=='Home' && !hideall" :currentScreen="currentScreen" />
+      <HomeScreen v-if="currentScreen=='Home'" :currentScreen="currentScreen" />
       <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
        -->
 
       <PostsList v-if="currentScreen=='Watchlist' && !hideall" :currentScreen="currentScreen"/>
 
-      <CreateUploadDialog/>
+      <CreateUploadDialog v-if="!hideall"/>
       
 
       <!-- <UploadVideoPostScreen />

@@ -19,13 +19,34 @@
         </v-list-item-content>
 
         <v-spacer></v-spacer>
+        <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn 
+                color="error"
+                v-bind="attrs"
+                v-on="on">
+                    <v-icon small>mdi-account-remove</v-icon>
+                </v-btn>
+            </template>
+            <span>Ban User</span>
 
-        <v-btn color="error">
-            <v-icon small>mdi-account-remove</v-icon>
-        </v-btn>
-        <v-btn color="primary" class="ma-3">
-            <v-icon small>mdi-account-arrow-up</v-icon>
-        </v-btn>
+        </v-tooltip>
+
+        <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+                
+                 <v-btn 
+                 color="primary" 
+                 class="ma-3"
+                 v-bind="attrs"
+                 v-on="on">
+                    <v-icon small>mdi-account-arrow-up</v-icon>
+                </v-btn>
+            </template>
+            <span>Upgrade User Level</span>
+
+        </v-tooltip>
+
         </v-list-item>
     </v-list>
 </v-card>

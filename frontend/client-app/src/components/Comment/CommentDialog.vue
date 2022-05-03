@@ -18,8 +18,8 @@
                 </v-col>
                 <v-col cols=6 ml-0>
                 
-                    <v-list dense disabled height="100%">
-                    <v-subheader>Comments</v-subheader>
+                    <v-list dense height="100%" three-line>
+                    <v-list-title class="text-center">Comments</v-list-title>
                     <v-list-item-group
                         color="primary"
                     >
@@ -27,6 +27,7 @@
                         v-for="(item, i) in items"
                         :key="i"
                         elevation="1"
+                        width="100%"
                         >
                         <v-list-item-avatar>
                             <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
@@ -34,10 +35,16 @@
                         <v-list-item-content>
                             <v-list-item-title v-html="item.commentedby"></v-list-item-title>
                             <v-list-item-subtitle v-html="item.comment"></v-list-item-subtitle>
-                        </v-list-item-content>
+                        <!-- <v-spacer></v-spacer> -->
+                        <!-- <v-btn icon>
+                            <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn> -->
+
                         <!-- <v-list-item-content>
                             <v-list-item-title v-text="item.text"></v-list-item-title>
                         </v-list-item-content> -->
+                        </v-list-item-content>
+                        <CommentMenu />
                         </v-list-item>
                     </v-list-item-group>
                     </v-list>
@@ -50,10 +57,12 @@
 
 <script>
 import PostView from './PostView.vue';
+import CommentMenu from './CommentMenu.vue'
 export default {
     name:'CommentDialog',
     components:{
         PostView,
+        CommentMenu,
     },
     setup() {
         

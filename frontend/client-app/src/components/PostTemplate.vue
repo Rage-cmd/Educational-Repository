@@ -43,11 +43,12 @@
         <v-icon v-else>mdi-thumb-up</v-icon>
       </v-btn>
 
-      <v-btn
+      <!-- <v-btn
       class="ma-2"
       icon>
           <v-icon>mdi-comment-outline</v-icon>
-      </v-btn>    
+      </v-btn>     -->
+      <CommentDialog :postModel="postModel"/>
    
       <v-btn
       class="ma-2"
@@ -57,6 +58,12 @@
           <v-icon v-if="!bookmarkFilled">mdi-bookmark-outline</v-icon>
           <v-icon v-else>mdi-bookmark</v-icon>
       </v-btn>     
+
+      <v-btn
+      class="ma-2"
+      icon>
+          <v-icon>mdi-alert-circle-outline</v-icon>
+      </v-btn>
    
     <v-spacer></v-spacer>
     <v-icon color="green" v-if="postModel.verifiedPost">mdi-check-bold</v-icon>
@@ -110,8 +117,14 @@
 
 
 <script>
+
+import CommentDialog from './Comment/CommentDialog.vue';
+
 export default {
   name: 'PostTemplate',
+  components:{
+    CommentDialog
+  },
   data(){
       return{
         fullDescription:false,

@@ -6,6 +6,7 @@ sys.path.append("..")
 
 import databaseInterfaces.mongoDB_interface as mongoDB_interface
 import databaseInterfaces.drive_api as drive_api
+import Caching.cache_impl as cache_impl
 
 creds = drive_api.get_credentials('/Users/rajeevgoyal/Academics/Sem 8/Educational Repository/OAuth keys/credentials.json')
 service = drive_api.build('drive', 'v3', credentials=creds)
@@ -68,7 +69,7 @@ def get_comments(user_id):
     return user_comments
 
 
-def like_post(user_id, post_id):
+def like_post(user_id, post_id, cache):
     """
     Like a post. The function expects a user id and a post id. 
     
@@ -77,6 +78,7 @@ def like_post(user_id, post_id):
     Parameters:
         user_id (str) : The user id of the user.
         post_id (str) : The id of the post.
+        cache (obj)   : The cache object for the application.
 
     Returns:
         success (bool) : A boolean value.
@@ -94,6 +96,8 @@ def like_post(user_id, post_id):
         else:
             user["liked_posts"].append(post_id)
             post['upvotes'] += 1
+
+        cache.addItem_upvote_cache(post_id, post['upvotes'])
 
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"liked_posts":user["liked_posts"]}})
         mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"upvotes":post['upvotes']}})
@@ -250,7 +254,7 @@ def edit_comment(user_id, comment_id, comment_text):
         return False
     
 
-def upload_post(user_id, post_details):
+def upload_post(user_id, post_details, cache):
     """
     Upload a post. The function expects a user id and a dictionary consisiting of post details.
 
@@ -273,6 +277,7 @@ def upload_post(user_id, post_details):
     Parameters:
         user_id (str) : The user id of the user.
         post_details (dict) : The details of the post.
+        cache (dict) : The cache for storing post ids.
 
     Returns:
         The document of the created post.
@@ -347,6 +352,8 @@ def upload_post(user_id, post_details):
     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
+
+    cache.addItem_recent_cache(post_doc['id'],datetime.now())
 
     return post_doc
     

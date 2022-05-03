@@ -14,7 +14,7 @@
       <PostsList v-if="currentScreen=='Watchlist' && !hideall" :currentScreen="currentScreen"/>
 
       <CreateUploadDialog v-if="!hideall"/>
-      
+      <UserListScreen v-if="currentScreen=='Reported Users'"/>
 
       <!-- <UploadVideoPostScreen />
       <TagCreationScreen />
@@ -33,6 +33,7 @@ import PostsList from './components/PostsList.vue';
 import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import UploadVideoPostScreen from './components/CreationScreens/UploadVideoPostScreen.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
+import UserListScreen from './components/UserListScreen.vue';
 
 export default {
   name: 'App',
@@ -45,6 +46,7 @@ export default {
     NavBar,
     PostsList,
     // TagCreationScreen,
+    UserListScreen,
 },
 
   data: () => ({

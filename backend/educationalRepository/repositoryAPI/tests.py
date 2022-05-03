@@ -103,13 +103,36 @@ def print_tag():
 
 
 
+# post_details = {
+#     'type': 'image',
+#     'caption': 'This is my first post!',
+#     'tags':['t1'],
+#     'text': "How are you all guys doing?!",
+#     "image_url": "/Users/rajeevgoyal/Downloads/images/cat_sleep.jpg",
+#     "new_tag": 't9'
+# }
+# print_main()
+# print("--")
+# print_tag()
+
+
+# upload_post('u2', post_details=post_details)
+
+# print("AFTER---------------------\n")
+# print_main()
+# print("--")
+# print_tag()
+
+# print("\n\n")
+
+# print(mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'}))
+
 post_details = {
-    'type': 'image',
-    'caption': 'This is my first post!',
-    'tags':['t1'],
-    'text': "How are you all guys doing?!",
-    "image_url": "/Users/rajeevgoyal/Downloads/images/cat_sleep.jpg",
-    "new_tag": 't9'
+    'type': 'video',
+    'caption': 'This is my first video post!',
+    'tags':['t1','t6'],
+    'text': "What do you think about it?",
+    "video_url": "/Users/rajeevgoyal/Downloads/images/sample_movie.mov",
 }
 print_main()
 print("--")
@@ -126,4 +149,3 @@ print_tag()
 print("\n\n")
 
 print(mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":'u2'}))
-

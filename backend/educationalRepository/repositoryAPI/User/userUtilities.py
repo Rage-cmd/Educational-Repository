@@ -275,30 +275,34 @@ def upload_post(user_id, post_details):
         post_details (dict) : The details of the post.
 
     Returns:
-        success (bool) : True if the post was uploaded successfully. False otherwise.
-
+        The document of the created post.
     """
-    # try:
-    post_doc = {
-        "id": 'p' + str(mongoDB_interface.getNextSequenceValue("test_db","posts_collection")),
-        "type": post_details["type"],
-        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "tags": post_details["tags"],
-        "caption": post_details["caption"],
-        "text": post_details["text"],
-        "author": user_id,
-        "comments": [],
-        "is_answered": False,
-        "is_approved": False,
-        "upvotes": 0,
-        "reports": 0,
-    }
+    try:
+        post_doc = {
+            "id": 'p' + str(mongoDB_interface.getNextSequenceValue("test_db","posts_collection")),
+            "type": post_details["type"],
+            "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "tags": post_details["tags"],
+            "caption": post_details["caption"],
+            "text": post_details["text"],
+            "author": user_id,
+            "comments": [],
+            "is_answered": False,
+            "is_approved": False,
+            "upvotes": 0,
+            "reports": 0,
+        }
 
+    except:
+        print("The post details are not in the correct format.")
     
     # if new_tag is not None create a new tag
     if "new_tag" in post_details:
         new_tag_id = insert_tag(post_details["new_tag"], post_details["tags"])
         post_doc["tags"].append(new_tag_id)
+    
+    if post_details["tags"] == []:
+        post_doc["tags"] = ["root"]
     
     parent_folder = post_details['tags'][-1]
     
@@ -319,10 +323,10 @@ def upload_post(user_id, post_details):
     elif post_details["type"] == "video":
         file_name, file_extension = os.path.splitext(post_details["video_url"])
         upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + file_extension
-        uploaded_file_id = drive_api.upload_file(post_details["caption"], 
+        uploaded_file_id = drive_api.upload_file(upload_name, 
                                                     post_details["video_url"], 
                                                     fields=fields, 
-                                                    parent_folder_id=drive_id)
+                                                    parent_folder_id=[drive_id])
         post_doc["video_url"] = uploaded_file_id["webContentLink"]
 
 
@@ -344,9 +348,7 @@ def upload_post(user_id, post_details):
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
 
-        # return True
-    # except:
-        # return False
+    return post_doc
     
 
 def insert_tag(tag_name, parents):
@@ -391,3 +393,28 @@ def insert_tag(tag_name, parents):
     except:
         print("Could not insert tag. Check if the parents are valid.")
         return None
+
+
+def verify_comment(user_id, comment_id):
+    """
+    Marks the comment as the accepted answer.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+        comment_id (str) : The id of the comment.
+
+    Returns:
+        The document of the comment.
+    """
+    try:
+        comment_doc = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
+        if comment_doc["author"] == user_id:
+            mongoDB_interface.updateDocument("test_db","posts_collection",{"id":comment_doc["post_id"]},{"$set": {"is_answered":True}})
+            mongoDB_interface.updateDocument("test_db","comments_collection",{"id":comment_id},{"$set": {"is_verified":True}})
+            return comment_doc
+        else:
+            return None
+    except:
+        print("Could not verify comment. Check if the comment id is valid.") 
+        return None
+ 

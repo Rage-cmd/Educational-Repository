@@ -34,3 +34,14 @@ def ban_user(user_id):
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set":{'is_banned':True}})
     except:
         print("Cannot ban user. User not found.")
+
+
+def get_all_users():
+    """
+    Returns all users.
+
+    Returns:
+        list: A list of all users.
+    """
+    users = mongoDB_interface.findAllDocument("test_db","users_collection",{})
+    return users

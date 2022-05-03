@@ -10,7 +10,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBaseUpload
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
@@ -133,6 +133,41 @@ def create_folder(folder_name, parent_folder_id, fields = "id, name"):
     print("File Response:", file)
     print("\n")
     print ('Folder ID: %s' % file.get('id'))
+    return file
+
+def upload_file_IO(file_name, file_stream, parent_folder_id, fields = "id, name"):
+    """
+    Uploads a file to the parent folder specified. If the parent_folder_id is None, the file is uploaded to the root folder.
+
+    Parameters:
+        file_name (str): Name of the file to upload.
+        file_path (str): Path of the file to upload.
+        parent_folder_id (str): List containing the IDs of the parent folder.
+
+    Returns:
+        The file metadata of the uploaded file as a dictionary according to the fields argument given.
+    """
+
+    # if no extention is given in the name then raise exception
+    if not re.search(r'\.[^.]*$', file_name):
+        raise Exception("File name must have an extension.")
+
+    file_metadata = {
+    'name' : file_name,
+    'parents' : parent_folder_id
+    }
+
+    
+    media = MediaIoBaseUpload(file_stream,
+                            mimetype=mimetypes.guess_type(file_name)[0])
+
+    file = service.files().create(body=file_metadata,
+                                    media_body=media,
+                                    fields=fields).execute()
+
+    print("File Response:", file)
+    print("\n")
+    print ('File ID: %s' % file.get('id'))
     return file
 
 

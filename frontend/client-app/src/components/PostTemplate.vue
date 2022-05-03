@@ -48,9 +48,7 @@
       icon>
           <v-icon>mdi-comment-outline</v-icon>
       </v-btn>    
-
-      <v-icon color="green" v-if="postModel.verifiedPost">mdi-check-bold</v-icon>   
-
+   
       <v-btn
       class="ma-2"
       icon
@@ -59,6 +57,9 @@
           <v-icon v-if="!bookmarkFilled">mdi-bookmark-outline</v-icon>
           <v-icon v-else>mdi-bookmark</v-icon>
       </v-btn>     
+   
+    <v-spacer></v-spacer>
+    <v-icon color="green" v-if="postModel.verifiedPost">mdi-check-bold</v-icon>
       </v-row>
 
       <div class="my-4 text-subtitle-1 font-weight-bold">

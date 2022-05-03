@@ -35,7 +35,6 @@
       >
         <v-btn
         class="ma-2"
-        text
         icon
         color="blue lighten-2"
         @click="thumbsupBtnHandler()"

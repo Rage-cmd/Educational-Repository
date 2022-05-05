@@ -11,10 +11,13 @@
       <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
        -->
 
-      <PostsList v-if="currentScreen=='Watchlist' && !hideall" :currentScreen="currentScreen"/>
+      <UserListScreen v-else-if="currentScreen=='Users List'"/>
 
-      <CreateUploadDialog v-if="!hideall"/>
-      <UserListScreen v-if="currentScreen=='Reported Users'"/>
+      <MyProfile v-else-if="currentScreen=='My Profile'" />
+
+      <PostsList v-else :currentScreen="currentScreen"/>
+
+      <CreateUploadDialog/>
 
       <!-- <UploadVideoPostScreen />
       <TagCreationScreen />
@@ -34,6 +37,7 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import UploadVideoPostScreen from './components/CreationScreens/UploadVideoPostScreen.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
+import MyProfile from './components/MyProfile.vue';
 
 export default {
   name: 'App',
@@ -47,6 +51,7 @@ export default {
     PostsList,
     // TagCreationScreen,
     UserListScreen,
+    MyProfile,
 },
 
   data: () => ({
@@ -56,7 +61,7 @@ export default {
     },
     currentScreen:"Home",
     sideMenuMap:{
-      "Moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Reported Users","Banned Users"],
+      "Moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
       "user":["Your Uploads","My Profile", "Watchlist"],
     },
     hideall: true,

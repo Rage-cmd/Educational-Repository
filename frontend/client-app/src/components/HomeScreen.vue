@@ -50,10 +50,10 @@ export default ({
     },
     data: ()=>({
         sampleVideoPostData:{
-      "title":"Thor Trailer",
+      "title":"Hospital Data Management Project",
       "verifiedPost":true,
       "description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos recusandae nesciunt ad voluptate aperiam exercitationem veritatis laudantium totam a, natus inventore, sunt unde laborum nam obcaecati neque. Velit, obcaecati quas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam temporibus optio deserunt, at odit dolorem nostrum magnam dolores sequi delectus, corporis reiciendis. Provident tempora minus maiores iure, cum fugit quasi.",
-      "videoURL":"https://www.youtube.com/embed/tgB1wUcmbbw",
+      "videoURL":"https://drive.google.com/file/d/13zHw-vwAWZCUhjFo4QVs7OcHqRqMj7ed/preview",
       "postType":"video",
       "username":"user1",
     },

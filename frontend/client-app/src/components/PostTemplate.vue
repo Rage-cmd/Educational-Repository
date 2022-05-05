@@ -22,7 +22,10 @@
     </v-card-text>
 
 
-    <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <!-- <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe> -->
+
+    <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" allow="autoplay">
     </iframe>
 
     <v-img v-if="postModel.postType === 'MCQ'" :src="postModel.imgURL" width="100%"></v-img>

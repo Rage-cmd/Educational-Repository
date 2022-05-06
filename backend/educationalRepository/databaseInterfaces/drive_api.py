@@ -88,7 +88,11 @@ def remove_folder(folder_id):
     Raises:
         Exception: If the folder is not found.
     """
-    service.files().delete(fileId=folder_id).execute()
+    try:
+        service.files().delete(fileId=folder_id).execute()
+        return True
+    except:
+        return False
 
 
 def remove_file(file_id):
@@ -130,9 +134,9 @@ def create_folder(folder_name, parent_folder_id, fields = "id, name"):
     file = service.files().create(body=file_metadata,
                                     fields=fields).execute()
 
-    print("File Response:", file)
-    print("\n")
-    print ('Folder ID: %s' % file.get('id'))
+    # print("File Response:", file)
+    # print("\n")
+    # print ('Folder ID: %s' % file.get('id'))
     return file
 
 def upload_file_IO(file_name, file_stream, parent_folder_id, fields = "id, name"):
@@ -157,10 +161,11 @@ def upload_file_IO(file_name, file_stream, parent_folder_id, fields = "id, name"
     'parents' : parent_folder_id
     }
 
-    
+    # Create a media file upload to represent our file.    
     media = MediaIoBaseUpload(file_stream,
                             mimetype=mimetypes.guess_type(file_name)[0])
 
+    # Upload the file.
     file = service.files().create(body=file_metadata,
                                     media_body=media,
                                     fields=fields).execute()

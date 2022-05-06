@@ -37,6 +37,11 @@ class CacheImpl:
         return postIds
 
 
+    def clear_cache(self):
+        self.most_recent_cache = PriorityQueue()
+        self.most_upvoted_cache = PriorityQueue()
+        return True
+        
 # cache = CacheImpl(2)
 
 # cache.addItem_recent_cache(1,datetime.now())

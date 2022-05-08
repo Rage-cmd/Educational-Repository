@@ -30,7 +30,6 @@ def approve_post(post_id):
     Approve a post. The function expects a user id and a post id. 
 
     Parameters:
-        user_id (str) : The user id of the user.
         post_id (str) : The id of the post.
     
     Returns:

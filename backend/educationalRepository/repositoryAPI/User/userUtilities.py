@@ -6,7 +6,7 @@ sys.path.append("..")
 
 import databaseInterfaces.mongoDB_interface as mongoDB_interface
 import databaseInterfaces.drive_api as drive_api
-import Caching.cache_impl as cache_impl
+import repositoryAPI.Caching.cache_impl as cache_impl
 
 creds = drive_api.get_credentials('/Users/rajeevgoyal/Academics/Sem 8/Educational Repository/OAuth keys/credentials.json')
 service = drive_api.build('drive', 'v3', credentials=creds)

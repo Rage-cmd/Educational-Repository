@@ -199,3 +199,37 @@ def approve_user_post(request):
             return HttpResponse("Post approval failed. The error is: " + str(e), status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
+def ban_user(request):
+    """
+    Bans a user.
+    The request should contain the user id.
+    """
+
+
+def fetch_post(request):
+    if request.method == 'GET':
+        data = JSONParser().parse(request)
+        post_id = data['post_id']
+        post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+        if post:
+            return JsonResponse(post, safe=False)
+        else:
+            return HttpResponse("Invalid post id")
+    else:
+        return HttpResponse("Invalid request")
+
+
+def fetch_comments(request):
+    if request.method == 'GET':
+        data = JSONParser().parse(request)
+        post_id = data['comment_id']
+        comments = findSingleDocument("test_db","comments_collection",{"id":post_id})
+        if comments:
+            return JsonResponse(comments, safe=False)
+        else:
+            return HttpResponse("Invalid comment id")
+    else:
+        return HttpResponse("Invalid request")
+
+cache = CacheImpl(10)

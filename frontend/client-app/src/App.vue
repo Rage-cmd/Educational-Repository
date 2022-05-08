@@ -38,6 +38,7 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -67,10 +68,10 @@ export default {
     hideall: true,
   }),
   methods:{
-    sideMenuSelectHandler(opt){
-      // console.log("selected opt:" + opt);
+    async sideMenuSelectHandler(opt){
       this.currentScreen = opt;
-
+      const response = await axios.get('http://127.0.0.1:8000/api/post');
+      console.log("This response:" + JSON.stringify(response.data));
     }
   }
 };

@@ -67,6 +67,6 @@ export default ({
       "username":"user2",
     },
     selectedTab:null,
-    })
+    }),
 })
 </script>

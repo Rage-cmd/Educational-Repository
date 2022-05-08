@@ -70,3 +70,57 @@ def login_creds(request):
             return HttpResponse("Invalid Username or Password", status=400)
     else:
         return HttpResponse("Invalid request", status=400)
+    
+# make password hash
+def make_password_hash(password):
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+# retrieve password from hash
+def retrieve_password(password_hash):
+    return hashlib.sha256(password_hash.encode('utf-8')).hexdigest()
+
+# saves the new user in the database
+def sign_up(request):
+    """
+    Sign up a new user.
+
+    The function expects a dictionary consisting of the following keys:
+        username (str) : The username of the user.
+        password (str) : The password of the user.
+        email (str) : The email of the user.
+    
+    Example::
+
+        data = {
+            "username" : <username>,
+            "password" : <password>,
+            "email" : <email>
+        }
+
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        name = data['username']
+        hashed_password = make_password_hash(data['password'])
+        email = data['email']
+        user_document = {
+            'id': getNextSequenceValue("test_db","users_collection"),
+            "name": name,
+            "password": hashed_password,
+            "email": email,
+            "account_type": "user",
+            "status": "active",
+            "posts": [],
+            "comments": [],
+            "saved_posts": [],
+            "liked_posts": [],
+            "points": 0,
+            "profile_picture": "",
+            "no_of_bans": 0,
+            "is_banned": False,
+        }
+
+        result = saveSingleDocument("test_db","users_collection",user_document)
+        return JsonResponse(user_document, safe=False, status=200)
+    else:
+        return HttpResponse("Invalid request", status=400)

@@ -1,6 +1,7 @@
-import imp
+import hashlib
 import re
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 import sys
@@ -14,6 +15,10 @@ from rest_framework.response import Response
 from repositoryAPI.serializer import *
 from rest_framework.parsers import JSONParser
 from databaseInterfaces.drive_api import *
+
+from repositoryAPI.User.userUtilities import *
+from repositoryAPI.Caching.cache_impl import *
+from repositoryAPI.Moderator.modUtilities import *
 
 serializers = {
     'users_collection' : UserSerializer,
@@ -51,3 +56,17 @@ class GenericView(views.APIView):
         result = deleteDocument("test_db",self.collection,data)
         return JsonResponse(result, safe=False)
     
+@csrf_exempt
+def login_creds(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        user = data['username']
+        password = data['password']
+        hashed_password = make_password_hash(password)
+        user_document = findSingleDocument("test_db","users_collection",{"username":user,"password":hashed_password})
+        if user_document:
+            return JsonResponse(user_document, safe=False, status=200)
+        else:
+            return HttpResponse("Invalid Username or Password", status=400)
+    else:
+        return HttpResponse("Invalid request", status=400)

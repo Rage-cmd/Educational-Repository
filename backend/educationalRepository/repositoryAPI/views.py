@@ -173,3 +173,29 @@ def upload_user_post(request):
             return HttpResponse("Post upload failed. The error is: " + str(e))
     else:
         return HttpResponse("Invalid request")
+
+
+def approve_user_post(request):
+    """
+    Approves a post.
+
+    The function expects a post id.
+
+    Upon successful approval, the function returns HTTP response with status 200.
+
+    Example::
+        
+        data ={
+            "post_id" : <post_id>
+        }
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        post_id = data['post_id']
+        try:
+            approve_post(post_id)
+            return HttpResponse("Post approved successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("Post approval failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)

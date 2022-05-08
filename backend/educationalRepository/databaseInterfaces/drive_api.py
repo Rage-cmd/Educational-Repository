@@ -349,5 +349,5 @@ def search_file(file_name = None, file_id = None, fields = "id, name", verbose =
 
 # if __name__ == '__main__':
     
-creds = get_credentials('/Users/rajeevgoyal/Academics/Sem 8/Educational Repository/OAuth keys/credentials.json')
+creds = get_credentials('credentials.json')
 service = build('drive', 'v3', credentials=creds)

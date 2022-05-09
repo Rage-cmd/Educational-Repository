@@ -197,7 +197,7 @@ def upload_user_post(request):
         post_details = data['post_details']
         try:
             uploaded_post = upload_post(user_id, post_details,cache)
-            return JsonResponse(uploaded_post,"Post uploaded successfully.")
+            return JsonResponse(json.loads(json.dumps(uploaded_post,default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Post upload failed. The error is: " + str(e))
     else:

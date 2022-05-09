@@ -343,9 +343,13 @@ def upload_post(user_id, post_details, cache):
         "name": post_doc["caption"],
         "type": "post",
         "children_tags": [],
-        "children_posts": [],
-        "drive_id": uploaded_file_id["id"],
+        "children_posts": []
     }
+
+    if post_doc["type"] == "image" or post_doc["type"] == "video":
+        maintree_child_doc['drive_id'] = uploaded_file_id['id']
+    else:
+        maintree_child_doc['drive_id'] = None
 
     mongoDB_interface.saveSingleDocument("test_db","maintree_collection",maintree_child_doc)
 
@@ -353,7 +357,7 @@ def upload_post(user_id, post_details, cache):
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
 
-    cache.addItem_recent_cache(post_doc['id'],datetime.now())
+    cache.addItem_recent_cache(post_doc['id'],datetime.datetime.now())
 
     return post_doc
     

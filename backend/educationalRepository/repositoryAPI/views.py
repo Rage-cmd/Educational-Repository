@@ -207,6 +207,16 @@ def ban_user(request):
     Bans a user.
     The request should contain the user id.
     """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        try:
+            ban_user(user_id)
+            return HttpResponse("User banned successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("User ban failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 
 
 def fetch_post(request):

@@ -291,10 +291,15 @@ def update_user_role(request, user_id, role):
 
 
 def fetch_post(request):
+    """
+    Fetches a post.
+    The request should contain the post id.
+    """
     if request.method == 'GET':
         data = JSONParser().parse(request)
         post_id = data['post_id']
         post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+        post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
         if post:
             return JsonResponse(post, safe=False)
         else:

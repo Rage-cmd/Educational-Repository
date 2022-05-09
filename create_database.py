@@ -15,7 +15,7 @@ users = [
         'points': 100,
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'no_of_bans': 0,
-        'is_banned': False
+        'is_banned': True
     },
     {
         'id': 'u3',

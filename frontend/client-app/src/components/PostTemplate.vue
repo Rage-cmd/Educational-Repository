@@ -32,15 +32,6 @@
               {{getDate(postModel)}}
             </v-list-item>
          </v-list>
-        <!-- </v-col> -->
-        <!-- <v-col cols="2"> -->
-        <!-- </v-col> -->
-        <!-- <v-avatar size=25 mr-6><img
-        :src=postModel.author.profile_picture
-        alt="John"
-      ></v-avatar>
-      
-       <v-text>{{postModel.author.name}}</v-text>  -->
        </v-row>
     </v-card-text>
 

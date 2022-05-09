@@ -25,6 +25,27 @@ def ban_user(user_id):
         return False
     
 
+def unban_user(user_id):
+    """
+    Unban a user. The function expects a user id.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+
+    Returns:
+        Boolean : True if the user is unbanned, False otherwise.
+    """
+    try:
+        user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        # unban user
+        if user["type"] == "user":
+            user["is_banned"] = False
+            mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":False}})
+            return True
+    except:
+        return False
+
+
 def approve_post(post_id):
     """
     Approve a post. The function expects a user id and a post id. 

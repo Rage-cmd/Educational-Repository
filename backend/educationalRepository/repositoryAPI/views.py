@@ -75,6 +75,10 @@ def login_creds(request):
         password = data['password']
         # hashed_password = make_password_hash(password)
         user_document = findSingleDocument("test_db","users_collection",{"email":email,"password":password})
+
+        if user_document['is_banned']:
+            return HttpResponse("User is banned", status=400)
+
         if user_document:
             return JsonResponse(json.loads(json.dumps(user_document, default=str)), safe=False, status=200)
         else:

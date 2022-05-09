@@ -426,4 +426,18 @@ def search(request):
         return HttpResponse("Invalid request", status=400)
 
 
+def get_all_users(request):
+    if request.method == "GET":
+        try:
+            users = findAllDocument("test_db","users_collection",{})
+            users_doc = []
+            for user in users:
+                users_doc.append(user)
+            return JsonResponse(json.loads(json.dumps(users_doc, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch users. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
 cache = CacheImpl(10)

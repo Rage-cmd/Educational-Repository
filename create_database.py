@@ -86,11 +86,12 @@ users = [
 posts = [
     {
         'id': 'p1',
-        'type': 'text',
+        'type': 'MCQ',
         'time': '2020-01-01T00:00:00Z',
         'tags': ['t4', 't5'],
         'caption': 'P1 Caption',
         'text': 'This is a test post',
+        'options': ['option1', 'option2', 'option3', 'option4'],
         'author': 'u2',
         'upvotes': 35,
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',

@@ -235,6 +235,23 @@ def fetch_watchlist(request, user_id):
             return HttpResponse("Failed to fetch watchlist. The error is: " + str(e), status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
+
+def fetch_user_details(request, user_id):
+    """
+    Fetches the details of a user.
+    The request should contain the user id.
+    """
+
+    if request.method == 'GET':
+        try:
+            user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
+            return JsonResponse(user_doc,status="200")
+        except Exception as e:
+            return HttpResponse('Could not fetch user details. The error is: ' + str(e))
+        
+    else:
+        return HttpResponse("Invalid request", status=400)
 def fetch_post(request):
     if request.method == 'GET':
         data = JSONParser().parse(request)

@@ -10,5 +10,5 @@ urlpatterns = [
     path('comment', views.GenericView.as_view(collection='comments_collection')),
     path('login', views.login_creds),
     path('signup', views.sign_up),
-    path('uploads\<int:user_id>', views.fetch_user_posts),    
+    path('uploads\<str:user_id>', views.fetch_user_posts),    
 ]

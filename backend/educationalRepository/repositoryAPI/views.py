@@ -119,7 +119,7 @@ def sign_up(request):
         hashed_password = make_password_hash(data['password'])
         email = data['email']
         user_document = {
-            'id': getNextSequenceValue("test_db","users_collection"),
+            'id': 'u' + getNextSequenceValue("test_db","users_collection"),
             "name": name,
             "password": hashed_password,
             "email": email,
@@ -136,7 +136,7 @@ def sign_up(request):
         }
 
         result = saveSingleDocument("test_db","users_collection",user_document)
-        return JsonResponse(user_document, safe=False, status=200)
+        return JsonResponse(json.loads(json.dumps(user_document, default=str)), safe=False, status=200)
     else:
         return HttpResponse("Invalid request", status=400)
 

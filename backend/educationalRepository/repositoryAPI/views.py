@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 import sys
 sys.path.append("..")
 
+import json
+
 from databaseInterfaces.mongoDB_interface import *
 from django.http import HttpResponse,JsonResponse
 from rest_framework import views
@@ -266,8 +268,8 @@ def fetch_user_posts(request, user_id):
             for post_id in user_posts:
                 post = findSingleDocument("test_db","posts_collection",{"id":post_id})
                 post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
-                posts.append()
-            return JsonResponse(posts, safe=False, status=200)
+                posts.append(json.dumps(post, default=str))
+            return JsonResponse(json.loads(posts), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
     else:
@@ -333,5 +335,10 @@ def fetch_comments(request):
 
 
 # def suggest(request):
+#     if request.method == 'POST':
+#         data = JSONParser().parse(request)
+#         search_type = data['search_type']
+#         search_term = data['search_term']
+#         if 
 
 cache = CacheImpl(10)

@@ -9,19 +9,22 @@ sys.path.append("..")
 
 import json
 
-from databaseInterfaces.mongoDB_interface import *
 from django.http import HttpResponse,JsonResponse
-from rest_framework import views
-from rest_framework.response import Response
 
-from repositoryAPI.serializer import *
-from rest_framework.parsers import JSONParser
+from databaseInterfaces.mongoDB_interface import *
 from databaseInterfaces.drive_api import *
 
+from rest_framework import views
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+
+from repositoryAPI.serializer import *
 from repositoryAPI.User.userUtilities import *
 from repositoryAPI.Caching.cache_impl import *
 from repositoryAPI.Moderator.modUtilities import *
 from repositoryAPI.Admin.adminUtilities import *
+from repositoryAPI.Suggestion.suggestions import *
+from repositoryAPI.Search.searchAlgorithms import *
 
 serializers = {
     'users_collection' : UserSerializer,
@@ -332,6 +335,65 @@ def fetch_comments(request):
             return HttpResponse("Invalid comment id")
     else:
         return HttpResponse("Invalid request")
+
+
+def suggest(request):
+    """
+    Suggests a post/tag.
+    The request should be as follows:
+    
+    Example::
+    
+        data = {
+            "search_type" : <search_type>,
+            "search_term" : <search_term>,
+        }
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        search_type = data['search_type']
+        search_term = data['search_term']
+        try:
+            if search_type == "post":
+                results = post_suggestions(search_term)
+            elif search_type == "tag":
+                results = tag_suggestions(search_term)
+            return JsonResponse(json.loads(json.dumps(results, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Suggestion failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+def search(request):
+    """
+    Searches for posts,tags or users.
+    The request should be as follows:
+
+    Example::
+
+        data = {
+            "search_type" : <search_type>,
+            "search_term" : <search_term>,
+        }
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        search_type = data['search_type']
+        search_term = data['search_term']
+        try:
+            if search_type == "post by ID":
+                results = post_ID_search(search_term)
+            elif search_type == "post by name":
+                results = post_name_search(search_term)
+            elif search_type == "tag by ID":
+                results = tag_ID_search(search_term)
+        
+            return JsonResponse(json.loads(json.dumps(results, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Search failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 
 
 # def suggest(request):

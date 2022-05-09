@@ -259,7 +259,7 @@ def fetch_user_details(request, user_id):
     if request.method == 'GET':
         try:
             user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
-            return JsonResponse(user_doc,status="200")
+            return JsonResponse(json.loads(json.dumps(user_doc,default=str)),status="200")
         except Exception as e:
             return HttpResponse('Could not fetch user details. The error is: ' + str(e))
         
@@ -424,7 +424,6 @@ def search(request):
             return HttpResponse("Search failed. The error is: " + str(e), status=500)
     else:
         return HttpResponse("Invalid request", status=400)
-
 
 
 cache = CacheImpl(10)

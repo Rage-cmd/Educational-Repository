@@ -17,5 +17,6 @@ urlpatterns = [
     path('post/<str:post_id>',views.fetch_post),
     path('comments/<str:post_id>',views.fetch_comments),
     path('suggest',views.suggest),
-    path('search',views.search)
+    path('search',views.search),
+    path('users',views.get_all_users)
 ]

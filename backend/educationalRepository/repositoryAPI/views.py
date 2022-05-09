@@ -1,3 +1,4 @@
+from gettext import find
 import hashlib
 import re
 from django.shortcuts import render
@@ -6,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 import sys
 sys.path.append("..")
+
 
 import json
 
@@ -26,12 +28,14 @@ from repositoryAPI.Admin.adminUtilities import *
 from repositoryAPI.Suggestion.suggestions import *
 from repositoryAPI.Search.searchAlgorithms import *
 
+
 serializers = {
     'users_collection' : UserSerializer,
     'posts_collection' : PostSerializer,
     'comments_collection': CommentSerializer,
     'main_tree_collection': MainTreeSerializer
 }
+
 
 class GenericView(views.APIView):
     collection = None
@@ -61,7 +65,8 @@ class GenericView(views.APIView):
         data = JSONParser().parse(request)
         result = deleteDocument("test_db",self.collection,data)
         return JsonResponse(result, safe=False)
-    
+
+
 @csrf_exempt
 def login_creds(request):
     if request.method == 'POST':
@@ -76,14 +81,17 @@ def login_creds(request):
             return HttpResponse("Invalid Username or Password", status=400)
     else:
         return HttpResponse("Invalid request", status=400)
-    
+
+
 # make password hash
 def make_password_hash(password):
     return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
+
 # retrieve password from hash
 def retrieve_password(password_hash):
     return hashlib.sha256(password_hash.encode('utf-8')).hexdigest()
+
 
 # saves the new user in the database
 def sign_up(request):
@@ -235,7 +243,7 @@ def fetch_watchlist(request, user_id):
             saved_posts = []
             for post_id in saved_post_ids:
                 saved_posts.append(findSingleDocument("test_db","posts_collection",{"id":post_id}))
-            return JsonResponse(saved_posts, safe=False, status=200)
+            return JsonResponse(json.loads(json.dumps(saved_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch watchlist. The error is: " + str(e), status=500)
     else:
@@ -251,7 +259,7 @@ def fetch_user_details(request, user_id):
     if request.method == 'GET':
         try:
             user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
-            return JsonResponse(user_doc,status="200")
+            return JsonResponse(json.loads(json.dumps(user_doc,default=str)),status="200")
         except Exception as e:
             return HttpResponse('Could not fetch user details. The error is: ' + str(e))
         
@@ -301,10 +309,31 @@ def fetch_post(request, post_id):
     The request should contain the post id.
     """
     if request.method == 'GET':
+        comments = []
         post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-        post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
+        author = findSingleDocument("test_db","users_collection",{"id":post['author']})
+        post['author'] = {
+            "id" : author['id'],
+            "name" : author['name'],
+            "profile_picture" : author['profile_picture'],
+        }
+        
+        for comment_id in post['comments']:
+            comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+            comments.append(comment)
+
+        for comment in comments:
+            comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+            comment['author'] = {
+                "id" : comment_author['id'],
+                "name" : comment_author['name'],
+                "profile_picture" : comment_author['profile_picture'],
+            }
+        
+        post['comments'] = comments
+
         if post:
-            return JsonResponse(post, safe=False)
+            return JsonResponse(json.loads(json.dumps(post,default=str)), safe=False)
         else:
             return HttpResponse("Invalid post id")
     else:
@@ -323,14 +352,19 @@ def fetch_comments(request, post_id):
         }
     """
     if request.method == 'GET':
-        comments = findSingleDocument("test_db","comments_collection",{"id":post_id})
-        comment_post['author'] = findSingleDocument("test_db","users_collection",{"id":comment_post['author']})
-        if comments:
-            return JsonResponse(comments, safe=False)
-        else:
-            return HttpResponse("Invalid comment id")
+        try:
+            comment_ids = findSingleDocument("test_db","posts_collection",{"id":post_id})['comments']
+            comments = []
+            for comment_id in comment_ids:
+                comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                comment['author'] = findSingleDocument("test_db","users_collection",{"id":comment["id"]})
+                comments.append(comment)
+            return JsonResponse(json.loads(json.dumps(comments, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch comments. The error is: " + str(e), status=500)
+        
     else:
-        return HttpResponse("Invalid request")
+        return HttpResponse("Invalid request", status=400)
 
 
 def suggest(request):
@@ -392,11 +426,18 @@ def search(request):
         return HttpResponse("Invalid request", status=400)
 
 
-# def suggest(request):
-#     if request.method == 'POST':
-#         data = JSONParser().parse(request)
-#         search_type = data['search_type']
-#         search_term = data['search_term']
-#         if 
+def get_all_users(request):
+    if request.method == "GET":
+        try:
+            users = findAllDocument("test_db","users_collection",{})
+            users_doc = []
+            for user in users:
+                users_doc.append(user)
+            return JsonResponse(json.loads(json.dumps(users_doc, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch users. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
 
 cache = CacheImpl(10)

@@ -71,10 +71,10 @@ class GenericView(views.APIView):
 def login_creds(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        user = data['username']
+        email = data['email']
         password = data['password']
         hashed_password = make_password_hash(password)
-        user_document = findSingleDocument("test_db","users_collection",{"username":user,"password":hashed_password})
+        user_document = findSingleDocument("test_db","users_collection",{"email":email,"password":hashed_password})
         if user_document:
             return JsonResponse(user_document, safe=False, status=200)
         else:
@@ -447,3 +447,15 @@ def get_all_users(request):
 
 
 cache = CacheImpl(10)
+
+
+# test upload post
+# {
+#     "user_id": "u1",
+#     "post_details": {
+#         "type": "text",
+#         "text": "This post has been uploaded using postman!!",
+#         "caption": "My first Postman Post!",
+#         "tags":["t1","t2"],
+#     }
+# }

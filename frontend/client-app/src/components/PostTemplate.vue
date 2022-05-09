@@ -152,7 +152,10 @@ export default {
 
   methods:{
       getDescription(postModel){
-        console.log(postModel.video_url)
+        // console.log(postModel.video_url)
+        if(postModel.text.length <= 250){
+          this.fullDescription = true;
+        }
           if(this.fullDescription == true){
               return postModel.text;
           }

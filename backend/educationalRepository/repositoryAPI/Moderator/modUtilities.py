@@ -26,7 +26,7 @@ def ban_user_mod(user_id):
         return False
     
 
-def unban_user(user_id):
+def unban_user_mod(user_id):
     """
     Unban a user. The function expects a user id.
 
@@ -39,7 +39,7 @@ def unban_user(user_id):
     try:
         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
         # unban user
-        if user["type"] == "user":
+        if user["access_level"] == "user":
             user["is_banned"] = False
             mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":False}})
             return True

@@ -16,12 +16,12 @@
                         <v-card class="ml-15 mt-15" width="500">
                         <v-card-title>Login</v-card-title>
                         <v-card-text>
-                            <v-text-field v-model="username" prepend-icon="mdi-account-circle" label="Username" clearable></v-text-field>
+                            <v-text-field v-model="email" prepend-icon="mdi-account-circle" label="Email" clearable></v-text-field>
                             <v-text-field v-model="password" prepend-icon="mdi-lock" label="Password" type="password"></v-text-field>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-actions>
-                            <v-btn @click="submitForm" color="success">Login</v-btn>
+                            <v-btn @click="validateUser" color="success">Login</v-btn>
                             <v-btn color="info">Sign Up</v-btn>
                         </v-card-actions>
                     </v-card>
@@ -36,36 +36,35 @@
 </template>
 
 <script>
+import {login} from '../api.js';
 
 export default ({
     setup() {
         
     },
     data: ()=>({
-        username: "",
+        email: "",
         password: "",
     }),
     methods: {
-        async submitForm(){
-            const response = await this.$http.post('http://127.0.0.1:8000/api/login', {
-                username: this.username,
-                password: this.password,
+        async validateUser(){
+           login(this.email, this.password).then(response => {
+               if(response.status == 200){
+                   this.$emit('successfulLogin', response.data);
+                   console.log(response.data)
+               }else{
+                     alert("Invalid username or password");
+                    this.email = "";
+                    this.password = "";
+                }
+            }).catch(() => {
+                alert("Invalid username or password");
+                this.email = "";
+                this.password = "";
             });
-
-            console.log(response.body);
-
-            this.username= "";
-            this.password= "";
-            
-            if(response.status == 200){
-                this.$store.commit('setUser', response.body);
-                this.$store.commit('setCurrentScreen', 'Home');
-            }
-
-        
         }
-    }
 
-})
+    }
+});
 </script>
 

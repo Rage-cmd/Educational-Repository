@@ -3,17 +3,23 @@
   <v-app>
 
     <v-main>
-      <NavBar :sideMenu="sideMenuMap[user.access_level]" @sideMenuSelect="sideMenuSelectHandler"/>
+      <LoginVue v-if="!loggedin" @successfulLogin="loginuser"/>
+      <div v-else>
+      <NavBar :sideMenu="sideMenuMap[user.access_level]" 
+      @sideMenuSelect="sideMenuSelectHandler"
+      @logout = "logout"/>
       <v-container >
         
       </v-container>
-      <HomeScreen v-if="currentScreen=='Home'" :currentScreen="currentScreen"/>
+
+
+      <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen"/>
       <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
        -->
 
       <UserListScreen v-else-if="currentScreen=='Users List'" :user="user"/>
 
-      <MyProfile v-else-if="currentScreen=='My Profile'" :user="user"/>
+      <MyProfile v-else-if="currentScreen=='My Profile' " :user="user"/>
 
       <PostsList v-else :currentScreen="currentScreen" :user="user"/>
 
@@ -23,6 +29,7 @@
       <TagCreationScreen />
        -->
 
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -38,7 +45,8 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
-import {yourUploads,getUserDetails} from './api.js';
+import {yourUploads} from './api.js';
+import LoginVue from './components/LoginVue.vue';
 
 export default {
   name: 'App',
@@ -50,9 +58,11 @@ export default {
     PostsList,
     UserListScreen,
     MyProfile,
+    LoginVue,
 },
 
   data: () => ({
+    loggedin : false,
     user:{
       "username":"sample_user",
       "access_level":"moderator",
@@ -72,11 +82,20 @@ export default {
         }
       );
     },
+    loginuser(user){
+      console.log(user);
+      this.user = user;
+      this.loggedin=true;
+    },
+    logout(){
+      this.loggedin=false;
+      this.user = null
+    }
   },
   created(){
-    getUserDetails('u5').then(response => {
-        this.user = response.data;
-      });
+    // getUserDetails('u5').then(response => {
+    //     this.user = response.data;
+    //   });
   }
 };
 </script>

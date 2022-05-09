@@ -52,7 +52,7 @@
                 <v-icon>mdi-bell-outline</v-icon>
             </v-btn> -->
             <NotificationDialog/>
-            <v-btn icon>
+            <v-btn icon @click="$emit('logout')">
                 <v-icon>mdi-logout</v-icon>
             </v-btn>
             </v-app-bar>

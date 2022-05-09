@@ -24,7 +24,7 @@
     <iframe v-if="postModel.type === 'video'" width="100%" height="400" :src="postModel.video_url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
 
-    <v-img v-if="postModel.type === 'MCQ'" :src="postModel.image_url" width="100%"></v-img>
+    <v-img v-if="postModel.image_url != null && postModel.image_url!=''" :src="postModel.image_url" width="100%"></v-img>
 
 
     <v-card-text>

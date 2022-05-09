@@ -33,7 +33,7 @@
               <UploadVideoPostScreen/>
           </v-tab-item>
         <v-tab>
-            MCQ Post
+            Text Post
         </v-tab>
           <v-tab-item>
               <UploadMCQPostScreen/>

@@ -19,6 +19,7 @@ from databaseInterfaces.drive_api import *
 from repositoryAPI.User.userUtilities import *
 from repositoryAPI.Caching.cache_impl import *
 from repositoryAPI.Moderator.modUtilities import *
+from repositoryAPI.Admin.adminUtilities import *
 
 serializers = {
     'users_collection' : UserSerializer,
@@ -167,8 +168,8 @@ def upload_user_post(request):
         user_id = data['user_id']
         post_details = data['post_details']
         try:
-            upload_post(user_id, post_details,cache)
-            return HttpResponse("Post uploaded successfully.")
+            uploaded_post = upload_post(user_id, post_details,cache)
+            return JsonResponse(uploaded_post,"Post uploaded successfully.")
         except Exception as e:
             return HttpResponse("Post upload failed. The error is: " + str(e))
     else:
@@ -200,18 +201,105 @@ def approve_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
 def ban_user(request):
     """
     Bans a user.
     The request should contain the user id.
     """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        try:
+            ban_user(user_id)
+            return HttpResponse("User banned successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("User ban failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+def fetch_watchlist(request, user_id):
+    """
+    Fetches the watchlist of a user.
+    The request should contain the user id.
+    """
+    if request.method == 'GET':
+        try:
+            saved_post_ids = findSingleDocument("test_db","users_collection",{"id":user_id})['saved_posts']
+            saved_posts = []
+            for post_id in saved_post_ids:
+                saved_posts.append(findSingleDocument("test_db","posts_collection",{"id":post_id}))
+            return JsonResponse(saved_posts, safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch watchlist. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+def fetch_user_details(request, user_id):
+    """
+    Fetches the details of a user.
+    The request should contain the user id.
+    """
+
+    if request.method == 'GET':
+        try:
+            user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
+            return JsonResponse(user_doc,status="200")
+        except Exception as e:
+            return HttpResponse('Could not fetch user details. The error is: ' + str(e))
+        
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+def fetch_user_posts(request, user_id):
+    """
+    Fetches the posts of a user.
+    The request should contain the user id.
+    """
+    if request.method == 'GET':
+        try:
+            user_posts = findSingleDocument("test_db","users_collection",{"id":user_id})['posts']
+            posts = []
+            for post_id in user_posts:
+                post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+                post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                posts.append()
+            return JsonResponse(posts, safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+    
+
+def update_user_role(request, user_id, role):
+    """
+    Updates the user id of a user.
+    The request should contain the admin id and the user id.
+    """
+    if request.method == 'POST':
+        try:
+            user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
+            assign_role(user_doc['id'], role)
+            return HttpResponse("User role updated successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("User role update failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 
 
 def fetch_post(request):
+    """
+    Fetches a post.
+    The request should contain the post id.
+    """
     if request.method == 'GET':
         data = JSONParser().parse(request)
         post_id = data['post_id']
         post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+        post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
         if post:
             return JsonResponse(post, safe=False)
         else:
@@ -221,15 +309,29 @@ def fetch_post(request):
 
 
 def fetch_comments(request):
+    """
+    Fetches the comments of a post.
+    The request should contain the post id.
+    
+    Example::
+    
+        data ={
+            "post_id" : <post_id>
+        }
+    """
     if request.method == 'GET':
         data = JSONParser().parse(request)
         post_id = data['comment_id']
         comments = findSingleDocument("test_db","comments_collection",{"id":post_id})
+        comment_post['author'] = findSingleDocument("test_db","users_collection",{"id":comment_post['author']})
         if comments:
             return JsonResponse(comments, safe=False)
         else:
             return HttpResponse("Invalid comment id")
     else:
         return HttpResponse("Invalid request")
+
+
+# def suggest(request):
 
 cache = CacheImpl(10)

@@ -309,15 +309,29 @@ def fetch_post(request):
 
 
 def fetch_comments(request):
+    """
+    Fetches the comments of a post.
+    The request should contain the post id.
+    
+    Example::
+    
+        data ={
+            "post_id" : <post_id>
+        }
+    """
     if request.method == 'GET':
         data = JSONParser().parse(request)
         post_id = data['comment_id']
         comments = findSingleDocument("test_db","comments_collection",{"id":post_id})
+        comment_post['author'] = findSingleDocument("test_db","users_collection",{"id":comment_post['author']})
         if comments:
             return JsonResponse(comments, safe=False)
         else:
             return HttpResponse("Invalid comment id")
     else:
         return HttpResponse("Invalid request")
+
+
+# def suggest(request):
 
 cache = CacheImpl(10)

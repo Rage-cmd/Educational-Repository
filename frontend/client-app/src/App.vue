@@ -78,6 +78,7 @@ export default {
     sideMenuMap:{
       "moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
       "user":["Your Uploads","My Profile", "Watchlist"],
+      "admin":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
     },
     hideall: true,
   }),

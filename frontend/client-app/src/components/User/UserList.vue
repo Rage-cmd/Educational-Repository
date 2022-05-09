@@ -7,7 +7,9 @@
     </v-card-title>
     <v-list>
         <v-list-item
-        v-for="user in users"
+        v-for="user in users.filter(user=>{
+                return user.access_level=='user';
+            })"
         :key="user.id"
         >
         <v-list-item-avatar>
@@ -25,7 +27,8 @@
                 color="error"
                  class="ma-3"
                 v-bind="attrs"
-                v-on="on">
+                v-on="on"
+                @click="banuser(user)">
                     <v-icon small>mdi-account-remove</v-icon>
                 </v-btn>
             </template>
@@ -34,7 +37,7 @@
         </v-tooltip>
 
         <v-tooltip top>
-            <template v-if="currentuser.user_level=='admin'" v-slot:activator="{ on, attrs }">
+            <template v-if="currentuser.access_level=='admin'" v-slot:activator="{ on, attrs }">
                 
                  <v-btn 
                  color="primary" 
@@ -49,13 +52,14 @@
         </v-tooltip>
 
         <v-tooltip top>
-            <template v-if="currentuser.user_level!='user' && user.is_banned==true" v-slot:activator="{ on, attrs }">
+            <template v-if="user.is_banned===true" v-slot:activator="{ on, attrs }">
                 
                  <v-btn 
                  color="success" 
                  class="ma-3"
                  v-bind="attrs"
-                 v-on="on">
+                 v-on="on"
+                 @click="unbanuser(user)">
                     <v-icon small>mdi-account-lock-open</v-icon>
                 </v-btn>
             </template>
@@ -72,12 +76,20 @@
 </template>
 
 <script>
-import {getAllUsers} from '../../api.js';
+import {getAllUsers,banuser,unbanuser} from '../../api.js';
 
 export default {
     name:'UserList',
     setup() {
         
+    },
+    computed:{
+        filterUsers(users){
+            console.log(users);
+            return users.filter(user=>{
+                return user.access_level=='user';
+            })
+        }
     },
     props:{
         currentuser:{
@@ -103,7 +115,32 @@ export default {
     created(){
         getAllUsers().then(response=>{
             this.users = response.data;
+            console.log(this.users);
         });
-    }
+    },
+    methods:{
+        async banuser(user){
+            await banuser(this.currentuser.id,user.id).then(
+                response=>{
+                    console.log(response);
+                    user.is_banned = true;
+                }
+            ).catch(error=>{
+                alert("Some error occured during user ban");
+                console.log(error);
+            });
+        },
+        async unbanuser(user){
+            await unbanuser(this.currentuser.id,user.id).then(
+                response=>{
+                    console.log(response);
+                    user.is_banned = false;
+                }
+            ).catch(error=>{
+                alert("Some error occured during user ban");
+                console.log(error);
+            });
+        }
+  }
 }
 </script>

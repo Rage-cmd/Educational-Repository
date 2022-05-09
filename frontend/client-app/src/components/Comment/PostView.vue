@@ -12,19 +12,19 @@
     </template>
 
 
-    <v-card-title>{{postModel.title}}</v-card-title>
+    <v-card-title>{{postModel.caption}}</v-card-title>
     
     
     <v-card-text secondary-title>
         <v-icon small>mdi-account</v-icon>
-        {{postModel.username}}
+        {{postModel.author.name}}
     </v-card-text>
 
 
-    <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <iframe v-if="postModel.type === 'video'" width="100%" height="400" :src="postModel.video_url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
 
-    <v-img v-if="postModel.postType === 'MCQ'" :src="postModel.imgURL" width="100%"></v-img>
+    <v-img v-if="postModel.type === 'MCQ'" :src="postModel.image_url" width="100%"></v-img>
 
 
     <v-card-text>
@@ -48,13 +48,7 @@
         active-class="deep-purple accent-4 white--text"
         column
       >
-        <v-chip>tag1</v-chip>
-
-        <v-chip>tag2</v-chip>
-
-        <v-chip>tag3</v-chip>
-
-        <v-chip>tag4</v-chip>
+        <v-chip v-for="tag in postModel.tags" :key="tag">{{tag}}</v-chip>
       </v-chip-group>
     </v-card-text>
 
@@ -83,10 +77,10 @@ export default {
   methods:{
       getDescription(postModel){
           if(this.fullDescription == true){
-              return postModel.description;
+              return postModel.text;
           }
           else{
-              return postModel.description.substring(0,250)
+              return postModel.text.substring(0,250)
           }
       },
 

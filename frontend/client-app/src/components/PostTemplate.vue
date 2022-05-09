@@ -13,22 +13,45 @@
     </template>
 
 
-    <v-card-title>{{postModel.title}}</v-card-title>
+    <v-card-title>{{postModel.caption}}</v-card-title>
     
     
     <v-card-text secondary-title>
-        <v-icon small>mdi-account</v-icon>
-        {{postModel.username}}
+       <v-row>
+        <!-- <v-col cols="10"> -->
+         <v-list width="100%">
+            <v-list-item height="80%" width="100%">
+                <v-list-item-avatar size="25">
+                    <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                    <v-list-item-title>{{postModel.author.name}}</v-list-item-title>
+                    
+                </v-list-item-content>
+                <v-spacer></v-spacer>
+              {{getDate(postModel)}}
+            </v-list-item>
+         </v-list>
+        <!-- </v-col> -->
+        <!-- <v-col cols="2"> -->
+        <!-- </v-col> -->
+        <!-- <v-avatar size=25 mr-6><img
+        :src=postModel.author.profile_picture
+        alt="John"
+      ></v-avatar>
+      
+       <v-text>{{postModel.author.name}}</v-text>  -->
+       </v-row>
     </v-card-text>
 
 
     <!-- <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe> -->
 
-    <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" allow="autoplay">
+    <iframe v-if="postModel.type === 'video'" width="100%" height="400" :src="postModel.video_url" allow="autoplay">
     </iframe>
 
-    <v-img v-if="postModel.postType === 'MCQ'" :src="postModel.imgURL" width="100%"></v-img>
+    <v-img v-if="postModel.type === 'MCQ'" :src="postModel.image_url" width="100%"></v-img>
 
 
     <v-card-text>
@@ -69,7 +92,7 @@
       </v-btn>
    
     <v-spacer></v-spacer>
-    <v-icon color="green" v-if="postModel.verifiedPost">mdi-check-bold</v-icon>
+    <v-icon color="green" v-if="postModel.is_answered">mdi-check-bold</v-icon>
       </v-row>
 
       <div class="my-4 text-subtitle-1 font-weight-bold">
@@ -91,13 +114,7 @@
         active-class="deep-purple accent-4 white--text"
         column
       >
-        <v-chip>tag1</v-chip>
-
-        <v-chip>tag2</v-chip>
-
-        <v-chip>tag3</v-chip>
-
-        <v-chip>tag4</v-chip>
+        <v-chip v-for="tag in postModel.tags" :key="tag">{{tag}}</v-chip>
       </v-chip-group>
     </v-card-text>
 
@@ -144,11 +161,12 @@ export default {
 
   methods:{
       getDescription(postModel){
+        console.log(postModel.video_url)
           if(this.fullDescription == true){
-              return postModel.description;
+              return postModel.text;
           }
           else{
-              return postModel.description.substring(0,250)
+              return postModel.text.substring(0,250)
           }
       },
 
@@ -161,12 +179,18 @@ export default {
       },
       bookmarkHandler(){
         this.bookmarkFilled = !this.bookmarkFilled;
+      },
+      getDate(postModel){
+       return postModel.time.split('T')[0].split("-").reverse().join("-"); 
       }
   },
   created: function(){
       this.description = this.getDescription(this.postModel);
       console.log(this.currentScreen);
   },
+  computed:{
+    
+  }
 
 }
 </script>

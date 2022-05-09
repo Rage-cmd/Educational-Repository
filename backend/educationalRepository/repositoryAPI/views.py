@@ -140,6 +140,7 @@ def sign_up(request):
         return HttpResponse("Invalid request", status=400)
 
 
+@csrf_exempt
 def upload_user_post(request):
     """
     Upload a post. The function expects a user id and a dictionary consisiting of post details.

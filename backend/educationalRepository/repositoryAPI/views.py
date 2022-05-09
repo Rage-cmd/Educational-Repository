@@ -127,9 +127,8 @@ def sign_up(request):
         if email in emails:
             return HttpResponse("Email already exists.", status=400)
 
-
         user_document = {
-            'id': 'u' + getNextSequenceValue("test_db","users_collection"),
+            'id': 'u' + str(getNextSequenceValue("test_db","users_collection")),
             "name": name,
             "password": hashed_password,
             "email": email,

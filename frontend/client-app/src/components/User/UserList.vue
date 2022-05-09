@@ -20,9 +20,10 @@
 
         <v-spacer></v-spacer>
         <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
+            <template v-if="!user.is_banned" v-slot:activator="{ on, attrs }">
                 <v-btn 
                 color="error"
+                 class="ma-3"
                 v-bind="attrs"
                 v-on="on">
                     <v-icon small>mdi-account-remove</v-icon>
@@ -33,7 +34,7 @@
         </v-tooltip>
 
         <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
+            <template v-if="currentuser.user_level=='admin'" v-slot:activator="{ on, attrs }">
                 
                  <v-btn 
                  color="primary" 
@@ -44,6 +45,21 @@
                 </v-btn>
             </template>
             <span>Upgrade User Level</span>
+
+        </v-tooltip>
+
+        <v-tooltip top>
+            <template v-if="currentuser.user_level!='user' && user.is_banned==true" v-slot:activator="{ on, attrs }">
+                
+                 <v-btn 
+                 color="success" 
+                 class="ma-3"
+                 v-bind="attrs"
+                 v-on="on">
+                    <v-icon small>mdi-account-lock-open</v-icon>
+                </v-btn>
+            </template>
+            <span>Remove Ban</span>
 
         </v-tooltip>
 
@@ -62,6 +78,15 @@ export default {
     name:'UserList',
     setup() {
         
+    },
+    props:{
+        currentuser:{
+            type:Object,
+            default:()=>({"id":2,
+            "username":"user2",
+            "user_level":"moderator",
+            })
+        },
     },
     data: ()=>({
         users:[

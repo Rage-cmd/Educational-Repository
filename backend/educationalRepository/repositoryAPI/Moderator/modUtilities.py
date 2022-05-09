@@ -17,7 +17,8 @@ def ban_user_mod(user_id):
     try:
         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
         # ban user for ban duration
-        if user["type"] == "user":
+        print(user)
+        if user["access_level"] == "user":
             user["is_banned"] = True
             mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":True}})
             return True

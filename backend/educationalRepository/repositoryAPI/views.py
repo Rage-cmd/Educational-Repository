@@ -295,14 +295,12 @@ def update_user_role(request, user_id, role):
         return HttpResponse("Invalid request", status=400)
 
 
-def fetch_post(request):
+def fetch_post(request, post_id):
     """
     Fetches a post.
     The request should contain the post id.
     """
     if request.method == 'GET':
-        data = JSONParser().parse(request)
-        post_id = data['post_id']
         post = findSingleDocument("test_db","posts_collection",{"id":post_id})
         post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
         if post:
@@ -313,7 +311,7 @@ def fetch_post(request):
         return HttpResponse("Invalid request")
 
 
-def fetch_comments(request):
+def fetch_comments(request, post_id):
     """
     Fetches the comments of a post.
     The request should contain the post id.
@@ -325,8 +323,6 @@ def fetch_comments(request):
         }
     """
     if request.method == 'GET':
-        data = JSONParser().parse(request)
-        post_id = data['comment_id']
         comments = findSingleDocument("test_db","comments_collection",{"id":post_id})
         comment_post['author'] = findSingleDocument("test_db","users_collection",{"id":comment_post['author']})
         if comments:

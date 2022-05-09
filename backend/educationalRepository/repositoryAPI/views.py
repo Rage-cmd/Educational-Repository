@@ -73,10 +73,10 @@ def login_creds(request):
         data = JSONParser().parse(request)
         email = data['email']
         password = data['password']
-        hashed_password = make_password_hash(password)
-        user_document = findSingleDocument("test_db","users_collection",{"email":email,"password":hashed_password})
+        # hashed_password = make_password_hash(password)
+        user_document = findSingleDocument("test_db","users_collection",{"email":email,"password":password})
         if user_document:
-            return JsonResponse(user_document, safe=False, status=200)
+            return JsonResponse(json.loads(json.dumps(user_document, default=str)), safe=False, status=200)
         else:
             return HttpResponse("Invalid Username or Password", status=400)
     else:
@@ -94,6 +94,7 @@ def retrieve_password(password_hash):
 
 
 # saves the new user in the database
+@csrf_exempt
 def sign_up(request):
     """
     Sign up a new user.
@@ -449,7 +450,7 @@ def get_all_users(request):
 cache = CacheImpl(10)
 
 
-# test upload post
+# test upload
 # {
 #     "user_id": "u1",
 #     "post_details": {

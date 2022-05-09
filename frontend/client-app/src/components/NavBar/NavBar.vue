@@ -52,9 +52,19 @@
                 <v-icon>mdi-bell-outline</v-icon>
             </v-btn> -->
             <NotificationDialog/>
-            <v-btn icon @click="$emit('logout')">
-                <v-icon>mdi-logout</v-icon>
-            </v-btn>
+            <v-tooltip bottom>
+                 <template v-slot:activator="{ on, attrs }">
+                    <v-btn 
+                    v-bind="attrs"
+                    v-on="on" 
+                    icon 
+                    @click="$emit('logout')">
+                        <v-icon>mdi-logout</v-icon>
+                    </v-btn>
+                </template>
+                <span>logout</span>
+                
+            </v-tooltip>
             </v-app-bar>
 
             <v-navigation-drawer

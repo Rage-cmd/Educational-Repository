@@ -3,7 +3,12 @@
   <v-app>
 
     <v-main>
-      <LoginVue v-if="!loggedin" @successfulLogin="loginuser"/>
+      <LoginVue v-if="!loggedin && currentScreen == 'loginScreen'" 
+      @successfulLogin="loginuser"
+      @signup="changeTosignup"/>
+      <SignupVue v-else-if="!loggedin && currentScreen == 'signupScreen'" 
+      @successfullLogin="loginuser"
+      @changelogin="changelogin"/>
       <div v-else>
       <NavBar :sideMenu="sideMenuMap[user.access_level]" 
       @sideMenuSelect="sideMenuSelectHandler"
@@ -47,6 +52,7 @@ import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
 import {yourUploads} from './api.js';
 import LoginVue from './components/LoginVue.vue';
+import SignupVue from './components/RegisterVue.vue';
 
 export default {
   name: 'App',
@@ -59,6 +65,7 @@ export default {
     UserListScreen,
     MyProfile,
     LoginVue,
+    SignupVue,
 },
 
   data: () => ({
@@ -67,7 +74,7 @@ export default {
       "username":"sample_user",
       "access_level":"moderator",
     },
-    currentScreen:"Home",
+    currentScreen:"loginScreen",
     sideMenuMap:{
       "moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
       "user":["Your Uploads","My Profile", "Watchlist"],
@@ -86,10 +93,18 @@ export default {
       console.log(user);
       this.user = user;
       this.loggedin=true;
+      this.currentScreen="Home";
     },
     logout(){
       this.loggedin=false;
-      this.user = null
+      this.user = null;
+      this.currentScreen="loginScreen";
+    },
+    changeTosignup(){
+      this.currentScreen="signupScreen";
+    },
+    changelogin(){
+      this.currentScreen = "loginScreen";
     }
   },
   created(){

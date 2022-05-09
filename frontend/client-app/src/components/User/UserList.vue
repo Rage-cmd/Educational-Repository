@@ -11,11 +11,11 @@
         :key="user.id"
         >
         <v-list-item-avatar>
-            <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+            <v-img :src="user.profile_picture"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
-            <v-list-item-title v-html="user.username"></v-list-item-title>
+            <v-list-item-title v-html="user.name"></v-list-item-title>
         </v-list-item-content>
 
         <v-spacer></v-spacer>
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import {getAllUsers} from '../../api.js';
+
 export default {
     name:'UserList',
     setup() {
@@ -73,5 +75,10 @@ export default {
             },
         ]
     }),
+    created(){
+        getAllUsers().then(response=>{
+            this.users = response.data;
+        });
+    }
 }
 </script>

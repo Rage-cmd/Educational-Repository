@@ -105,4 +105,9 @@ export const notifications = async (userid)=>{
     return response;
 }
 
+export const getAllUsers = async ()=>{
+    var response = await axios.get(devServer + 'users');
+    return response;
+}
+
 

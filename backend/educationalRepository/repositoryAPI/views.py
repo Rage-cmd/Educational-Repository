@@ -118,6 +118,16 @@ def sign_up(request):
         name = data['username']
         hashed_password = make_password_hash(data['password'])
         email = data['email']
+
+        all_users = findAllDocument("test_db","users_collection",{})
+        emails = []
+        for user in all_users:
+            emails.append(user['email'])
+        
+        if email in emails:
+            return HttpResponse("Email already exists.", status=400)
+
+
         user_document = {
             'id': 'u' + getNextSequenceValue("test_db","users_collection"),
             "name": name,

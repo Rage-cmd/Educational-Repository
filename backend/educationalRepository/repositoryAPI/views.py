@@ -219,6 +219,22 @@ def ban_user(request):
         return HttpResponse("Invalid request", status=400)
 
 
+def fetch_watchlist(request, user_id):
+    """
+    Fetches the watchlist of a user.
+    The request should contain the user id.
+    """
+    if request.method == 'GET':
+        try:
+            saved_post_ids = findSingleDocument("test_db","users_collection",{"id":user_id})['saved_posts']
+            saved_posts = []
+            for post_id in saved_post_ids:
+                saved_posts.append(findSingleDocument("test_db","posts_collection",{"id":post_id}))
+            return JsonResponse(saved_posts, safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch watchlist. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 def fetch_post(request):
     if request.method == 'GET':
         data = JSONParser().parse(request)

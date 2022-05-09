@@ -252,6 +252,28 @@ def fetch_user_details(request, user_id):
         
     else:
         return HttpResponse("Invalid request", status=400)
+
+
+def fetch_user_posts(request, user_id):
+    """
+    Fetches the posts of a user.
+    The request should contain the user id.
+    """
+    if request.method == 'GET':
+        try:
+            user_posts = findSingleDocument("test_db","users_collection",{"id":user_id})['posts']
+            posts = []
+            for post_id in user_posts:
+                post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+                post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                posts.append()
+            return JsonResponse(posts, safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+    
+
 def fetch_post(request):
     if request.method == 'GET':
         data = JSONParser().parse(request)

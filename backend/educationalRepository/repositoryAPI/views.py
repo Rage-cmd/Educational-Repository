@@ -128,11 +128,11 @@ def sign_up(request):
             return HttpResponse("Email already exists.", status=400)
 
         user_document = {
-            'id': 'u' + str(getNextSequenceValue("test_db","users_collection")),
+            "id": 'u' + str(getNextSequenceValue("test_db","users_collection")),
             "name": name,
             "password": hashed_password,
             "email": email,
-            "account_type": "user",
+            "access_level": "user",
             "status": "active",
             "posts": [],
             "comments": [],

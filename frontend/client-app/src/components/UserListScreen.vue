@@ -1,5 +1,5 @@
 <template>
-    <UserList />
+    <UserList :currentuser="user"/>
 </template>
 
 <script>
@@ -9,6 +9,9 @@ export default {
     name:'UserListScreen',
     setup() {
         
+    },
+    props:{
+        user:Object
     },
     components:{
         UserList

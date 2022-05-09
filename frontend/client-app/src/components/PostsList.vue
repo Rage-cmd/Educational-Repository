@@ -26,6 +26,7 @@ export default ({
     },
     props:{
         currentScreen:String,
+        user:Object,
     },
     data: ()=>({
         sampleVideoPostData:{
@@ -120,7 +121,7 @@ export default ({
     selectedTab:null,
     }),
     async created(){
-         await yourUploads('u2').then((response)=>{
+         await yourUploads(this.user.id).then((response)=>{
              this.posts = response.data;
          }
         );

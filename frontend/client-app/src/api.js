@@ -65,9 +65,7 @@ export const getSavedPosts = async (userid)=>{
 }
 
 export const getUserDetails = async (userid)=>{
-    var response = await axios.post(devServer + 'user',{
-        userid:userid,
-    });
+    var response = await axios.get(devServer + 'user/'+userid);
     return response;
 }
 

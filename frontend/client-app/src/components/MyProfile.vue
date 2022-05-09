@@ -5,9 +5,9 @@
             <v-avatar color="primary" size="150">A</v-avatar>
           </v-row>
           <v-list >
-               <v-card-title class="pb-0 pt-5 justify-center" >User Name</v-card-title>
+               <v-card-title class="pb-0 pt-5 justify-center" >{{user.name}}</v-card-title>
               <v-card-subtitle class="pt-3 text-center">
-                  Email
+                  {{user.email}}
               </v-card-subtitle>
               <!-- <v-list-item-subtitle class="text-center">
                     Email
@@ -22,7 +22,7 @@
                         Posts
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        5
+                        {{user.posts.length}}
                     </v-list-item-subtitle>
                 </v-list>
                 
@@ -31,7 +31,7 @@
                         Comments
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        15
+                        {{user.comments.length}}
                     </v-list-item-subtitle>
                 </v-list>
 
@@ -40,7 +40,7 @@
                         Points
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        42
+                        {{user.points}}
                     </v-list-item-subtitle>
                 </v-list>
                 </v-row>
@@ -60,5 +60,20 @@ export default ({
     setup() {
         
     },
+    created() {
+    },
+    props:{
+        user:{
+            type:Object,
+            default:()=>({
+                "username":"sample_user",
+                "access_level":"Moderator",
+            }),
+        },
+    },
+    data:()=>({
+    }),
+    methods:{
+    }
 })
 </script>

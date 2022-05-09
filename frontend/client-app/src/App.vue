@@ -3,19 +3,19 @@
   <v-app>
 
     <v-main>
-      <NavBar :sideMenu="sideMenuMap[user.user_level]" @sideMenuSelect="sideMenuSelectHandler"/>
+      <NavBar :sideMenu="sideMenuMap[user.access_level]" @sideMenuSelect="sideMenuSelectHandler"/>
       <v-container >
         
       </v-container>
-      <HomeScreen v-if="currentScreen=='Home'" :currentScreen="currentScreen" />
+      <HomeScreen v-if="currentScreen=='Home'" :currentScreen="currentScreen"/>
       <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
        -->
 
-      <UserListScreen v-else-if="currentScreen=='Users List'"/>
+      <UserListScreen v-else-if="currentScreen=='Users List'" :user="user"/>
 
-      <MyProfile v-else-if="currentScreen=='My Profile'" />
+      <MyProfile v-else-if="currentScreen=='My Profile'" :user="user"/>
 
-      <PostsList v-else :currentScreen="currentScreen"/>
+      <PostsList v-else :currentScreen="currentScreen" :user="user"/>
 
       <CreateUploadDialog/>
 
@@ -38,19 +38,16 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
-import axios from 'axios';
+import {yourUploads,getUserDetails} from './api.js';
 
 export default {
   name: 'App',
 
   components: {
     HomeScreen,
-    // UploadVideoPostScreen,
-    // PendingApprovalsScreen,
     CreateUploadDialog,
     NavBar,
     PostsList,
-    // TagCreationScreen,
     UserListScreen,
     MyProfile,
 },
@@ -58,11 +55,11 @@ export default {
   data: () => ({
     user:{
       "username":"sample_user",
-      "user_level":"Moderator",
+      "access_level":"moderator",
     },
     currentScreen:"Home",
     sideMenuMap:{
-      "Moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
+      "moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
       "user":["Your Uploads","My Profile", "Watchlist"],
     },
     hideall: true,
@@ -70,9 +67,16 @@ export default {
   methods:{
     async sideMenuSelectHandler(opt){
       this.currentScreen = opt;
-      const response = await axios.get('http://127.0.0.1:8000/api/post');
-      console.log("This response:" + JSON.stringify(response.data));
-    }
+      yourUploads().then(function(response){
+        console.log(response);
+        }
+      );
+    },
+  },
+  created(){
+    getUserDetails('u5').then(response => {
+        this.user = response.data;
+      });
   }
 };
 </script>

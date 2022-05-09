@@ -103,31 +103,31 @@ export default ({
       "tags": ["t4","t5"],
       "options":["option1", "option2", "option3"],
       "author": {
-      "_id": "6277a3ab8fb52aafb4294872",
-      "id": "u2",
-      "name": "John Doe",
-      "email": "user@example.com",
-      "password": "password",
-      "access_level": "user",
-      "status": "active",
-      "posts": [
-        "p1"
-      ],
-      "comments": [
-        "c13",
-        "c66"
-      ],
-      "saved_posts": [
-        "p2"
-      ],
-      "liked_posts": [
-        "p32",
-        "p62"
-      ],
-      "points": 100,
-      "profile_picture": "https://example.com/profile.png",
-      "no_of_bans": 0,
-      "is_banned": false
+        "_id": "6277a3ab8fb52aafb4294872",
+        "id": "u2",
+        "name": "John Doe",
+        "email": "user@example.com",
+        "password": "password",
+        "access_level": "user",
+        "status": "active",
+        "posts": [
+            "p1"
+        ],
+        "comments": [
+            "c13",
+            "c66"
+        ],
+        "saved_posts": [
+            "p2"
+        ],
+        "liked_posts": [
+            "p32",
+            "p62"
+        ],
+        "points": 100,
+        "profile_picture": "https://example.com/profile.png",
+        "no_of_bans": 0,
+        "is_banned": false
     },
     "upvotess":10,
     "is_approved":true,

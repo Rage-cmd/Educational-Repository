@@ -274,6 +274,22 @@ def fetch_user_posts(request, user_id):
         return HttpResponse("Invalid request", status=400)
     
 
+def update_user_role(request, user_id, role):
+    """
+    Updates the user id of a user.
+    The request should contain the admin id and the user id.
+    """
+    if request.method == 'POST':
+        try:
+            user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
+            assign_role(user_doc['id'], role)
+            return HttpResponse("User role updated successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("User role update failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
 def fetch_post(request):
     if request.method == 'GET':
         data = JSONParser().parse(request)

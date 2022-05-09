@@ -74,7 +74,9 @@ export default {
         items : [{"commentedby":"user1",
                     "comment":"a + b = c"},
                 {"commentedby":"user2",
-                    "comment":"Albert Einstein"}]
+                    "comment":"Albert Einstein"}],
+        dialog:false,
+        
     }),
 }
 </script>

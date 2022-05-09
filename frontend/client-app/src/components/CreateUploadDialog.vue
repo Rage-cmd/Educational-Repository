@@ -8,7 +8,6 @@
     >
         <template v-slot:activator="{ on, attrs }">
         <v-btn
-                v-show="!hidden && !hideall"
                 color="pink"
                 v-bind="attrs"
                 v-on="on"
@@ -63,6 +62,10 @@ export default {
         UploadVideoPostScreen,
         UploadMCQPostScreen,
         TagCreationScreen,
-    }
+    },
+    data: ()=>({
+            dialog:false,
+            value:0,
+    }),
 }
 </script>

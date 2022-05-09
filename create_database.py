@@ -9,7 +9,7 @@ users = [
         'access_level': 'user',
         'status': 'active',
         'posts': ['p1'],
-        'comments': ['c13', 'c66'],
+        'comments': ['c1', 'c2'],
         'saved_posts': ['p2'],
         'liked_posts': ['p32', 'p62'],
         'points': 100,
@@ -86,7 +86,7 @@ users = [
 posts = [
     {
         'id': 'p1',
-        'type': 'MCQ',
+        'type': 'text',
         'time': '2020-01-01T00:00:00Z',
         'tags': ['t4', 't5'],
         'caption': 'P1 Caption',
@@ -94,10 +94,10 @@ posts = [
         'options': ['option1', 'option2', 'option3', 'option4'],
         'author': 'u2',
         'upvotes': 35,
-        'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'image_url': '',
         'is_answered': False,
         'is_approved': True,
-        'comments': ['c13', 'c66'],
+        'comments': ['c1', 'c2'],
         'reports': 2
     },
     {

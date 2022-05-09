@@ -279,7 +279,12 @@ def fetch_user_posts(request, user_id):
             posts = []
             for post_id in user_posts:
                 post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-                post['author'] = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                post_doc = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                post['author'] = {
+                    "id" : post_doc['id'],
+                    "name" : post_doc['name'],
+                    "profile_picture" : post_doc['profile_picture']
+                }
                 posts.append(post)
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         except Exception as e:

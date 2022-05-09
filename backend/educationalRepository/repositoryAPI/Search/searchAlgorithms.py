@@ -15,6 +15,9 @@ def post_name_search(post_name):
     return result
 
 def tag_ID_search(tag_id):
+    """
+    Returns all the child with the given tag ID.
+    """
     main_tree_node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":tag_id})
     post_nodes = []
     queue = [main_tree_node]

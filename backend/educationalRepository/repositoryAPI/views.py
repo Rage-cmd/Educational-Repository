@@ -19,6 +19,7 @@ from databaseInterfaces.drive_api import *
 from repositoryAPI.User.userUtilities import *
 from repositoryAPI.Caching.cache_impl import *
 from repositoryAPI.Moderator.modUtilities import *
+from repositoryAPI.Admin.adminUtilities import *
 
 serializers = {
     'users_collection' : UserSerializer,
@@ -167,8 +168,8 @@ def upload_user_post(request):
         user_id = data['user_id']
         post_details = data['post_details']
         try:
-            upload_post(user_id, post_details,cache)
-            return HttpResponse("Post uploaded successfully.")
+            uploaded_post = upload_post(user_id, post_details,cache)
+            return JsonResponse(uploaded_post,"Post uploaded successfully.")
         except Exception as e:
             return HttpResponse("Post upload failed. The error is: " + str(e))
     else:
@@ -199,6 +200,7 @@ def approve_user_post(request):
             return HttpResponse("Post approval failed. The error is: " + str(e), status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
 
 def ban_user(request):
     """

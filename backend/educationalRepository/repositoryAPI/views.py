@@ -246,6 +246,22 @@ def ban_user(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+@csrf_exempt
+def unban_user(request):
+    """
+    Unbans a user.
+    The request should contain the user id.
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        
+        if(unban_user_mod(user_id)):
+            return HttpResponse("User ban lifted", status=200)
+        else:
+            return HttpResponse("User unban failed. Check the user access level.", status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 
 def fetch_watchlist(request, user_id):
     """

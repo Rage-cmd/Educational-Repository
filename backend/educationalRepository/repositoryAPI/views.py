@@ -239,7 +239,7 @@ def ban_user(request):
         data = JSONParser().parse(request)
         user_id = data['user_id']
 
-        if(ban_user(user_id)):
+        if(ban_user_mod(user_id)):
             return HttpResponse("User banned successfully.", status=200)
         else:
             return HttpResponse("User ban failed. Check the user access level.", status=500)

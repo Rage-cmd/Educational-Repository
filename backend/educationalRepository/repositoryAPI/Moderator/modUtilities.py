@@ -4,7 +4,7 @@ sys.path.append("..")
 
 import databaseInterfaces.mongoDB_interface as mongoDB_interface
 
-def ban_user(user_id):
+def ban_user_mod(user_id):
     """
     Ban a user. The function expects a user id. 
 

@@ -20,20 +20,20 @@ def assign_role(user_id, role="user"):
         print("Cannot assign role. User not found.")
 
 
-def ban_user(user_id):
-    """
-    Bans a user.
+# def ban_user(user_id):
+#     """
+#     Bans a user.
 
-    Parameters:
-        user_id (str): The user's id.   
-    """
+#     Parameters:
+#         user_id (str): The user's id.   
+#     """
 
-    try:
-        user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
-        user["is_banned"] = True
-        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set":{'is_banned':True}})
-    except:
-        print("Cannot ban user. User not found.")
+#     try:
+#         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+#         user["is_banned"] = True
+#         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set":{'is_banned':True}})
+#     except:
+#         print("Cannot ban user. User not found.")
 
 
 def get_all_users():

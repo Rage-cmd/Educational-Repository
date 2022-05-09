@@ -229,7 +229,7 @@ def approve_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
-
+@csrf_exempt
 def ban_user(request):
     """
     Bans a user.
@@ -238,11 +238,11 @@ def ban_user(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         user_id = data['user_id']
-        try:
-            ban_user(user_id)
+
+        if(ban_user_mod(user_id)):
             return HttpResponse("User banned successfully.", status=200)
-        except Exception as e:
-            return HttpResponse("User ban failed. The error is: " + str(e), status=500)
+        else:
+            return HttpResponse("User ban failed. Check the user access level.", status=500)
     else:
         return HttpResponse("Invalid request", status=400)
 

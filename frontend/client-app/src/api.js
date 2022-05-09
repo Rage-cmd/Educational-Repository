@@ -108,4 +108,3 @@ export const getAllUsers = async ()=>{
     return response;
 }
 
-

@@ -39,7 +39,8 @@
     <!-- <iframe v-if="postModel.postType === 'video'" width="100%" height="400" :src="postModel.videoURL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe> -->
 
-    <iframe v-if="postModel.type === 'video'" width="100%" height="400" :src="postModel.video_url" allow="autoplay">
+    <iframe v-if="postModel.type === 'video'" width="100%" height="400" :src="postModel.video_url" allow="autoplay"
+    allowfullscreen>
     </iframe>
 
     <v-img v-if="postModel.image_url != null && postModel.image_url!=''" :src="postModel.image_url" width="100%"></v-img>

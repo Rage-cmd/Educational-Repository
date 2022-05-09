@@ -60,9 +60,7 @@ export const banuser = async (moderatorid,userid)=>{
 }
 
 export const getSavedPosts = async (userid)=>{
-    var response = await axios.post(devServer + 'getsavedposts',{
-        userid:userid,
-    });
+    var response = await axios.get(devServer + 'uploads/' + userid);
     return response;
 }
 
@@ -73,10 +71,8 @@ export const getUserDetails = async (userid)=>{
     return response;
 }
 
-export const yourUploads = async (userid)=>{
-    var response = await axios.post(devServer + 'youruploads',{
-        userid:userid,
-    });
+export const yourUploads = async (userid='u2')=>{
+    var response = await axios.get(devServer + 'uploads/' + userid);
     return response;
 }
 

@@ -496,3 +496,29 @@ def report_post(user_id,post_id):
     except:
         print("Could not report post. Check if the post id is valid.") 
         return 0
+
+
+def get_detailed_post(post_id):
+    comments = []
+    post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
+    author = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":post['author']})
+    post['author'] = {
+        "id" : author['id'],
+        "name" : author['name'],
+        "profile_picture" : author['profile_picture'],
+    }
+    
+    for comment_id in post['comments']:
+        comment = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
+        comments.append(comment)
+
+    for comment in comments:
+        comment_author = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":comment['author']})
+        comment['author'] = {
+            "id" : comment_author['id'],
+            "name" : comment_author['name'],
+            "profile_picture" : comment_author['profile_picture'],
+        }
+    
+    post['comments'] = comments
+    return post 

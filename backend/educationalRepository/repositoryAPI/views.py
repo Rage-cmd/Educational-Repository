@@ -306,27 +306,7 @@ def fetch_watchlist(request, user_id):
             saved_post_ids = findSingleDocument("test_db","users_collection",{"id":user_id})['saved_posts']
             saved_posts = []
             for post_id in saved_post_ids:
-                post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-                post_user = findSingleDocument("test_db","users_collection",{"id":post['author']})
-                author = {
-                    "id" : post_user['id'],
-                    "name" : post_user['name'],
-                    "profile_picture" : post_user['profile_picture'],
-                }
-                post['author'] = author
-
-                comments = []
-                for comment_id in post['comments']:
-                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                    comment_user = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                    comment_author = {
-                        "id" : comment_user['id'],
-                        "name" : comment_user['name'],
-                        "profile_picture" : comment_user['profile_picture'],
-                    }
-                    comment['author'] = comment_author
-                    comments.append(comment)
-                post['comments'] = comments
+                post = get_detailed_post(post_id)
                 saved_posts.append(post)
 
             return JsonResponse(json.loads(json.dumps(saved_posts, default=str)), safe=False, status=200)
@@ -364,28 +344,7 @@ def fetch_user_posts(request, user_id):
             posts = []
             user = findSingleDocument("test_db","users_collection",{"id":user_id})
             for post_id in user_posts:
-                comments = []
-                post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-                post['author'] = {
-                    "id" : user['id'],
-                    "name" : user['name'],
-                    "profile_picture" : user['profile_picture']
-                }
-                comment = []
-                # print(post["caption"], post['comments'])
-                for comment_id in post['comments']:
-                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                    comments.append(comment)
-
-                for comment in comments:
-                    comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                    comment['author'] = {
-                        "id" : comment_author['id'],
-                        "name" : comment_author['name'],
-                        "profile_picture" : comment_author['profile_picture'],
-                    }
-            
-                post['comments'] = comments
+                post = get_detailed_post(post_id)
                 posts.append(post)
 
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
@@ -428,29 +387,9 @@ def fetch_post(request, post_id):
     The request should contain the post id.
     """
     if request.method == 'GET':
-        comments = []
+        # comments = []
         try:
-            post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-            author = findSingleDocument("test_db","users_collection",{"id":post['author']})
-            post['author'] = {
-                "id" : author['id'],
-                "name" : author['name'],
-                "profile_picture" : author['profile_picture'],
-            }
-            
-            for comment_id in post['comments']:
-                comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                comments.append(comment)
-
-            for comment in comments:
-                comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                comment['author'] = {
-                    "id" : comment_author['id'],
-                    "name" : comment_author['name'],
-                    "profile_picture" : comment_author['profile_picture'],
-                }
-            
-            post['comments'] = comments
+            post = get_detailed_post(post_id)
             return JsonResponse(json.loads(json.dumps(post,default=str)), safe=False)
         except Exception as e:
             return HttpResponse("Cannot fetch post. Check the post id. The error is " + str(e), status=500)
@@ -530,27 +469,7 @@ def suggest(request):
                 posts =[]
 
                 for post in results:
-                    comments = []
-                    author = findSingleDocument("test_db","users_collection",{"id":post['author']})
-                    post['author'] = {
-                        "id" : author['id'],
-                        "name" : author['name'],
-                        "profile_picture" : author['profile_picture'],
-                    }
-
-                    for comment_id in post['comments']:
-                        comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                        comments.append(comment)
-                    
-                    for comment in comments:
-                        comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                        comment['author'] = {
-                            "id" : comment_author['id'],
-                            "name" : comment_author['name'],
-                            "profile_picture" : comment_author['profile_picture'],
-                        }
-                    
-                    post['comments'] = comments
+                    post = get_detailed_post(post['id'])
                     posts.append(post)
 
                 return JsonResponse(json.loads(json.dumps(posts[:10], default=str)), safe=False, status=200)

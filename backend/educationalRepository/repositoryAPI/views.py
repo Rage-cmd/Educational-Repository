@@ -613,7 +613,7 @@ def save_user_post(request):
         if result == 1:
             return HttpResponse("Saved successfully", status=200)
         elif result == -1:
-            return HttpResponse("Unsaved successfully", status=500)
+            return HttpResponse("Unsaved successfully", status=200)
         else:
             return HttpResponse("Failed to save post", status=500)
     else:

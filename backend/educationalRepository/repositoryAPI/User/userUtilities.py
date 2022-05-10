@@ -147,7 +147,7 @@ def save_post(user_id, post_id):
         return 0
 
 
-def comment_post(user_id, post_id, comment_text):
+def comment_post(user_id, post_id, comment_text,cache):
     """
     Comment on a post. The function expects a user id, a post id and a comment text. 
     Parameters:
@@ -181,6 +181,9 @@ def comment_post(user_id, post_id, comment_text):
 
     user['comments'].append(comment_id)
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
+
+    # cache.addItem_comment_cache(post, post['upvotes'])
+    cache.addItem_comment_cache(post, len(post['comments']))
 
     return comment_doc
 

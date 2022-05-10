@@ -1,5 +1,5 @@
 from backend.educationalRepository.databaseInterfaces.mongoDB_interface import *
-
+from backend.educationalRepository.repositoryAPI.Caching.cache_impl import *
 users = [
     {
         'id': 'u2',
@@ -342,6 +342,7 @@ main_tree = [
 
 # delete database
 deleteDatabase("test_db")
+
 
 # creating the database and the collections
 test_db = createDatabase("test_db")

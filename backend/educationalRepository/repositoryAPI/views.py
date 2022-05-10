@@ -729,7 +729,82 @@ def report_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
-# def 
+
+def fetch_latest_posts(request):
+    post_2 = findSingleDocument("test_db","posts_collection",{"id":'p2'})
+    post_3 = findSingleDocument("test_db","posts_collection",{"id":'p3'})
+    cache.addItem_recent_cache(post_2,datetime.datetime.now())
+    cache.addItem_recent_cache(post_3,datetime.datetime.now())
+    if request.method == "GET":
+        try:
+            posts = cache.getAllItems_recent_cache()
+            response_posts = []
+            print(posts)
+            for post in posts:
+                comments = []
+                author = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                post['author'] = {
+                    "id" : author['id'],
+                    "name" : author['name'],
+                    "profile_picture" : author['profile_picture'],
+                }
+                
+                for comment_id in post['comments']:
+                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                    comments.append(comment)
+
+                for comment in comments:
+                    comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+                    comment['author'] = {
+                        "id" : comment_author['id'],
+                        "name" : comment_author['name'],
+                        "profile_picture" : comment_author['profile_picture'],
+                    }
+                
+                post['comments'] = comments
+                response_posts.append(posts)
+            return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+def fetch_most_commented_posts(request):
+    post_4 = findSingleDocument("test_db","posts_collection",{"id":'p4'})
+    post_6 = findSingleDocument("test_db","posts_collection",{"id":'p6'})
+    cache.addItem_recent_cache(post_4,4)
+    cache.addItem_recent_cache(post_6,2)
+    if request.method == "GET":
+        try:
+            posts = cache.getAllItems_comment_cache()
+            response_posts = []
+            for post in posts:
+                comments = []
+                author = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                post['author'] = {
+                    "id" : author['id'],
+                    "name" : author['name'],
+                    "profile_picture" : author['profile_picture'],
+                }
+                
+                for comment_id in post['comments']:
+                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                    comments.append(comment)
+
+                for comment in comments:
+                    comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+                    comment['author'] = {
+                        "id" : comment_author['id'],
+                        "name" : comment_author['name'],
+                        "profile_picture" : comment_author['profile_picture'],
+                    }
+                
+                post['comments'] = comments
+                response_posts.append(posts)
+            return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
 
 cache = CacheImpl(10)
 

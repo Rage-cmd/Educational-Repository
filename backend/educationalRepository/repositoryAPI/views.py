@@ -193,6 +193,7 @@ def upload_user_post(request):
         }
     """
     if request.method == 'POST':
+        print(request)
         data = JSONParser().parse(request)
         print(data)
         user_id = data['user_id']
@@ -305,7 +306,29 @@ def fetch_watchlist(request, user_id):
             saved_post_ids = findSingleDocument("test_db","users_collection",{"id":user_id})['saved_posts']
             saved_posts = []
             for post_id in saved_post_ids:
-                saved_posts.append(findSingleDocument("test_db","posts_collection",{"id":post_id}))
+                post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+                post_user = findSingleDocument("test_db","users_collection",{"id":post['user_id']})
+                author = {
+                    "id" : post_user['id'],
+                    "name" : post_user['name'],
+                    "profile_picture" : post_user['profile_picture'],
+                }
+                post['author'] = author
+
+                comments = []
+                for comment_id in post['comments']:
+                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                    comment_user = findSingleDocument("test_db","users_collection",{"id":comment['user_id']})
+                    comment_author = {
+                        "id" : comment_user['id'],
+                        "name" : comment_user['name'],
+                        "profile_picture" : comment_user['profile_picture'],
+                    }
+                    comment['author'] = comment_author
+                    comments.append(comment)
+                post['comments'] = comments
+                saved_posts.append(post)
+
             return JsonResponse(json.loads(json.dumps(saved_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch watchlist. The error is: " + str(e), status=500)

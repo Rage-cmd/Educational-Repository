@@ -12,7 +12,7 @@ urlpatterns = [
     path('approvepost',views.approve_user_post),
     path('unapprovepost',views.unapprove_user_post),
     path('banuser',views.ban_user),
-    path('watchlist/<str:user_id>',views.fetch_watchlist),
+    path('saved/<str:user_id>',views.fetch_watchlist),
     path('user/<str:user_id>',views.fetch_user_details),
     path('updaterole/<str:user_id>/<str:role>',views.update_user_role),
     path('post/<str:post_id>',views.fetch_post),

@@ -362,16 +362,17 @@ def fetch_user_posts(request, user_id):
         try:
             user_posts = findSingleDocument("test_db","users_collection",{"id":user_id})['posts']
             posts = []
-            comments = []
+            user = findSingleDocument("test_db","users_collection",{"id":user_id})
             for post_id in user_posts:
+                comments = []
                 post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-                post_doc = findSingleDocument("test_db","users_collection",{"id":post['author']})
                 post['author'] = {
-                    "id" : post_doc['id'],
-                    "name" : post_doc['name'],
-                    "profile_picture" : post_doc['profile_picture']
+                    "id" : user['id'],
+                    "name" : user['name'],
+                    "profile_picture" : user['profile_picture']
                 }
-
+                comment = []
+                # print(post["caption"], post['comments'])
                 for comment_id in post['comments']:
                     comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
                     comments.append(comment)

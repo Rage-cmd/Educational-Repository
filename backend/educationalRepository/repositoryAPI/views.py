@@ -622,6 +622,32 @@ def save_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
+def verify_user_comment(request):
+    """
+    Verifies the user's comment.
+    The request should contain the user id as well as the comment id.
+    
+    Example::
+    
+        data = {
+            "user_id" : <user_id>,
+            "comment_id" : <comment_id>,
+            }
+    """
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        comment_id = data['comment_id']
+        try:
+            verify_comment(user_id, comment_id)
+            return HttpResponse("Verified successfully", status=200)
+        except Exception as e:
+            return HttpResponse("Failed to verify comment. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
 cache = CacheImpl(10)
 
 

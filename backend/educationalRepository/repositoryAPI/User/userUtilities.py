@@ -427,9 +427,15 @@ def verify_comment(user_id, comment_id):
     """
     try:
         comment_doc = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
-        if comment_doc["author"] == user_id:
+        post_doc = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":comment_doc["post_id"]})
+    
+        if post_doc['author'] == user_id:
             mongoDB_interface.updateDocument("test_db","posts_collection",{"id":comment_doc["post_id"]},{"$set": {"is_answered":True}})
             mongoDB_interface.updateDocument("test_db","comments_collection",{"id":comment_id},{"$set": {"is_verified":True}})
+
+            notification = "Your comment was accepted as the answer!"
+            mongoDB_interface.updateDocument("test_db","users_collection",{"id":comment_doc['author']},{"$push": {"notifications":notification}})
+
             return comment_doc
         else:
             return None

@@ -552,6 +552,7 @@ def search(request):
         search_type = data['search_type']
         search_term = data['search_term']
         try:
+            results = None
             if search_type == "post by ID":
                 results = post_ID_search(search_term)
             elif search_type == "post by name":

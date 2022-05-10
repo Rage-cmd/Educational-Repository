@@ -201,7 +201,7 @@ comments = [
     },
     {
         'id': 'c2',
-        'author': 'u3',
+        'author': 'u2',
         'post_id': 'p2',
         'time': '2020-01-01T00:00:00Z',
         'text': 'This is the second test comment',

@@ -66,7 +66,7 @@
       icon>
           <v-icon>mdi-comment-outline</v-icon>
       </v-btn>     -->
-      <CommentDialog :postModel="postModel"/>
+      <CommentDialog :postModel="postModel" :user="user" @verifyComment="verifyComment"/>
    
       <v-btn
       class="ma-2"
@@ -132,7 +132,7 @@
 <script>
 
 import CommentDialog from './Comment/CommentDialog.vue';
-import { savePost} from '../api.js'
+import { savePost,likePost} from '../api.js'
 
 export default {
   name: 'PostTemplate',
@@ -174,7 +174,15 @@ export default {
             this.description = this.getDescription(postModel);
       },
       thumbsupBtnHandler(){
-        this.$emit('postLike',this.postModel.id,this.user.id);
+        // this.$emit('postLike',this.postModel.id,this.user.id);
+        console.log("Liking the post")
+            likePost(this.user.id,this.postModel.id).then((response)=>{
+                alert(response.data);
+                var index = this.$store.state.posts.findIndex((obj=>obj.id===this.postModel.id))
+                this.$state.state.posts[index].upvotes++;  
+            }).catch((error)=>{
+                alert(error);
+            });
         this.thumbsupFilled = !this.thumbsupFilled;
       },
       async bookmarkHandler(){
@@ -182,13 +190,16 @@ export default {
         await savePost(this.user.id,this.postModel.id).then(()=>{
           this.bookmarkFilled = !this.bookmarkFilled;
           if(this.currentScreen === "Saved Posts"){
-            this.$emit('removePost',this.postModel.id);
+            this.$store.commit('setPosts',this.$store.state.posts.filter(post=>post.id!==this.postModel.id));
           }
           this.bookmarkLoading = false;
         });
       },
       getDate(postModel){
        return postModel.time.split('T')[0].split("-").reverse().join("-"); 
+      },
+      verifyComment(commentid){
+        this.$emit('verifyComment',commentid);
       }
   },
   created: function(){

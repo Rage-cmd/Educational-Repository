@@ -145,3 +145,11 @@ export const likePost = async(user_id,post_id)=>{
     });
     return response;
 }
+
+export const verifyComment = async(comment_id,user_id)=>{
+    var response = await axios.post(devServer + 'verifycomment',{
+        user_id:user_id,
+        comment_id:comment_id,
+    });
+    return response;
+}

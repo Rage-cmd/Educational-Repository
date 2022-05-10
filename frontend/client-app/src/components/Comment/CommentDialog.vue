@@ -44,8 +44,8 @@
                             <v-list-item-title v-text="item.text"></v-list-item-title>
                         </v-list-item-content> -->
                         </v-list-item-content>
-                        <v-icon color="green" v-if="comment.is_verfied">mdi-check-bold</v-icon>
-                        <CommentMenu />
+                        <v-icon color="green" v-if="comment.is_verified">mdi-check-bold</v-icon>
+                        <CommentMenu :user="user" :postModel="postModel" :comment="comment" @verifyComment="verifyComment"/>
                         </v-list-item>
                     </v-list-item-group>
                     </v-list>
@@ -73,6 +73,7 @@ export default {
     },
     props:{
         postModel:Object,
+        user:Object,
     },
     data:()=>({
         items : [{"commentedby":"user1",
@@ -82,5 +83,10 @@ export default {
         dialog:false,
         
     }),
+    methods:{
+        verifyComment(commentId){
+            this.$emit('verifyComment',commentId);
+        },
+    }
 }
 </script>

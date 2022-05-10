@@ -6,12 +6,16 @@
         <v-container mt-6>
             <!-- <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/> -->
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
-            <PostTemplate v-for="post in posts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
+            <div :key="reloadPosts">
+
+            <PostTemplate v-for="post in getPosts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
             @approvepost="postapproveMethod"
             :user="user"
             @removePost="removePost"
-            @postLike="postLikeHandler"/>
+            @postLike="postLikeHandler"
+            @verifyComment="verifyComment"/>
                         
+            </div>
         </v-container>        
         
     </v-app>
@@ -36,25 +40,48 @@ export default ({
     postsKey:true,
     posts:[],
     selectedTab:null,
+    reloadPosts:false,
     }),
     async created(){
         if(this.currentScreen==="Your Uploads"){
             await yourUploads(this.user.id).then((response)=>{
-                this.posts = response.data;
+                this.$store.commit('setPosts', response.data);
             });
         }
         else if(this.currentScreen==="Pending Approvals"){
             await pendingApprovals(this.user.id).then((response)=>{
-                this.posts = response.data;
+                this.$store.commit('setPosts', response.data);
             });
         }
         else if(this.currentScreen === "Saved Posts"){
             await getSavedPosts(this.user.id).then((response)=>{
-                this.posts = response.data;
+                this.$store.commit('setPosts', response.data);
             });
         }
     },
+    computed:{
+        getPosts(){
+            return this.$store.state.posts;
+        }
+    },
     methods:{
+        async fetchPostList(){
+            if(this.currentScreen==="Your Uploads"){
+            await yourUploads(this.user.id).then((response)=>{
+                this.$store.commit('setPosts', response.data);
+            });
+            }
+            else if(this.currentScreen==="Pending Approvals"){
+                await pendingApprovals(this.user.id).then((response)=>{
+                    this.$store.commit('setPosts', response.data);
+                });
+            }
+            else if(this.currentScreen === "Saved Posts"){
+                await getSavedPosts(this.user.id).then((response)=>{
+                    this.$store.commit('setPosts', response.data);
+                });
+            }
+        },
         async postapproveMethod(post_id){
             await approvepost(post_id).then((response)=>{
                 alert(response.data);
@@ -77,6 +104,11 @@ export default ({
                 alert(error);
             });
         },
+        verifyComment(comment_id){
+            console.log(comment_id)
+            this.fetchPostList();
+            // this.postsKey = !this.postsKey;
+        }
     }
 
 });

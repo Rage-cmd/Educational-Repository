@@ -13,7 +13,8 @@
       <NavBar :sideMenu="sideMenuMap[user.access_level]" 
       @sideMenuSelect="sideMenuSelectHandler"
       @logout = "logout"
-      :user="user"/>
+      :user="user"
+      @navBarOption="navigate"/>
       <v-container >
         
       </v-container>
@@ -109,6 +110,9 @@ export default {
     },
     changelogin(){
       this.currentScreen = "loginScreen";
+    },
+    navigate(opt){
+      this.currentScreen = opt;
     }
   },
   created(){

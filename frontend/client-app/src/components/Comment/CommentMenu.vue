@@ -15,6 +15,7 @@
 
             <v-list>
               <v-list-item
+                @click="reportComment"
               >
               <v-list-item-icon>
                 <v-icon>mdi-alert-circle-outline</v-icon>
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import {verifyComment} from '../../api.js';
+import {reportComment, verifyComment} from '../../api.js';
 
 export default {
     name:'CommentMenu',
@@ -59,7 +60,17 @@ export default {
           alert("Some error occured during comment verification");
           console.log(error);
         });
-      }
+      },
+      async reportComment(){
+        reportComment(this.comment.id,this.user.id).then(
+          response=>{
+            alert(response.data);
+          }
+        ).catch(error=>{
+          alert("Some error occured during comment reporting");
+          console.log(error);
+        });
+      },
     },
     created(){
       console.log("commentMenu" + JSON.stringify(this.postModel));

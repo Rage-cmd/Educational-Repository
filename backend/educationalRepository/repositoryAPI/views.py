@@ -481,7 +481,7 @@ def suggest(request):
                     tag_ids = tag['path_to_tag']
                     path_to_tag_docs = []
                     for tag_id in tag_ids:
-                        tag_doc = findSingleDocument("test_db","tags_collection",{"id":tag_id})
+                        tag_doc = findSingleDocument("test_db","tagtree_collection",{"id":tag_id})
                         path_to_tag_docs.append(tag_doc)
                     tag['path_to_tag'] = path_to_tag_docs
                     tags.append(tag)

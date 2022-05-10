@@ -307,7 +307,7 @@ def fetch_watchlist(request, user_id):
             saved_posts = []
             for post_id in saved_post_ids:
                 post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-                post_user = findSingleDocument("test_db","users_collection",{"id":post['user_id']})
+                post_user = findSingleDocument("test_db","users_collection",{"id":post['author']})
                 author = {
                     "id" : post_user['id'],
                     "name" : post_user['name'],
@@ -318,7 +318,7 @@ def fetch_watchlist(request, user_id):
                 comments = []
                 for comment_id in post['comments']:
                     comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                    comment_user = findSingleDocument("test_db","users_collection",{"id":comment['user_id']})
+                    comment_user = findSingleDocument("test_db","users_collection",{"id":comment['author']})
                     comment_author = {
                         "id" : comment_user['id'],
                         "name" : comment_user['name'],

@@ -785,6 +785,25 @@ def fetch_most_commented_posts(request):
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
 
 
+@csrf_exempt
+def upload_user_comment(request):
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        post_id = data['post_id']
+        comment_text = data['text']
+        try:
+            result = comment_post(user_id,post_id,comment_text, cache)
+            if result:
+                return JsonResponse(json.loads(json.dumps(result, default=str)), safe=False, status=200)
+            else:
+                return HttpResponse("Failed to upload comment. Check post ID.", status=200)
+        except Exception as e:
+            return HttpResponse("Failed to upload comment. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
 cache = CacheImpl(10)
 
 

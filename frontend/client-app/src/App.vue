@@ -9,28 +9,32 @@
       <SignupVue v-else-if="!loggedin && currentScreen == 'signupScreen'" 
       @successfullLogin="loginuser"
       @changelogin="changelogin"/>
+
+
       <div v-else>
-      <NavBar :sideMenu="sideMenuMap[user.access_level]" 
-      @sideMenuSelect="sideMenuSelectHandler"
-      @logout = "logout"
-      :user="user"
-      @navBarOption="navigate"/>
-      <v-container >
+        <NavBar :sideMenu="sideMenuMap[user.access_level]" 
+        @sideMenuSelect="sideMenuSelectHandler"
+        @logout = "logout"
+        :user="user"
+        @navBarOption="navigate"
+        @searchInput="showSearchResult"/>
         
-      </v-container>
+        <v-container >
+          
+        </v-container>
 
 
-      <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen" :user="user"/>
-      <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
-       -->
+        <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen" :user="user"/>
+        <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
+        -->
 
-      <UserListScreen v-else-if="currentScreen=='Users List'" :user="user"/>
+        <UserListScreen v-else-if="currentScreen=='Users List'" :user="user"/>
 
-      <MyProfile v-else-if="currentScreen=='My Profile' " :user="user"/>
+        <MyProfile v-else-if="currentScreen=='My Profile' " :user="user"/>
 
-      <PostsList v-else :currentScreen="currentScreen" :user="user" :key="postListKey"/>
+        <PostsList v-else :currentScreen="currentScreen" :user="user" :key="postListKey"/>
 
-      <CreateUploadDialog/>
+        <CreateUploadDialog/>
 
       <!-- <UploadVideoPostScreen />
       <TagCreationScreen />
@@ -52,7 +56,7 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
-import {yourUploads} from './api.js';
+import {getFilteredPosts, yourUploads} from './api.js';
 import LoginVue from './components/LoginVue.vue';
 import SignupVue from './components/RegisterVue.vue';
 
@@ -113,6 +117,19 @@ export default {
     },
     navigate(opt){
       this.currentScreen = opt;
+    },
+    async showSearchResult(searchterm,searchtype){
+      this.currentScreen="Search Result";
+      console.log("Showing search screen")
+      if(searchtype.toLowerCase()==="post"){
+        this.$store.commit('setPosts',[searchterm]);
+      }else if(searchtype.toLowerCase()==="tag"){
+        getFilteredPosts(searchterm.id,searchtype.toLowerCase()).then((response)=>{
+          console.log(response);
+          this.$store.commit('setPosts',response.data);
+        }
+      );
+      }
     }
   },
   created(){

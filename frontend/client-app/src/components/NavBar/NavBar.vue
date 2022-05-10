@@ -30,6 +30,7 @@
                         <v-select
                         :items="items"
                         v-model="searchFilter"
+                        @input="refreshSuggestions"
                         ></v-select>   
                         </v-container>
                     </v-col>
@@ -40,9 +41,23 @@
                         chips
                         small-chips
                         dense
-                        multiple
-                        :items="suggestionOptions"
-                        ></v-autocomplete>
+                        :items.sync="suggestionOptions"
+                        @update:search-input="debounceInput($event)"
+                        @input="$emit('searchInput',selectedOption,searchFilter)"
+                        no-filter 
+                        >
+                        
+                         <template v-slot:selection="data">
+                            <v-chip v-bind="data.attrs" small>{{getOption(data.item)}}</v-chip>
+                        </template>
+
+                        <template v-slot:item="data" >
+                            <v-list-item-content @click="optionSelected(data.item)">
+                                <v-list-item-title v-html="getOption(data.item)"></v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+
+                        </v-autocomplete>
                      </v-container>
                  </v-col>
                  </v-row>
@@ -92,6 +107,8 @@
 <script>
 
 import NotificationDialog from "../../components/NavBar/NotificationDialog.vue"
+import {getPostSuggestions} from "../../api.js";
+import _ from 'lodash';
 
 export default {
     components:{
@@ -112,11 +129,17 @@ export default {
         sideMenuSelection: null,
         navBarOptions:["Home"],
         items:["Child Search","Tag","Post"],
-        suggestionOptions:["CN","OS", "Lingo"],
+        suggestionOptions:[],
+        // suggestionOptions:["CN","OS", "Lingo"],
         searchFilter:"",
+        search:null,
+        selectedOption:null,
     }),
     created: function(){
         this.searchFilter=this.items[0];
+    },
+    computed:{
+        
     },
     watcher:{
         user(){
@@ -124,6 +147,32 @@ export default {
         }
     },
     methods:{
+        refreshSuggestions(){
+            console.log("check");
+            this.suggestionOptions=[];
+        },
+        debounceInput: _.debounce(function (search) {
+            getPostSuggestions(search,this.searchFilter.toLowerCase()).then(res=>{
+                this.suggestionOptions=res.data;
+            })
+        }, 1000),
+        loginput(val){
+            console.log(val);
+        },
+        getOption(item){
+            
+            if(item.caption){
+                return item.caption;
+            }else{
+                return item.name;
+            }
+        },
+        getItem(text){
+            return this.suggestionOptions.find(item=>item.name===text[0]);
+        },
+        optionSelected(item){
+            this.selectedOption=item;
+        },
     }
 }
 </script>

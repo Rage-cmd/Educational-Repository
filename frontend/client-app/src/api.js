@@ -93,12 +93,7 @@ export const getSuggestion = async (suggestionModel)=>{
     return response;
 }
 
-export const search = async (searchModel)=>{
-    var response = await axios.post(devServer + 'search',{
-        search:searchModel,
-    });
-    return response;
-}
+
 
 export const notifications = async (userid)=>{
     var response = await axios.post(devServer + 'notifications',{
@@ -172,5 +167,22 @@ export const getLatestPosts = async()=>{
 
 export const getMostCommentedPosts = async()=>{
     var response = await axios.get(devServer + 'top');
+    return response;
+}
+
+export const getPostSuggestions = async(search,search_type)=>{
+    var response = await axios.post(devServer + 'suggest',{
+        search_term:search,
+        search_type:search_type,
+
+    });
+    return response;
+}
+
+export const getFilteredPosts = async(search_term,search_type)=>{
+    var response = await axios.post(devServer + 'search',{
+        search_term:search_term,
+        search_type:search_type,
+    });
     return response;
 }

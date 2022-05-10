@@ -444,7 +444,7 @@ def verify_comment(user_id, comment_id):
         return None
  
 
-def report_comment(comment_id):
+def report_comment(user_id,comment_id):
     """
     Increments the report count of the comment.
 
@@ -457,14 +457,19 @@ def report_comment(comment_id):
     """
     try:
         comment_doc = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
-        mongoDB_interface.updateDocument("test_db","comments_collection",{"id":comment_id},{"$inc": {"reports":1}})
-        return comment_doc
+        user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        if comment_doc['id'] not in user["requested_reports"]:
+            mongoDB_interface.updateDocument("test_db","comments_collection",{"id":comment_id},{"$inc": {"reports":1}})
+            mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"requested_reports":comment_doc['id']}})
+            return 1
+        else:
+            return -1
     except:
         print("Could not report comment. Check if the comment id is valid.") 
-        return None
+        return 0
 
 
-def report_post(post_id):
+def report_post(user_id,post_id):
     """
     Increments the report count of the post.
 
@@ -477,8 +482,13 @@ def report_post(post_id):
     """
     try:
         post_doc = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
-        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$inc": {"reports":1}})
-        return post_doc
+        user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        if post_doc['id'] not in user["requested_reports"]:
+            mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$inc": {"reports":1}})
+            mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"requested_reports":post_doc['id']}})
+            return 1
+        else:
+            return -1
     except:
         print("Could not report post. Check if the post id is valid.") 
-        return None
+        return 0

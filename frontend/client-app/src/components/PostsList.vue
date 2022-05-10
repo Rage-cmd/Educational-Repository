@@ -23,7 +23,7 @@
 
 <script>
 import PostTemplate from "../components/PostTemplate.vue" ;
-import {yourUploads,approvepost, pendingApprovals, getSavedPosts, likePost} from '../api.js';
+import {yourUploads,approvepost, pendingApprovals, getSavedPosts, likePost, getLatestPosts, getMostCommentedPosts} from '../api.js';
 
 export default ({
     setup() {
@@ -55,6 +55,15 @@ export default ({
         }
         else if(this.currentScreen === "Saved Posts"){
             await getSavedPosts(this.user.id).then((response)=>{
+                this.$store.commit('setPosts', response.data);
+            });
+        }
+        else if(this.currentScreen === "Most Recent"){
+            await getLatestPosts().then((response)=>{
+                this.$store.commit('setPosts', response.data);
+            });
+        }else if(this.currentScreen === "Most Commented"){
+            await getMostCommentedPosts().then((response)=>{
                 this.$store.commit('setPosts', response.data);
             });
         }

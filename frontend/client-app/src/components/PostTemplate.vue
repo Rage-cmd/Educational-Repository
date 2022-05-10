@@ -80,7 +80,9 @@
 
       <v-btn
       class="ma-2"
-      icon>
+      icon
+      @click="reportPostHandler"
+      >
           <v-icon>mdi-alert-circle-outline</v-icon>
       </v-btn>
    
@@ -132,7 +134,7 @@
 <script>
 
 import CommentDialog from './Comment/CommentDialog.vue';
-import { savePost,likePost} from '../api.js'
+import { savePost,likePost, reportPost} from '../api.js'
 
 export default {
   name: 'PostTemplate',
@@ -200,6 +202,13 @@ export default {
       },
       verifyComment(commentid){
         this.$emit('verifyComment',commentid);
+      },
+      reportPostHandler(){
+        reportPost(this.user.id,this.postModel.id).then((response)=>{
+          alert(response.data);
+        }).catch((error)=>{
+          alert(error);
+        });
       }
   },
   created: function(){

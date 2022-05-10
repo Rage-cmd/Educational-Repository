@@ -161,3 +161,11 @@ export const reportComment = async(comment_id,user_id)=>{
     });
     return response;
 }
+
+export const reportPost = async(user_id,post_id)=>{
+    var response = await axios.post(devServer + 'reportpost',{
+        user_id:user_id,
+        post_id:post_id,
+    });
+    return response;
+}

@@ -97,7 +97,7 @@ posts = [
         'image_url': '',
         'is_answered': False,
         'is_approved': True,
-        'comments': ['c1', 'c2'],
+        'comments': ['c1'],
         'reports': 2
     },
     {
@@ -112,7 +112,7 @@ posts = [
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'is_answered': False,
         'is_approved': True,
-        'comments': ['c13', 'c66'],
+        'comments': [],
         'reports': 2
     },
     {
@@ -127,7 +127,7 @@ posts = [
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'is_answered': False,
         'is_approved': False,
-        'comments': ['c13', 'c66'],
+        'comments': ['c3'],
         'reports': 2
     },
     {
@@ -142,7 +142,7 @@ posts = [
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'is_answered': False,
         'is_approved': True,
-        'comments': ['c13', 'c66'],
+        'comments': [],
         'reports': 2
     },
     {
@@ -157,7 +157,7 @@ posts = [
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'is_answered': False,
         'is_approved': True,
-        'comments': ['c13', 'c66'],
+        'comments': [],
         'reports': 2
     },
     {
@@ -172,7 +172,7 @@ posts = [
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'is_answered': False,
         'is_approved': False,
-        'comments': ['c13', 'c66'],
+        'comments': ['c2'],
         'reports': 2
     }
 
@@ -198,7 +198,17 @@ comments = [
         'upvotes': 3,
         'reports': 0,
         'is_verified': False
-    }
+    },
+    {
+        'id': 'c3',
+        'author': 'u4',
+        'post_id': 'p12',
+        'time': '2020-01-01T00:00:00Z',
+        'text': 'This is the third test comment',
+        'upvotes': 3,
+        'reports': 0,
+        'is_verified': False
+    },
 ]
 
 tags = [

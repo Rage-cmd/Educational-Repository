@@ -10,6 +10,7 @@ urlpatterns = [
     path('uploads/<str:user_id>', views.fetch_user_posts), 
     path('uploadPost',views.upload_user_post),
     path('approvePost',views.approve_user_post),
+    path('unapprovePost',views.unapprove_user_post),
     path('banUser',views.ban_user),
     path('watchlist/<str:user_id>',views.fetch_watchlist),
     path('user/<str:user_id>',views.fetch_user_details),

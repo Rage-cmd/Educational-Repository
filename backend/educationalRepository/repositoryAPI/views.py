@@ -204,6 +204,7 @@ def upload_user_post(request):
         return HttpResponse("Invalid request")
 
 
+@csrf_exempt
 def approve_user_post(request):
     """
     Approves a post.
@@ -230,6 +231,33 @@ def approve_user_post(request):
         return HttpResponse("Invalid request", status=400)
 
 @csrf_exempt
+def unapprove_user_post(request):
+    """
+    Unapproves a post.
+
+    The function expects a post id.
+
+    Upon successful unapproval, the function returns HTTP response with status 200.
+
+    Example::
+
+        data ={
+            "post_id" : <post_id>
+        }
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        post_id = data['post_id']
+        try:
+            unapprove_post(post_id)
+            return HttpResponse("Post unapproved successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("Post unapproval failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+@csrf_exempt
 def ban_user(request):
     """
     Bans a user.
@@ -245,6 +273,7 @@ def ban_user(request):
             return HttpResponse("User ban failed. Check the user access level.", status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
 
 @csrf_exempt
 def unban_user(request):
@@ -262,6 +291,7 @@ def unban_user(request):
             return HttpResponse("User unban failed. Check the user access level.", status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
 
 def fetch_watchlist(request, user_id):
     """
@@ -323,6 +353,7 @@ def fetch_user_posts(request, user_id):
         return HttpResponse("Invalid request", status=400)
     
 
+@csrf_exempt
 def update_user_role(request, user_id, role):
     """
     Updates the user id of a user.
@@ -403,6 +434,7 @@ def fetch_comments(request, post_id):
         return HttpResponse("Invalid request", status=400)
 
 
+@csrf_exempt
 def suggest(request):
     """
     Suggests a post/tag.
@@ -431,6 +463,7 @@ def suggest(request):
         return HttpResponse("Invalid request", status=400)
 
 
+@csrf_exempt
 def search(request):
     """
     Searches for posts,tags or users.

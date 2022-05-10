@@ -23,4 +23,5 @@ urlpatterns = [
     path('unbanuser',views.unban_user),
     path('pendingapprovals',views.fetch_pending_approvals),
     path('likepost',views.like_user_post),
+    path('savepost',views.save_user_post),
 ]

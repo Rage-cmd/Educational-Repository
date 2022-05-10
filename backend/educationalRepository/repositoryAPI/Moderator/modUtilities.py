@@ -17,11 +17,10 @@ def ban_user_mod(user_id):
     try:
         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
         # ban user for ban duration
-        print(user)
-        if user["access_level"] == "user":
-            user["is_banned"] = True
-            mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":True}})
-            return True
+        # if user["access_level"] == "user":
+        user["is_banned"] = True
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":True}})
+        return True
     except:
         return False
     
@@ -39,10 +38,10 @@ def unban_user_mod(user_id):
     try:
         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
         # unban user
-        if user["access_level"] == "user":
-            user["is_banned"] = False
-            mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":False}})
-            return True
+        # if user["access_level"] == "user":
+        user["is_banned"] = False
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"is_banned":False}})
+        return True
     except:
         return False
 

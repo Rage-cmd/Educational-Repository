@@ -30,6 +30,7 @@
                         <v-select
                         :items="items"
                         v-model="searchFilter"
+                        @input="refreshSuggestions"
                         ></v-select>   
                         </v-container>
                     </v-col>
@@ -42,16 +43,17 @@
                         dense
                         :items.sync="suggestionOptions"
                         @update:search-input="debounceInput($event)"
+                        @input="$emit('searchInput',selectedOption,searchFilter)"
                         no-filter 
                         >
                         
                          <template v-slot:selection="data">
-                            <v-chip v-bind="data.attrs" small>{{data.item.caption}}</v-chip>
+                            <v-chip v-bind="data.attrs" small>{{getOption(data.item)}}</v-chip>
                         </template>
 
-                        <template v-slot:item="data">
-                            <v-list-item-content>
-                                <v-list-item-title v-html="data.item.caption"></v-list-item-title>
+                        <template v-slot:item="data" >
+                            <v-list-item-content @click="optionSelected(data.item)">
+                                <v-list-item-title v-html="getOption(data.item)"></v-list-item-title>
                             </v-list-item-content>
                         </template>
 
@@ -131,30 +133,46 @@ export default {
         // suggestionOptions:["CN","OS", "Lingo"],
         searchFilter:"",
         search:null,
+        selectedOption:null,
     }),
     created: function(){
         this.searchFilter=this.items[0];
     },
+    computed:{
+        
+    },
     watcher:{
         user(){
             console.log(this.user);
-        },
-        search(val){
-            if(!val){
-                return
-            }
-            this.debounceInput(val);
         }
     },
     methods:{
+        refreshSuggestions(){
+            console.log("check");
+            this.suggestionOptions=[];
+        },
         debounceInput: _.debounce(function (search) {
-            getPostSuggestions(search).then(res=>{
+            getPostSuggestions(search,this.searchFilter.toLowerCase()).then(res=>{
                 this.suggestionOptions=res.data;
             })
         }, 1000),
         loginput(val){
             console.log(val);
-        }
+        },
+        getOption(item){
+            
+            if(item.caption){
+                return item.caption;
+            }else{
+                return item.name;
+            }
+        },
+        getItem(text){
+            return this.suggestionOptions.find(item=>item.name===text[0]);
+        },
+        optionSelected(item){
+            this.selectedOption=item;
+        },
     }
 }
 </script>

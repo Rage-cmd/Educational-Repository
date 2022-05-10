@@ -383,12 +383,19 @@ def update_user_role(request, user_id, role):
     """
     Updates the user id of a user.
     The request should contain the admin id and the user id.
+
+    Example::
+
+        data ={
+            "user_id" : <user_id>,
+            "role" : <role>
+        }
     """
     if request.method == 'POST':
         try:
+            assign_role(user_id, role)
             user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
-            assign_role(user_doc['id'], role)
-            return HttpResponse("User role updated successfully.", status=200)
+            return JsonResponse(json.loads(json.dumps(user_doc,default=str)),status="200")
         except Exception as e:
             return HttpResponse("User role update failed. The error is: " + str(e), status=500)
     else:
@@ -606,7 +613,7 @@ def save_user_post(request):
         if result == 1:
             return HttpResponse("Saved successfully", status=200)
         elif result == -1:
-            return HttpResponse("Unsaved successfully", status=500)
+            return HttpResponse("Unsaved successfully", status=200)
         else:
             return HttpResponse("Failed to save post", status=500)
     else:

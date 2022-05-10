@@ -159,34 +159,35 @@ def comment_post(user_id, post_id, comment_text,cache):
         success (bool) : A boolean value.
 
     """
-    # try:
-    user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
-    post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
+    try:
+        user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
 
-    comment_doc = {
-        "id": 'c' + str(mongoDB_interface.getNextSequenceValue("test_db","comments_collection")),
-        "author": user_id,
-        "post_id": post_id,
-        "time": datetime.datetime.now(),
-        "text": comment_text,
-        "upvotes": 0,
-        "reports": 0,
-        "is_verified": False
-    }
+        comment_doc = {
+            "id": 'c' + str(mongoDB_interface.getNextSequenceValue("test_db","comments_collection")),
+            "author": user_id,
+            "post_id": post_id,
+            "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "text": comment_text,
+            "upvotes": 0,
+            "reports": 0,
+            "is_verified": False
+        }
 
-    comment_id = mongoDB_interface.saveSingleDocument("test_db","comments_collection",comment_doc)
+        comment_id = mongoDB_interface.saveSingleDocument("test_db","comments_collection",comment_doc)
 
-    post['comments'].append(comment_id)
-    mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"comments":post['comments']}})
+        post['comments'].append(comment_id)
+        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"comments":post['comments']}})
 
-    user['comments'].append(comment_id)
-    mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
+        user['comments'].append(comment_id)
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
 
-    # cache.addItem_comment_cache(post, post['upvotes'])
-    cache.addItem_comment_cache(post, len(post['comments']))
+        # cache.addItem_comment_cache(post, post['upvotes'])
+        # cache.addItem_comment_cache(post, len(post['comments']))
 
-    return comment_doc
-
+        return comment_doc
+    except:
+        return None
 
 
 # to be implemented

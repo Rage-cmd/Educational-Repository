@@ -29,4 +29,5 @@ urlpatterns = [
     path('reportpost',views.report_user_post),
     path('latest',views.fetch_latest_posts),
     path('top',views.fetch_most_commented_posts),
+    path('uploadcomment',views.upload_user_comment),
 ]

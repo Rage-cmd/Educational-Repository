@@ -514,11 +514,26 @@ def search(request):
         try:
             results = None
             if search_type == "post":
-                results = post_ID_search(search_term)
+                post = post_ID_search(search_term)
+                results = get_detailed_post(post['id'])
             # elif search_type == "post":
             #     results = post_name_search(search_term)
             elif search_type == "tag":
-                results = tag_ID_search(search_term)
+                posts = tag_ID_search(search_term)
+                results = []
+                for post in posts:
+                    comments = []
+                    for comment_id in post['comments']:
+                        comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                        author = findSingleDocument("test_db","users_collection",{"id":comment["author"]})
+                        comment['author'] = {
+                            "id" : author['id'],
+                            "name" : author['name'],
+                            "profile_picture" : author['profile_picture'],
+                        }
+                        comments.append(comment)
+                    post['comments'] = comments
+                    results.append(post)
         
             return JsonResponse(json.loads(json.dumps(results, default=str)), safe=False, status=200)
         except Exception as e:
@@ -768,6 +783,25 @@ def fetch_most_commented_posts(request):
             return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
+
+
+@csrf_exempt
+def upload_user_comment(request):
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        post_id = data['post_id']
+        comment_text = data['text']
+        try:
+            result = comment_post(user_id,post_id,comment_text, cache)
+            if result:
+                return JsonResponse(json.loads(json.dumps(result, default=str)), safe=False, status=200)
+            else:
+                return HttpResponse("Failed to upload comment. Check post ID.", status=200)
+        except Exception as e:
+            return HttpResponse("Failed to upload comment. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 
 
 cache = CacheImpl(10)

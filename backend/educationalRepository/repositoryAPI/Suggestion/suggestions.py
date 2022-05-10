@@ -13,12 +13,14 @@ def post_suggestions(keyword):
         result.append(post)
     return result
 
+
 def tag_suggestions(keyword):
     tags = mongoDB_interface.findAllDocument("test_db","tagtree_collection",{"name": {"$regex": keyword, "$options": "i"}})
     result = []
     for tag in tags:
         result.append(tag)
     return result
+
 
 def neighbour_suggestions(path):
     """
@@ -29,6 +31,7 @@ def neighbour_suggestions(path):
     last_node = path[-1]
     children_posts = []
     children_tags = []
+
     for post_id in last_node['children_posts']:
         children_posts.append(mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id}))
     

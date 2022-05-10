@@ -556,7 +556,7 @@ def suggest(request):
                 post['comments'] = comments
                 posts.append(post)
 
-            return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
+            return JsonResponse(json.loads(json.dumps(posts[:10], default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Suggestion failed. The error is: " + str(e), status=500)
     else:

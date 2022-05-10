@@ -129,3 +129,11 @@ export const savePost = async(user_id,post_id)=>{
     });
     return response;
 }
+
+export const updateRole = async(user_id,role)=>{
+    var response = await axios.post(devServer + 'updaterole',{
+        user_id:user_id,
+        role:role,
+    });
+    return response;
+}

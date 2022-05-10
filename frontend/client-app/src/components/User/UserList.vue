@@ -20,6 +20,21 @@
         </v-list-item-content>
 
         <v-spacer></v-spacer>
+        <v-row class="d-flex justify-end">
+            <v-cols cols="3">
+                <div height="10">
+                    <v-select v-if="currentuser.access_level==='admin'"  
+                    :items="roles" 
+                    outlined 
+                    width="10"
+                    class="my-0"
+                    label="update role"
+                    dense
+                    @change="$emit('updateRole',user.id,$event)"
+                    ></v-select>
+                </div>
+            </v-cols>
+        
         <v-tooltip top>
             <template v-if="!user.is_banned" v-slot:activator="{ on, attrs }">
                 <v-btn 
@@ -51,20 +66,16 @@
 
         </v-tooltip>
 
-        <v-tooltip top>
-            <template v-if="currentuser.access_level=='admin'" v-slot:activator="{ on, attrs }">
-                
-                 <v-btn 
+  
+        </v-row>
+                 <!-- <v-btn 
                  color="primary" 
                  class="ma-3"
                  v-bind="attrs"
-                 v-on="on">
+                 v-on="on"
+                 @click="$emit('upgradeUser',user.id)">
                     <v-icon small>mdi-account-arrow-up</v-icon>
-                </v-btn>
-            </template>
-            <span>Upgrade User Level</span>
-
-        </v-tooltip>
+                </v-btn> -->
 
         
 
@@ -97,6 +108,7 @@ export default {
         users:Array,
     },
     data: ()=>({
+        roles:["admin","moderator","user"],
     }),
     created(){
     },

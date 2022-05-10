@@ -1,11 +1,13 @@
 <template>
     <UserList :currentuser="user" :users="users"
-    @banuser="banuser"/>
+    @banuser="banuser"
+    @updateRole="upgradeRole"
+    :key="userListKey"/>
 </template>
 
 <script>
 import UserList from './User/UserList.vue';
-import {banuser,getAllUsers} from '../api.js';
+import {banuser,getAllUsers,updateRole} from '../api.js';
 
 export default {
     name:'UserListScreen',
@@ -20,6 +22,7 @@ export default {
     },
     data:()=>({
         users:[],
+        userListKey:true,
     }),
     created(){
         getAllUsers().then(response=>{
@@ -44,6 +47,21 @@ export default {
                 console.log(error);
             });
         },
+        async upgradeRole(user_id,role){
+            console.log("upgrading user" + role);
+            await updateRole(user_id,role).then(
+                response=>{
+                    alert(response);
+                    getAllUsers().then(response=>{
+                        this.users = response.data;
+                        this.userListKey = !this.userListKey;
+                    });
+                }
+            ).catch(error=>{
+                alert("Some error occured during user ban");
+                console.log(error);
+            });
+        }
     }
 }
 </script>

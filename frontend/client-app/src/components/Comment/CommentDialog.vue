@@ -24,17 +24,17 @@
                         color="primary"
                     >
                         <v-list-item
-                        v-for="(item, i) in items"
+                        v-for="(comment, i) in postModel.comments"
                         :key="i"
                         elevation="1"
                         width="100%"
                         >
                         <v-list-item-avatar>
-                            <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                            <v-img :src="comment.author.profile_picture"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title v-html="item.commentedby"></v-list-item-title>
-                            <v-list-item-subtitle v-html="item.comment"></v-list-item-subtitle>
+                            <v-list-item-title v-html="comment.author.name"></v-list-item-title>
+                            <v-list-item-subtitle v-html="comment.text"></v-list-item-subtitle>
                         <!-- <v-spacer></v-spacer> -->
                         <!-- <v-btn icon>
                             <v-icon>mdi-dots-vertical</v-icon>
@@ -44,6 +44,7 @@
                             <v-list-item-title v-text="item.text"></v-list-item-title>
                         </v-list-item-content> -->
                         </v-list-item-content>
+                        <v-icon color="green" v-if="comment.is_verfied">mdi-check-bold</v-icon>
                         <CommentMenu />
                         </v-list-item>
                     </v-list-item-group>
@@ -66,6 +67,9 @@ export default {
     },
     setup() {
         
+    },
+    created(){
+        console.log(this.postModel);
     },
     props:{
         postModel:Object,

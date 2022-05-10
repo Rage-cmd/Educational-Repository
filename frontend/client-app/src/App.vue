@@ -77,9 +77,9 @@ export default {
     },
     currentScreen:"loginScreen",
     sideMenuMap:{
-      "moderator":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
-      "user":["Your Uploads","My Profile", "Watchlist"],
-      "admin":["Your Uploads","My Profile", "Watchlist","Pending Approvals","Users List"],
+      "moderator":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List"],
+      "user":["Your Uploads","My Profile", "Saved Posts"],
+      "admin":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List"],
     },
     hideall: true,
   }),

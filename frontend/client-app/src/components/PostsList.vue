@@ -7,7 +7,8 @@
             <!-- <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/> -->
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
             <PostTemplate v-for="post in posts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
-            @approvepost="postapproveMethod"/>
+            @approvepost="postapproveMethod"
+            :user="user"/>
                         
         </v-container>        
         
@@ -16,7 +17,7 @@
 
 <script>
 import PostTemplate from "../components/PostTemplate.vue" ;
-import {yourUploads,approvepost, pendingApprovals} from '../api.js';
+import {yourUploads,approvepost, pendingApprovals, getSavedPosts} from '../api.js';
 
 export default ({
     setup() {
@@ -30,94 +31,6 @@ export default ({
         user:Object,
     },
     data: ()=>({
-        sampleVideoPostData:{
-            "caption":"Hospital Data Management Project",
-      "is_answered":true,
-      "text":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos recusandae nesciunt ad voluptate aperiam exercitationem veritatis laudantium totam a, natus inventore, sunt unde laborum nam obcaecati neque. Velit, obcaecati quas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam temporibus optio deserunt, at odit dolorem nostrum magnam dolores sequi delectus, corporis reiciendis. Provident tempora minus maiores iure, cum fugit quasi.",
-      "video_url":"https://drive.google.com/file/d/13zHw-vwAWZCUhjFo4QVs7OcHqRqMj7ed/preview",
-      "type":"video",
-      "user":"user1",
-      "time":"2020-06-01T00:00:00.000Z",
-      "tags": ["t4","t5"],
-      "author":{
-          "_id": "6277a3ab8fb52aafb4294872",
-        "id": "u2",
-        "name": "John Doe",
-        "email": "user@example.com",
-        "password": "password",
-        "access_level": "user",
-        "status": "active",
-        "posts": [
-            "p1"
-        ],
-        "comments": [
-            "c13",
-            "c66"
-        ],
-        "saved_posts": [
-            "p2"
-        ],
-        "liked_posts": [
-            "p32",
-            "p62"
-        ],
-        "points": 100,
-        "profile_picture": "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-        "no_of_bans": 0,
-        "is_banned": false
-    },
-    "upvotess":10,
-    "is_approved":true,
-    "comments":[
-        "c13",
-        "c66"
-    ],
-    "reports":2,
-    },
-    sampleMCQPostData:{
-        "is_answered":false,
-      "caption":"Find the value of x",
-      "time":"2020-06-01T00:00:00.000Z",
-      "text":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos recusandae nesciunt ad voluptate aperiam exercitationem veritatis laudantium totam a, natus inventore, sunt unde laborum nam obcaecati neque. Velit, obcaecati quas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam temporibus optio deserunt, at odit dolorem nostrum magnam dolores sequi delectus, corporis reiciendis. Provident tempora minus maiores iure, cum fugit quasi.",
-      "image_url":"https://hi-static.z-dn.net/files/d62/0c3678b43230a26c13d6f16947d28a03.jpg",
-      "type":"Text",
-      "tags": ["t4","t5"],
-      "options":["option1", "option2", "option3"],
-      "author": {
-          "_id": "6277a3ab8fb52aafb4294872",
-      "id": "u2",
-      "name": "John Doe",
-      "email": "user@example.com",
-      "password": "password",
-      "access_level": "user",
-      "status": "active",
-      "posts": [
-          "p1"
-      ],
-      "comments": [
-          "c13",
-        "c66"
-      ],
-      "saved_posts": [
-          "p2"
-      ],
-      "liked_posts": [
-          "p32",
-        "p62"
-      ],
-      "points": 100,
-      "profile_picture": "https://example.com/profile.png",
-      "no_of_bans": 0,
-      "is_banned": false
-    },
-    "upvotess":10,
-    "is_approved":true,
-    "comments":[
-        "c13",
-        "c66"
-    ],
-    "reports":2,
-    },
     posts:[],
     selectedTab:null,
     }),
@@ -129,6 +42,11 @@ export default ({
         }
         else if(this.currentScreen==="Pending Approvals"){
             await pendingApprovals(this.user.id).then((response)=>{
+                this.posts = response.data;
+            });
+        }
+        else if(this.currentScreen === "Saved Posts"){
+            await getSavedPosts(this.user.id).then((response)=>{
                 this.posts = response.data;
             });
         }

@@ -69,7 +69,7 @@ export const unbanuser = async (moderatorid,userid)=>{
 }
 
 export const getSavedPosts = async (userid)=>{
-    var response = await axios.get(devServer + 'uploads/' + userid);
+    var response = await axios.get(devServer + 'saved/' + userid);
     return response;
 }
 
@@ -122,3 +122,10 @@ export const pendingApprovals = async()=>{
     return response;
 }
 
+export const savePost = async(user_id,post_id)=>{
+    var response = await axios.post(devServer + 'savepost',{
+        user_id:user_id,
+        post_id:post_id,
+    });
+    return response;
+}

@@ -72,6 +72,7 @@
       class="ma-2"
       icon
       @click="bookmarkHandler()"
+      :loading="bookmarkLoading"
       >
           <v-icon v-if="!bookmarkFilled">mdi-bookmark-outline</v-icon>
           <v-icon v-else>mdi-bookmark</v-icon>
@@ -131,6 +132,7 @@
 <script>
 
 import CommentDialog from './Comment/CommentDialog.vue';
+import { savePost} from '../api.js'
 
 export default {
   name: 'PostTemplate',
@@ -144,11 +146,13 @@ export default {
         loading:false,
         thumbsupFilled:false,
         bookmarkFilled:false,
+        bookmarkLoading:false,
       }
   },
   props:{
       postModel:Object,
       currentScreen:String,
+      user:Object,
   },
 
   methods:{
@@ -172,8 +176,12 @@ export default {
       thumbsupBtnHandler(){
         this.thumbsupFilled = !this.thumbsupFilled;
       },
-      bookmarkHandler(){
-        this.bookmarkFilled = !this.bookmarkFilled;
+      async bookmarkHandler(){
+        this.bookmarkLoading=true;
+        await savePost(this.user.id,this.postModel.id).then(()=>{
+          this.bookmarkFilled = !this.bookmarkFilled;
+          this.bookmarkLoading = false;
+        });
       },
       getDate(postModel){
        return postModel.time.split('T')[0].split("-").reverse().join("-"); 

@@ -584,7 +584,7 @@ def like_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
-
+@csrf_exempt
 def save_user_post(request):
     """
     Saves a post.

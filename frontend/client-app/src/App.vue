@@ -20,7 +20,7 @@
       </v-container>
 
 
-      <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen"/>
+      <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen" :user="user"/>
       <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
        -->
 

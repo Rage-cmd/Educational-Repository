@@ -23,11 +23,6 @@ export const createTag = async (tagModel,userid)=>{
     return response;
 }
 
-export const getCachedPosts = async ()=>{
-    var response = await axios.get(devServer);
-    return response;
-}
-
 export const login = async (email,password)=>{
     var response = await axios.post(devServer + 'login',{
         email:email,
@@ -167,5 +162,15 @@ export const reportPost = async(user_id,post_id)=>{
         user_id:user_id,
         post_id:post_id,
     });
+    return response;
+}
+
+export const getLatestPosts = async()=>{
+    var response = await axios.get(devServer + 'latest');
+    return response;
+}
+
+export const getMostCommentedPosts = async()=>{
+    var response = await axios.get(devServer + 'top');
     return response;
 }

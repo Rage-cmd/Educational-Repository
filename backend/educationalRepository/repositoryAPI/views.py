@@ -229,6 +229,7 @@ def approve_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
 @csrf_exempt
 def ban_user(request):
     """
@@ -246,6 +247,7 @@ def ban_user(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
 @csrf_exempt
 def unban_user(request):
     """
@@ -262,6 +264,7 @@ def unban_user(request):
             return HttpResponse("User unban failed. Check the user access level.", status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
 
 def fetch_watchlist(request, user_id):
     """
@@ -323,6 +326,7 @@ def fetch_user_posts(request, user_id):
         return HttpResponse("Invalid request", status=400)
     
 
+@csrf_exempt
 def update_user_role(request, user_id, role):
     """
     Updates the user id of a user.
@@ -403,6 +407,7 @@ def fetch_comments(request, post_id):
         return HttpResponse("Invalid request", status=400)
 
 
+@csrf_exempt
 def suggest(request):
     """
     Suggests a post/tag.
@@ -431,6 +436,7 @@ def suggest(request):
         return HttpResponse("Invalid request", status=400)
 
 
+@csrf_exempt
 def search(request):
     """
     Searches for posts,tags or users.

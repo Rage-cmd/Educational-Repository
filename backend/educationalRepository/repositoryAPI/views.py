@@ -531,6 +531,36 @@ def get_all_users(request):
         return HttpResponse("Invalid request", status=400)
 
 
+@csrf_exempt
+def like_user_post(request):
+    """
+    Likes a post.
+    The request should contain the user id as well as the post id.
+    
+    Example::
+    
+        data = {
+            "user_id" : <user_id>,
+            "post_id" : <post_id>,
+            }
+    """
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        post_id = data['post_id']
+        post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+        response = {
+            "status" : "success",
+            "likes": post["upvotes"]
+        }
+        try:
+            like_post(user_id,post_id,cache)
+            return JsonResponse(json.loads(json.dumps(response, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to like post. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
 cache = CacheImpl(10)
 
 

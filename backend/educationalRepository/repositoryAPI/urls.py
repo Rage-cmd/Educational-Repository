@@ -22,4 +22,5 @@ urlpatterns = [
     path('users',views.get_all_users),
     path('unbanuser',views.unban_user),
     path('pendingapprovals',views.fetch_pending_approvals),
+    path('likepost',views.like_user_post),
 ]

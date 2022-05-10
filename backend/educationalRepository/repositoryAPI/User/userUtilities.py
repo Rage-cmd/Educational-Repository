@@ -102,6 +102,12 @@ def like_post(user_id, post_id, cache):
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"liked_posts":user["liked_posts"]}})
         mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"upvotes":post['upvotes']}})
 
+        if post['upvotes'] in [1,2,5,10,20,50,100] or post['upvotes']%100 == 0: 
+            # send notification to user
+            notification = "Your post " + post["caption"] + " has reached " + str(post['upvotes']) + " upvotes!"
+            user_id = post['author']
+            mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"notifications":notification}})
+
         return True
     
     except:

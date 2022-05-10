@@ -97,7 +97,8 @@ def like_post(user_id, post_id, cache):
             user["liked_posts"].append(post_id)
             post['upvotes'] += 1
 
-        cache.addItem_upvote_cache(post_id, post['upvotes'])
+        # cache.addItem_upvote_cache(post_id, post['upvotes'])
+        cache.addItem_comment_cache(post, post['upvotes'])
 
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"liked_posts":user["liked_posts"]}})
         mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"upvotes":post['upvotes']}})
@@ -365,7 +366,7 @@ def upload_post(user_id, post_details, cache):
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
 
-    cache.addItem_recent_cache(post_doc['id'],datetime.datetime.now())
+    cache.addItem_recent_cache(post_doc,datetime.datetime.now())
 
     return post_doc
     

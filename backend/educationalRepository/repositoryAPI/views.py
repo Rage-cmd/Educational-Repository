@@ -379,7 +379,7 @@ def fetch_user_posts(request, user_id):
     
 
 @csrf_exempt
-def update_user_role(request, user_id, role):
+def update_user_role(request):
     """
     Updates the user id of a user.
     The request should contain the admin id and the user id.
@@ -393,6 +393,9 @@ def update_user_role(request, user_id, role):
     """
     if request.method == 'POST':
         try:
+            data = JSONParser().parse(request)
+            user_id = data['user_id']
+            role = data['role']
             assign_role(user_id, role)
             user_doc = findSingleDocument("test_db","users_collection",{"id":user_id})
             return JsonResponse(json.loads(json.dumps(user_doc,default=str)),status="200")

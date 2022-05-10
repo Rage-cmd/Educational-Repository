@@ -14,7 +14,7 @@ urlpatterns = [
     path('banuser',views.ban_user),
     path('saved/<str:user_id>',views.fetch_watchlist),
     path('user/<str:user_id>',views.fetch_user_details),
-    path('updaterole/<str:user_id>/<str:role>',views.update_user_role),
+    path('updaterole',views.update_user_role),
     path('post/<str:post_id>',views.fetch_post),
     path('comments/<str:post_id>',views.fetch_comments),
     path('suggest',views.suggest),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('pendingapprovals',views.fetch_pending_approvals),
     path('likepost',views.like_user_post),
     path('savepost',views.save_user_post),
+    path('verifycomment',views.verify_comment),
 ]

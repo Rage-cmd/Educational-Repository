@@ -174,3 +174,12 @@ export const getMostCommentedPosts = async()=>{
     var response = await axios.get(devServer + 'top');
     return response;
 }
+
+export const getPostSuggestions = async(search)=>{
+    var response = await axios.post(devServer + 'suggest',{
+        search_term:search,
+        search_type:'post',
+
+    });
+    return response;
+}

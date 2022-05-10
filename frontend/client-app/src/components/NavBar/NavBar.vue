@@ -40,9 +40,22 @@
                         chips
                         small-chips
                         dense
-                        multiple
-                        :items="suggestionOptions"
-                        ></v-autocomplete>
+                        :items.sync="suggestionOptions"
+                        @update:search-input="debounceInput($event)"
+                        no-filter 
+                        >
+                        
+                         <template v-slot:selection="data">
+                            <v-chip v-bind="data.attrs" small>{{data.item.caption}}</v-chip>
+                        </template>
+
+                        <template v-slot:item="data">
+                            <v-list-item-content>
+                                <v-list-item-title v-html="data.item.caption"></v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+
+                        </v-autocomplete>
                      </v-container>
                  </v-col>
                  </v-row>
@@ -92,6 +105,8 @@
 <script>
 
 import NotificationDialog from "../../components/NavBar/NotificationDialog.vue"
+import {getPostSuggestions} from "../../api.js";
+import _ from 'lodash';
 
 export default {
     components:{
@@ -112,8 +127,10 @@ export default {
         sideMenuSelection: null,
         navBarOptions:["Home"],
         items:["Child Search","Tag","Post"],
-        suggestionOptions:["CN","OS", "Lingo"],
+        suggestionOptions:[],
+        // suggestionOptions:["CN","OS", "Lingo"],
         searchFilter:"",
+        search:null,
     }),
     created: function(){
         this.searchFilter=this.items[0];
@@ -121,9 +138,23 @@ export default {
     watcher:{
         user(){
             console.log(this.user);
+        },
+        search(val){
+            if(!val){
+                return
+            }
+            this.debounceInput(val);
         }
     },
     methods:{
+        debounceInput: _.debounce(function (search) {
+            getPostSuggestions(search).then(res=>{
+                this.suggestionOptions=res.data;
+            })
+        }, 1000),
+        loginput(val){
+            console.log(val);
+        }
     }
 }
 </script>

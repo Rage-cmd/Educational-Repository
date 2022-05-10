@@ -193,6 +193,7 @@ def upload_user_post(request):
     """
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        print(data)
         user_id = data['user_id']
         post_details = data['post_details']
         try:
@@ -377,34 +378,47 @@ def fetch_post(request, post_id):
     """
     if request.method == 'GET':
         comments = []
-        post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-        author = findSingleDocument("test_db","users_collection",{"id":post['author']})
-        post['author'] = {
-            "id" : author['id'],
-            "name" : author['name'],
-            "profile_picture" : author['profile_picture'],
-        }
-        
-        for comment_id in post['comments']:
-            comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-            comments.append(comment)
-
-        for comment in comments:
-            comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-            comment['author'] = {
-                "id" : comment_author['id'],
-                "name" : comment_author['name'],
-                "profile_picture" : comment_author['profile_picture'],
+        try:
+            post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+            author = findSingleDocument("test_db","users_collection",{"id":post['author']})
+            post['author'] = {
+                "id" : author['id'],
+                "name" : author['name'],
+                "profile_picture" : author['profile_picture'],
             }
-        
-        post['comments'] = comments
+            
+            for comment_id in post['comments']:
+                comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                comments.append(comment)
 
-        if post:
+            for comment in comments:
+                comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+                comment['author'] = {
+                    "id" : comment_author['id'],
+                    "name" : comment_author['name'],
+                    "profile_picture" : comment_author['profile_picture'],
+                }
+            
+            post['comments'] = comments
             return JsonResponse(json.loads(json.dumps(post,default=str)), safe=False)
-        else:
-            return HttpResponse("Invalid post id")
+        except Exception as e:
+            return HttpResponse("Cannot fetch post. Check the post id. The error is " + str(e), status=500)
     else:
         return HttpResponse("Invalid request")
+
+
+def fetch_pending_approvals(request):
+    """
+    Fetches the pending approvals.
+    """
+    if request.method == 'GET':
+        try:
+            posts = get_pending_approvals()
+            return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
+        except Exception as e:
+            return HttpResponse("Failed to fetch pending approvals. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
 
 
 def fetch_comments(request, post_id):

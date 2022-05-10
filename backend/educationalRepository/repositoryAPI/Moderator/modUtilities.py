@@ -84,3 +84,24 @@ def unapprove_post(post_id):
     except:
         print("Error in unapproving post. Check if the post with the id: " + post_id + " exists.")
         return False
+
+
+def get_pending_approvals():
+    """
+    Get all the posts that are pending approval. 
+
+    Parameters:
+        None
+    
+    Returns:
+        List : A list of all the posts that are pending approval.
+    """
+    try:
+        post_ids = mongoDB_interface.findAllDocument("test_db","posts_collection",{"is_approved":False})
+        posts = []
+        for post in post_ids:
+            posts.append(post)
+        return posts
+    except:
+        print("Error in getting pending approvals.")
+        return []

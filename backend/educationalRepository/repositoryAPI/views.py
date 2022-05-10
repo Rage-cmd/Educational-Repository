@@ -793,23 +793,19 @@ def upload_user_comment(request):
         post_id = data['post_id']
         comment_text = data['text']
         try:
-            result = comment_post(user_id,post_id,comment_text, cache)
-            if result:
-                return JsonResponse(json.loads(json.dumps(result, default=str)), safe=False, status=200)
-            else:
-                return HttpResponse("Failed to upload comment. Check post ID.", status=200)
-            comments = comment_post(user_id,post_id,comment_text, cache)
-            if not comments:
+            comment = comment_post(user_id,post_id,comment_text, cache)
+            if not comment:
                 return HttpResponse("Failed to comment on post. Check post ID.", status=200)
+            # print(comments)
+            # for comment in comments:
+            comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+            comment['author'] = {
+                "id" : comment_author['id'],
+                "name" : comment_author['name'],
+                "profile_picture" : comment_author['profile_picture'],
+            }
 
-            for comment in comments:
-                comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                comment['author'] = {
-                    "id" : comment_author['id'],
-                    "name" : comment_author['name'],
-                    "profile_picture" : comment_author['profile_picture'],
-                }
-            return JsonResponse(json.loads(json.dumps(comments, default=str)), safe=False, status=200)
+            return JsonResponse(json.loads(json.dumps(comment, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to upload comment. The error is: " + str(e), status=500)
     else:

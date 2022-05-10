@@ -153,3 +153,11 @@ export const verifyComment = async(comment_id,user_id)=>{
     });
     return response;
 }
+
+export const reportComment = async(comment_id,user_id)=>{
+    var response = await axios.post(devServer + 'reportcomment',{
+        user_id:user_id,
+        comment_id:comment_id,
+    });
+    return response;
+}

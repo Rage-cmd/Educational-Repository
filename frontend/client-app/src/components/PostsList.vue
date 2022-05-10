@@ -107,7 +107,7 @@ export default ({
         verifyComment(comment_id){
             console.log(comment_id)
             this.fetchPostList();
-            this.postsKey = !this.postsKey;
+            // this.postsKey = !this.postsKey;
         }
     }
 

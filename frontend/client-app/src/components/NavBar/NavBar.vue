@@ -15,6 +15,7 @@
                    v-for="opt in navBarOptions" :key="opt"
                    color="primary"
                    elevation="0"
+                   @click="$emit('navBarOption',opt)"
                     >
                         {{opt}}
                     </v-btn>

@@ -50,7 +50,7 @@ export default {
     }),
     methods:{
       async verifyCommentHandler(){
-        await verifyComment(this.user.id,this.comment.id).then(
+        await verifyComment(this.comment.id,this.user.id).then(
           response=>{
             alert(response.data);
             this.$emit('verifyComment',this.comment.id);

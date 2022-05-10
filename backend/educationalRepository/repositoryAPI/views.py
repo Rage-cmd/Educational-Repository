@@ -773,8 +773,8 @@ def fetch_latest_posts(request):
 def fetch_most_commented_posts(request):
     post_4 = findSingleDocument("test_db","posts_collection",{"id":'p4'})
     post_6 = findSingleDocument("test_db","posts_collection",{"id":'p6'})
-    cache.addItem_recent_cache(post_4,4)
-    cache.addItem_recent_cache(post_6,2)
+    cache.addItem_comment_cache(post_4,4)
+    cache.addItem_comment_cache(post_6,2)
     if request.method == "GET":
         try:
             posts = cache.getAllItems_comment_cache()

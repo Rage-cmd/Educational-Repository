@@ -111,7 +111,7 @@
     </v-card-text>
 
     <v-card-actions v-if="currentScreen=='Pending Approvals'">
-      <v-btn rounded color="success" width="48%">
+      <v-btn rounded color="success" width="48%" @click="$emit('approvepost',postModel.id)">
         <v-icon>mdi-check-bold</v-icon>
         Accept
       </v-btn>

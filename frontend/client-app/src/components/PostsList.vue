@@ -6,7 +6,8 @@
         <v-container mt-6>
             <!-- <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/> -->
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
-            <PostTemplate v-for="post in posts" :key="post.id" :postModel="post" :currentScreen="currentScreen"/>
+            <PostTemplate v-for="post in posts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
+            @approvepost="postapproveMethod"/>
                         
         </v-container>        
         
@@ -15,7 +16,7 @@
 
 <script>
 import PostTemplate from "../components/PostTemplate.vue" ;
-import {yourUploads} from '../api.js';
+import {yourUploads,approvepost, pendingApprovals} from '../api.js';
 
 export default ({
     setup() {
@@ -121,10 +122,26 @@ export default ({
     selectedTab:null,
     }),
     async created(){
-         await yourUploads(this.user.id).then((response)=>{
-             this.posts = response.data;
-         }
-        );
-    }
-})
+        if(this.currentScreen==="Your Uploads"){
+            await yourUploads(this.user.id).then((response)=>{
+                this.posts = response.data;
+            });
+        }
+        else if(this.currentScreen==="Pending Approvals"){
+            await pendingApprovals(this.user.id).then((response)=>{
+                this.posts = response.data;
+            });
+        }
+    },
+    methods:{
+        async postapproveMethod(post_id){
+            await approvepost(post_id).then((response)=>{
+                alert(response.data);
+                this.posts = this.posts.filter(post => post.id != post_id);
+            }).catch((error)=>{
+                alert(error);
+            });
+        },
+        }
+});
 </script>

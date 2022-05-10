@@ -174,6 +174,7 @@ export default {
             this.description = this.getDescription(postModel);
       },
       thumbsupBtnHandler(){
+        this.$emit('postLike',this.postModel.id,this.user.id);
         this.thumbsupFilled = !this.thumbsupFilled;
       },
       async bookmarkHandler(){

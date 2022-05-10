@@ -137,3 +137,11 @@ export const updateRole = async(user_id,role)=>{
     });
     return response;
 }
+
+export const likePost = async(user_id,post_id)=>{
+    var response = await axios.post(devServer + 'likepost',{
+        user_id:user_id,
+        post_id:post_id,
+    });
+    return response;
+}

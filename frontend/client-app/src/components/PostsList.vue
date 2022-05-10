@@ -9,7 +9,8 @@
             <PostTemplate v-for="post in posts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
             @approvepost="postapproveMethod"
             :user="user"
-            @removePost="removePost"/>
+            @removePost="removePost"
+            @postLike="postLikeHandler"/>
                         
         </v-container>        
         
@@ -18,7 +19,7 @@
 
 <script>
 import PostTemplate from "../components/PostTemplate.vue" ;
-import {yourUploads,approvepost, pendingApprovals, getSavedPosts} from '../api.js';
+import {yourUploads,approvepost, pendingApprovals, getSavedPosts, likePost} from '../api.js';
 
 export default ({
     setup() {
@@ -65,6 +66,16 @@ export default ({
         removePost(post_id){
             this.posts = this.posts.filter(post => post.id != post_id);
             this.postsKey = !this.postsKey;
+        },
+        postLikeHandler(post_id,user_id){
+            console.log("Liking the post")
+            likePost(user_id,post_id).then((response)=>{
+                alert(response.data);
+                var index = this.posts.findIndex((obj=>obj.id===post_id))
+                this.posts[index].upvotes++;  
+            }).catch((error)=>{
+                alert(error);
+            });
         },
     }
 

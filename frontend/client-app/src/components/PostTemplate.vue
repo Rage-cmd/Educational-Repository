@@ -74,7 +74,7 @@
       @click="bookmarkHandler()"
       :loading="bookmarkLoading"
       >
-          <v-icon v-if="!bookmarkFilled">mdi-bookmark-outline</v-icon>
+          <v-icon v-if="currentScreen!=='Saved Posts' && !bookmarkFilled">mdi-bookmark-outline</v-icon>
           <v-icon v-else>mdi-bookmark</v-icon>
       </v-btn>     
 
@@ -180,6 +180,9 @@ export default {
         this.bookmarkLoading=true;
         await savePost(this.user.id,this.postModel.id).then(()=>{
           this.bookmarkFilled = !this.bookmarkFilled;
+          if(this.currentScreen === "Saved Posts"){
+            this.$emit('removePost',this.postModel.id);
+          }
           this.bookmarkLoading = false;
         });
       },

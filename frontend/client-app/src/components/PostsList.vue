@@ -8,7 +8,8 @@
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
             <PostTemplate v-for="post in posts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
             @approvepost="postapproveMethod"
-            :user="user"/>
+            :user="user"
+            @removePost="removePost"/>
                         
         </v-container>        
         
@@ -31,6 +32,7 @@ export default ({
         user:Object,
     },
     data: ()=>({
+    postsKey:true,
     posts:[],
     selectedTab:null,
     }),
@@ -60,6 +62,11 @@ export default ({
                 alert(error);
             });
         },
-        }
+        removePost(post_id){
+            this.posts = this.posts.filter(post => post.id != post_id);
+            this.postsKey = !this.postsKey;
+        },
+    }
+
 });
 </script>

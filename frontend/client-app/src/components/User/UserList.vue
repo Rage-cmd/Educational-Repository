@@ -7,10 +7,8 @@
     </v-card-title>
     <v-list>
         <v-list-item
-        v-for="user in users.filter(user=>{
-                return user.access_level=='user';
-            })"
-        :key="user.id"
+        v-for="(user,index) in users"
+        :key="(user.id,user.is_banned)"
         >
         <v-list-item-avatar>
             <v-img :src="user.profile_picture"></v-img>
@@ -18,6 +16,7 @@
 
         <v-list-item-content>
             <v-list-item-title v-html="user.name"></v-list-item-title>
+            <v-list-item-subtitle v-html="user.access_level"></v-list-item-subtitle>
         </v-list-item-content>
 
         <v-spacer></v-spacer>
@@ -28,26 +27,11 @@
                  class="ma-3"
                 v-bind="attrs"
                 v-on="on"
-                @click="banuser(user)">
+                @click="banuser(user,index)">
                     <v-icon small>mdi-account-remove</v-icon>
                 </v-btn>
             </template>
             <span>Ban User</span>
-
-        </v-tooltip>
-
-        <v-tooltip top>
-            <template v-if="currentuser.access_level=='admin'" v-slot:activator="{ on, attrs }">
-                
-                 <v-btn 
-                 color="primary" 
-                 class="ma-3"
-                 v-bind="attrs"
-                 v-on="on">
-                    <v-icon small>mdi-account-arrow-up</v-icon>
-                </v-btn>
-            </template>
-            <span>Upgrade User Level</span>
 
         </v-tooltip>
 
@@ -67,6 +51,23 @@
 
         </v-tooltip>
 
+        <v-tooltip top>
+            <template v-if="currentuser.access_level=='admin'" v-slot:activator="{ on, attrs }">
+                
+                 <v-btn 
+                 color="primary" 
+                 class="ma-3"
+                 v-bind="attrs"
+                 v-on="on">
+                    <v-icon small>mdi-account-arrow-up</v-icon>
+                </v-btn>
+            </template>
+            <span>Upgrade User Level</span>
+
+        </v-tooltip>
+
+        
+
         </v-list-item>
     </v-list>
 </v-card>
@@ -76,7 +77,7 @@
 </template>
 
 <script>
-import {getAllUsers,banuser,unbanuser} from '../../api.js';
+import {unbanuser} from '../../api.js';
 
 export default {
     name:'UserList',
@@ -84,12 +85,6 @@ export default {
         
     },
     computed:{
-        filterUsers(users){
-            console.log(users);
-            return users.filter(user=>{
-                return user.access_level=='user';
-            })
-        }
     },
     props:{
         currentuser:{
@@ -99,36 +94,15 @@ export default {
             "user_level":"moderator",
             })
         },
+        users:Array,
     },
     data: ()=>({
-        users:[
-            {"id":1,
-            "username":"user1",
-            "user_level":"user",
-            },
-            {"id":2,
-            "username":"user2",
-            "user_level":"moderator",
-            },
-        ]
     }),
     created(){
-        getAllUsers().then(response=>{
-            this.users = response.data;
-            console.log(this.users);
-        });
     },
     methods:{
-        async banuser(user){
-            await banuser(this.currentuser.id,user.id).then(
-                response=>{
-                    console.log(response);
-                    user.is_banned = true;
-                }
-            ).catch(error=>{
-                alert("Some error occured during user ban");
-                console.log(error);
-            });
+        async banuser(user,index){
+            this.$emit('banuser',user,index);
         },
         async unbanuser(user){
             await unbanuser(this.currentuser.id,user.id).then(

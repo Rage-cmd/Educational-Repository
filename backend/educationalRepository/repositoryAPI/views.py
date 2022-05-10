@@ -584,6 +584,30 @@ def like_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
+def save_user_post(request):
+    """
+    Saves a post.
+    The request should contain the user id as well as the post id.
+    
+    Example::
+    
+        data = {
+            "user_id" : <user_id>,
+            "post_id" : <post_id>,
+            }
+    """
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        post_id = data['post_id']
+        if save_post(user_id,post_id):
+            return HttpResponse("Post saved", status=200)
+        else:
+            return HttpResponse("Failed to save post", status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
 cache = CacheImpl(10)
 
 

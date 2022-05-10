@@ -60,6 +60,11 @@ def approve_post(post_id):
         post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
         post["is_approved"] = True
         mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"is_approved":post['is_approved']}})
+        
+        notification = "Your post " + post["caption"] + " has been approved."
+        user_id = post['author']
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"notifications":notification}})
+        
         return True
     except:
         print("Error in approving post. Check if the post with the id: " + post_id + " exists.")
@@ -80,6 +85,10 @@ def unapprove_post(post_id):
         post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
         post["is_approved"] = False
         mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"is_approved":post['is_approved']}})
+
+        notification = "Your post " + post["caption"] + " has been rejected!."
+        user_id = post['author']
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"notifications":notification}})
         return True
     except:
         print("Error in unapproving post. Check if the post with the id: " + post_id + " exists.")

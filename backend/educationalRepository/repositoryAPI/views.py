@@ -144,6 +144,7 @@ def sign_up(request):
             "liked_posts": [],
             "points": 0,
             "profile_picture": "",
+            "notifications": [],
             "no_of_bans": 0,
             "is_banned": False,
         }

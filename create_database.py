@@ -14,6 +14,7 @@ users = [
         'liked_posts': ['p32', 'p62'],
         'points': 100,
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'notifications': [],
         'no_of_bans': 0,
         'is_banned': True
     },
@@ -30,6 +31,7 @@ users = [
         'liked_posts': ['p37', 'p67'],
         'points': 100,
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'notifications': [],
         'no_of_bans': 0,
         'is_banned': False
     },
@@ -46,6 +48,7 @@ users = [
         'liked_posts': ['p38', 'p68'],
         'points': 114,
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'notifications': [],
         'no_of_bans': 0,
         'is_banned': False
     },
@@ -62,6 +65,7 @@ users = [
         'liked_posts': ['p39', 'p69'],
         'points': 100,
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'notifications': [],
         'no_of_bans': 0,
         'is_banned': False
     },
@@ -78,6 +82,7 @@ users = [
         'liked_posts': ['p40', 'p70'],
         'points': 100,
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'notifications': [],
         'no_of_bans': 0,
         'is_banned': False
     },

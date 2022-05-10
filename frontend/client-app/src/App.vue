@@ -27,7 +27,7 @@
 
       <MyProfile v-else-if="currentScreen=='My Profile' " :user="user"/>
 
-      <PostsList v-else :currentScreen="currentScreen" :user="user"/>
+      <PostsList v-else :currentScreen="currentScreen" :user="user" :key="postListKey"/>
 
       <CreateUploadDialog/>
 
@@ -82,6 +82,7 @@ export default {
       "admin":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List"],
     },
     hideall: true,
+    postListKey:true,
   }),
   methods:{
     async sideMenuSelectHandler(opt){
@@ -90,6 +91,7 @@ export default {
         console.log(response);
         }
       );
+      this.postListKey = !this.postListKey;
     },
     loginuser(user){
       console.log(user);

@@ -414,6 +414,13 @@ def fetch_pending_approvals(request):
     if request.method == 'GET':
         try:
             posts = get_pending_approvals()
+            for post in posts:
+                author = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                post['author'] = {
+                    "id" : author['id'],
+                    "name" : author['name'],
+                    "profile_picture" : author['profile_picture'],
+                }
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch pending approvals. The error is: " + str(e), status=500)

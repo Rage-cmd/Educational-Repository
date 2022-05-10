@@ -12,7 +12,8 @@
       <div v-else>
       <NavBar :sideMenu="sideMenuMap[user.access_level]" 
       @sideMenuSelect="sideMenuSelectHandler"
-      @logout = "logout"/>
+      @logout = "logout"
+      :user="user"/>
       <v-container >
         
       </v-container>

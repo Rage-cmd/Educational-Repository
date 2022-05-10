@@ -51,7 +51,7 @@
             <!-- <v-btn icon>
                 <v-icon>mdi-bell-outline</v-icon>
             </v-btn> -->
-            <NotificationDialog/>
+            <NotificationDialog :user="user"/>
             <v-tooltip bottom>
                  <template v-slot:activator="{ on, attrs }">
                     <v-btn 
@@ -101,6 +101,7 @@ export default {
     },
     props:{
         sideMenu:Array,
+        user:Object,
     },
     data:()=>({
         userDetails:{
@@ -115,6 +116,11 @@ export default {
     }),
     created: function(){
         this.searchFilter=this.items[0];
+    },
+    watcher:{
+        user(){
+            console.log(this.user);
+        }
     },
     methods:{
     }

@@ -197,7 +197,7 @@ comments = [
     {
         'id': 'c2',
         'author': 'u3',
-        'post_id': 'p12',
+        'post_id': 'p2',
         'time': '2020-01-01T00:00:00Z',
         'text': 'This is the second test comment',
         'upvotes': 3,
@@ -207,7 +207,7 @@ comments = [
     {
         'id': 'c3',
         'author': 'u4',
-        'post_id': 'p12',
+        'post_id': 'p4',
         'time': '2020-01-01T00:00:00Z',
         'text': 'This is the third test comment',
         'upvotes': 3,

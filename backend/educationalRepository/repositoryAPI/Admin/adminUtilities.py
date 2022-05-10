@@ -16,6 +16,9 @@ def assign_role(user_id, role="user"):
         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
         user["access_level"] = role
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set":{'access_level':role}})
+
+        notification = "You have been assigned the role of " + role + "."
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push":{'notifications':notification}})
     except:
         print("Cannot assign role. User not found.")
 

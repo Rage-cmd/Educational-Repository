@@ -362,6 +362,7 @@ def fetch_user_posts(request, user_id):
         try:
             user_posts = findSingleDocument("test_db","users_collection",{"id":user_id})['posts']
             posts = []
+            comments = []
             for post_id in user_posts:
                 post = findSingleDocument("test_db","posts_collection",{"id":post_id})
                 post_doc = findSingleDocument("test_db","users_collection",{"id":post['author']})
@@ -370,7 +371,22 @@ def fetch_user_posts(request, user_id):
                     "name" : post_doc['name'],
                     "profile_picture" : post_doc['profile_picture']
                 }
+
+                for comment_id in post['comments']:
+                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                    comments.append(comment)
+
+                for comment in comments:
+                    comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+                    comment['author'] = {
+                        "id" : comment_author['id'],
+                        "name" : comment_author['name'],
+                        "profile_picture" : comment_author['profile_picture'],
+                    }
+            
+                post['comments'] = comments
                 posts.append(post)
+                
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
@@ -649,6 +665,57 @@ def verify_user_comment(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
+@csrf_exempt
+def report_user_comment(request):
+    """
+    Reports a comment.
+    The request should contain the user id as well as the comment id.
+    
+    Example::
+    
+        data = {
+            "user_id" : <user_id>,
+            "comment_id" : <comment_id>,
+            }
+    """
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        comment_id = data['comment_id']
+        try:
+            report_comment(comment_id)
+            return HttpResponse("Comment Reported", status=200)
+        except Exception as e:
+            return HttpResponse("Failed to report comment. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+
+@csrf_exempt
+def report_user_post(request):
+    """
+    Reports a post.
+    The request should contain the user id as well as the post id.
+    
+    Example::
+    
+        data = {
+            "user_id" : <user_id>,
+            "post_id" : <post_id>,
+            }
+    """
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        post_id = data['post_id']
+        try:
+            report_post(post_id)
+            return HttpResponse("Post Reported", status=200)
+        except Exception as e:
+            return HttpResponse("Failed to report post. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+# def 
 
 cache = CacheImpl(10)
 

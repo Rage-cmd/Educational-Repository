@@ -443,3 +443,42 @@ def verify_comment(user_id, comment_id):
         print("Could not verify comment. Check if the comment id is valid.") 
         return None
  
+
+def report_comment(comment_id):
+    """
+    Increments the report count of the comment.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+        comment_id (str) : The id of the comment.
+
+    Returns:
+        The document of the comment.
+    """
+    try:
+        comment_doc = mongoDB_interface.findSingleDocument("test_db","comments_collection",{"id":comment_id})
+        mongoDB_interface.updateDocument("test_db","comments_collection",{"id":comment_id},{"$inc": {"reports":1}})
+        return comment_doc
+    except:
+        print("Could not report comment. Check if the comment id is valid.") 
+        return None
+
+
+def report_post(post_id):
+    """
+    Increments the report count of the post.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+        post_id (str) : The id of the post.
+
+    Returns:
+        The document of the post.
+    """
+    try:
+        post_doc = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
+        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$inc": {"reports":1}})
+        return post_doc
+    except:
+        print("Could not report post. Check if the post id is valid.") 
+        return None

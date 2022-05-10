@@ -25,4 +25,6 @@ urlpatterns = [
     path('likepost',views.like_user_post),
     path('savepost',views.save_user_post),
     path('verifycomment',views.verify_user_comment),
+    path('reportcomment',views.report_user_comment),
+    path('reportpost',views.report_user_post),
 ]

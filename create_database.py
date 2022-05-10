@@ -16,6 +16,7 @@ users = [
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'notifications': [],
         'no_of_bans': 0,
+        'requested_reports': [],
         'is_banned': True
     },
     {
@@ -33,6 +34,7 @@ users = [
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'notifications': [],
         'no_of_bans': 0,
+        'requested_reports': [],
         'is_banned': False
     },
     {
@@ -50,6 +52,7 @@ users = [
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'notifications': [],
         'no_of_bans': 0,
+        'requested_reports': [],
         'is_banned': False
     },
     {
@@ -67,6 +70,7 @@ users = [
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'notifications': [],
         'no_of_bans': 0,
+        'requested_reports': [],
         'is_banned': False
     },
     {
@@ -84,6 +88,7 @@ users = [
         'profile_picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'notifications': [],
         'no_of_bans': 0,
+        'requested_reports': [],
         'is_banned': False
     },
 ]

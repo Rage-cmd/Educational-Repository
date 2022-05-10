@@ -386,7 +386,7 @@ def fetch_user_posts(request, user_id):
             
                 post['comments'] = comments
                 posts.append(post)
-                
+
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
@@ -681,10 +681,16 @@ def report_user_comment(request):
     """
     if request.method == "POST":
         data = JSONParser().parse(request)
+        user_id = data['user_id']
         comment_id = data['comment_id']
         try:
-            report_comment(comment_id)
-            return HttpResponse("Comment Reported", status=200)
+            result = report_comment(user_id,comment_id)
+            if result == 1:
+                return HttpResponse("Comment Reported", status=200)
+            elif result == -1:
+                return HttpResponse("Comment already reported", status=200)
+            else:
+                return HttpResponse("Failed to report comment. Check comment ID.", status=200)
         except Exception as e:
             return HttpResponse("Failed to report comment. The error is: " + str(e), status=500)
     else:
@@ -706,10 +712,16 @@ def report_user_post(request):
     """
     if request.method == "POST":
         data = JSONParser().parse(request)
+        user_id = data['user_id']
         post_id = data['post_id']
         try:
-            report_post(post_id)
-            return HttpResponse("Post Reported", status=200)
+            result = report_post(user_id,post_id)
+            if result == 1:
+                return HttpResponse("Post Reported", status=200)
+            elif result == -1:
+                return HttpResponse("Post already reported", status=200)
+            else:
+                return HttpResponse("Failed to report post. Check post ID.", status=200)
         except Exception as e:
             return HttpResponse("Failed to report post. The error is: " + str(e), status=500)
     else:

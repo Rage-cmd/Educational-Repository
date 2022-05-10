@@ -66,4 +66,22 @@ def approve_post(post_id):
         print("Error in approving post. Check if the post with the id: " + post_id + " exists.")
         return False
 
+
+def unapprove_post(post_id):
+    """
+    Unapprove a post. The function expects a user id and a post id. 
+
+    Parameters:
+        post_id (str) : The id of the post.
     
+    Returns:
+        Boolean : True if the post is unapproved, False otherwise.
+    """
+    try:
+        post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
+        post["is_approved"] = False
+        mongoDB_interface.updateDocument("test_db","posts_collection",{"id":post_id},{"$set": {"is_approved":post['is_approved']}})
+        return True
+    except:
+        print("Error in unapproving post. Check if the post with the id: " + post_id + " exists.")
+        return False

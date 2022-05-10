@@ -204,6 +204,7 @@ def upload_user_post(request):
         return HttpResponse("Invalid request")
 
 
+@csrf_exempt
 def approve_user_post(request):
     """
     Approves a post.
@@ -226,6 +227,32 @@ def approve_user_post(request):
             return HttpResponse("Post approved successfully.", status=200)
         except Exception as e:
             return HttpResponse("Post approval failed. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+@csrf_exempt
+def unapprove_user_post(request):
+    """
+    Unapproves a post.
+
+    The function expects a post id.
+
+    Upon successful unapproval, the function returns HTTP response with status 200.
+
+    Example::
+
+        data ={
+            "post_id" : <post_id>
+        }
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        post_id = data['post_id']
+        try:
+            unapprove_post(post_id)
+            return HttpResponse("Post unapproved successfully.", status=200)
+        except Exception as e:
+            return HttpResponse("Post unapproval failed. The error is: " + str(e), status=500)
     else:
         return HttpResponse("Invalid request", status=400)
 

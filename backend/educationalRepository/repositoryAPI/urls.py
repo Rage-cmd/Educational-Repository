@@ -18,5 +18,6 @@ urlpatterns = [
     path('comments/<str:post_id>',views.fetch_comments),
     path('suggest',views.suggest),
     path('search',views.search),
-    path('users',views.get_all_users)
+    path('users',views.get_all_users),
+    path('unbanuser',views.unban_user),
 ]

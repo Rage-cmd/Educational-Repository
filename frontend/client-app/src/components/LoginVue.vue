@@ -2,7 +2,7 @@
     <v-app>
         <v-app-bar app dense dark color="blue">
             <v-spacer></v-spacer>
-            New here? <v-btn class="pa-2" rounded href="/login" text> Sign Up</v-btn>            
+            New here? <v-btn class="pa-2" rounded @click="$emit('signup')"  text> Sign Up</v-btn>            
         </v-app-bar>
         <v-content class="pt-0">
             <v-container fluid class="pa-0" fill-height>
@@ -22,7 +22,7 @@
                         <v-divider></v-divider>
                         <v-card-actions>
                             <v-btn @click="validateUser" color="success">Login</v-btn>
-                            <v-btn color="info">Sign Up</v-btn>
+                            <v-btn color="info" @click="$emit('signup')">Sign Up</v-btn>
                         </v-card-actions>
                     </v-card>
                     </div>

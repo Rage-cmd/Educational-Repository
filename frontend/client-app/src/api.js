@@ -36,9 +36,11 @@ export const login = async (email,password)=>{
     return response;
 }
 
-export const signup = async (userModel)=>{
+export const signup = async (username,email,password)=>{
     var response = await axios.post(devServer + 'signup',{
-        user:userModel,
+        "username":username,
+        "email":email,
+        "password":password
     });
     return response;
 }
@@ -52,9 +54,17 @@ export const postApproval = async (postid,userid)=>{
 }
 
 export const banuser = async (moderatorid,userid)=>{
-    var response = await axios.post(devServer + 'banuser',{
+    var response = await axios.post(devServer + 'banUser',{
         moderatorid:moderatorid,
-        userid:userid,
+        user_id:userid,
+    });
+    return response;
+}
+
+export const unbanuser = async (moderatorid,userid)=>{
+    var response = await axios.post(devServer + 'unbanuser',{
+        moderatorid:moderatorid,
+        user_id:userid,
     });
     return response;
 }

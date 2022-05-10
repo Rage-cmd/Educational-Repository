@@ -2,7 +2,7 @@
     <v-app>
         <v-app-bar app dense dark color="blue">
             <v-spacer></v-spacer>
-            Already regiserted? <v-btn class="pa-2" rounded href="/login" text> Login</v-btn>            
+            Already regiserted? <v-btn class="pa-2" rounded @click="$emit('changelogin')" text> Login</v-btn>            
         </v-app-bar>
         <v-content class="pt-0">
             <v-container fluid class="pa-0" fill-height>
@@ -16,15 +16,15 @@
                         <v-card class="ml-15 mt-15" width="500">
                         <v-card-title>Sign up</v-card-title>
                         <v-card-text>
-                            <v-text-field prepend-icon="mdi-account-circle" label="Username" clearable></v-text-field>
-                            <v-text-field prepend-icon="mdi-email" label="Email" clearable></v-text-field>
-                            <v-text-field prepend-icon="mdi-lock" label="Password" type="password"></v-text-field>
+                            <v-text-field prepend-icon="mdi-account-circle" v-model="username" label="Username" clearable></v-text-field>
+                            <v-text-field prepend-icon="mdi-email" label="Email" v-model="email" clearable></v-text-field>
+                            <v-text-field prepend-icon="mdi-lock" label="Password" v-model="password" type="password"></v-text-field>
                             <v-text-field prepend-icon="mdi-lock" label="Confirm Password" type="password"></v-text-field>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-actions>
-                            <v-btn color="success">Register</v-btn>
-                            <v-btn color="info">Login</v-btn>
+                            <v-btn color="success" @click="signupuser">Register</v-btn>
+                            <v-btn color="info" @click="$emit('changelogin')">Login</v-btn>
                         </v-card-actions>
                     </v-card>
                     </div>
@@ -39,13 +39,30 @@
 
 <script>
 
+import {signup} from '../api.js';
+
 export default ({
     setup() {
         
     },
     data: ()=>({
-        
+        email:"",
+        username:"",
+        password:"",
     }),
+    methods: {
+      async signupuser(){
+          console.log("check");
+          await signup(this.username,this.email,this.password).then((response)=>{
+              if(response.status == 200){
+                  this.$emit('successfullLogin',response.data)
+              }else{
+                  alert("Some error, please try again!");
+              }
+          }
+          );
+      }  
+    },
 
 })
 </script>

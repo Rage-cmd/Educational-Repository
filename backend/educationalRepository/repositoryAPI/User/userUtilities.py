@@ -130,18 +130,20 @@ def save_post(user_id, post_id):
     """
     try:
         user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
-
+        result = 0
         if post_id in user["saved_posts"]:
             # remove post_id from saved posts if it is already saved
             user["saved_posts"].remove(post_id)
+            result = -1
         else:
             user["saved_posts"].append(post_id)
+            result = 1
 
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"saved_posts":user["saved_posts"]}})
 
-        return True
+        return result
     except:
-        return False
+        return 0
 
 
 def comment_post(user_id, post_id, comment_text):

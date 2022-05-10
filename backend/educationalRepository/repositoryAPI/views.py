@@ -571,13 +571,14 @@ def like_user_post(request):
         data = JSONParser().parse(request)
         user_id = data['user_id']
         post_id = data['post_id']
-        post = findSingleDocument("test_db","posts_collection",{"id":post_id})
-        response = {
-            "status" : "success",
-            "likes": post["upvotes"]
-        }
+        
         try:
             like_post(user_id,post_id,cache)
+            post = findSingleDocument("test_db","posts_collection",{"id":post_id})
+            response = {
+                "status" : "success",
+                "likes": post["upvotes"]
+            }
             return JsonResponse(json.loads(json.dumps(response, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to like post. The error is: " + str(e), status=500)
@@ -601,8 +602,11 @@ def save_user_post(request):
         data = JSONParser().parse(request)
         user_id = data['user_id']
         post_id = data['post_id']
-        if save_post(user_id,post_id):
-            return HttpResponse("Post saved", status=200)
+        result = save_post(user_id,post_id)
+        if result == 1:
+            return HttpResponse("Saved successfully", status=200)
+        elif result == -1:
+            return HttpResponse("Unsaved successfully", status=500)
         else:
             return HttpResponse("Failed to save post", status=500)
     else:

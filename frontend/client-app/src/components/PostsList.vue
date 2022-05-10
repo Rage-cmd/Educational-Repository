@@ -10,7 +10,8 @@
             @approvepost="postapproveMethod"
             :user="user"
             @removePost="removePost"
-            @postLike="postLikeHandler"/>
+            @postLike="postLikeHandler"
+            @verifyComment="verifyComment"/>
                         
         </v-container>        
         
@@ -55,6 +56,23 @@ export default ({
         }
     },
     methods:{
+        async fetchPostList(){
+            if(this.currentScreen==="Your Uploads"){
+            await yourUploads(this.user.id).then((response)=>{
+                this.posts = response.data;
+            });
+            }
+            else if(this.currentScreen==="Pending Approvals"){
+                await pendingApprovals(this.user.id).then((response)=>{
+                    this.posts = response.data;
+                });
+            }
+            else if(this.currentScreen === "Saved Posts"){
+                await getSavedPosts(this.user.id).then((response)=>{
+                    this.posts = response.data;
+                });
+            }
+        },
         async postapproveMethod(post_id){
             await approvepost(post_id).then((response)=>{
                 alert(response.data);
@@ -77,6 +95,11 @@ export default ({
                 alert(error);
             });
         },
+        verifyComment(comment_id){
+            console.log(comment_id)
+            this.fetchPostList();
+            this.postsKey = !this.postsKey;
+        }
     }
 
 });

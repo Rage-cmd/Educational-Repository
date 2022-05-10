@@ -66,7 +66,7 @@
       icon>
           <v-icon>mdi-comment-outline</v-icon>
       </v-btn>     -->
-      <CommentDialog :postModel="postModel"/>
+      <CommentDialog :postModel="postModel" :user="user" @verifyComment="verifyComment"/>
    
       <v-btn
       class="ma-2"
@@ -189,6 +189,9 @@ export default {
       },
       getDate(postModel){
        return postModel.time.split('T')[0].split("-").reverse().join("-"); 
+      },
+      verifyComment(commentid){
+        this.$emit('verifyComment',commentid);
       }
   },
   created: function(){

@@ -22,8 +22,7 @@
                 <v-list-item-title>Report</v-list-item-title>
               </v-list-item>
 
-              <v-list-item
-              >
+              <v-list-item v-if=" postModel.author.id === user.id " @click="verifyCommentHandler">
               <v-list-item-icon>
                 <v-icon color="green">mdi-check-decagram</v-icon>
               </v-list-item-icon>
@@ -34,15 +33,36 @@
 </template>
 
 <script>
+import {verifyComment} from '../../api.js';
+
 export default {
     name:'CommentMenu',
     setup() {
         
     },
+    props:{
+        user:Object,
+        postModel:Object,
+        comment:Object,
+    },
     data: ()=>({
         menuopts:["report"],
     }),
     methods:{
+      async verifyCommentHandler(){
+        await verifyComment(this.user.id,this.comment.id).then(
+          response=>{
+            alert(response.data);
+            this.$emit('verifyComment',this.comment.id);
+          }
+        ).catch(error=>{
+          alert("Some error occured during comment verification");
+          console.log(error);
+        });
+      }
+    },
+    created(){
+      console.log("commentMenu" + this.postModel);
     }
 }
 </script>

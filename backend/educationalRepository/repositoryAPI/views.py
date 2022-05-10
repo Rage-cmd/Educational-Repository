@@ -622,7 +622,7 @@ def save_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
-
+@csrf_exempt
 def verify_user_comment(request):
     """
     Verifies the user's comment.
@@ -640,8 +640,10 @@ def verify_user_comment(request):
         user_id = data['user_id']
         comment_id = data['comment_id']
         try:
-            verify_comment(user_id, comment_id)
-            return HttpResponse("Verified successfully", status=200)
+            if verify_comment(user_id, comment_id):
+                return HttpResponse("Verified successfully", status=200)
+            else:
+                return HttpResponse("Cannot verify comment. Check if the user is the author of the post the comment was written for.", status=200)
         except Exception as e:
             return HttpResponse("Failed to verify comment. The error is: " + str(e), status=500)
     else:

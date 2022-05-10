@@ -524,11 +524,51 @@ def suggest(request):
         search_type = data['search_type']
         search_term = data['search_term']
         try:
+            results = None
             if search_type == "post":
                 results = post_suggestions(search_term)
+                posts =[]
+
+                for post in results:
+                    comments = []
+                    author = findSingleDocument("test_db","users_collection",{"id":post['author']})
+                    post['author'] = {
+                        "id" : author['id'],
+                        "name" : author['name'],
+                        "profile_picture" : author['profile_picture'],
+                    }
+
+                    for comment_id in post['comments']:
+                        comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
+                        comments.append(comment)
+                    
+                    for comment in comments:
+                        comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
+                        comment['author'] = {
+                            "id" : comment_author['id'],
+                            "name" : comment_author['name'],
+                            "profile_picture" : comment_author['profile_picture'],
+                        }
+                    
+                    post['comments'] = comments
+                    posts.append(post)
+
+                return JsonResponse(json.loads(json.dumps(posts[:10], default=str)), safe=False, status=200)
+
             elif search_type == "tag":
                 results = tag_suggestions(search_term)
-            return JsonResponse(json.loads(json.dumps(results, default=str)), safe=False, status=200)
+                tags = []
+                for tag in results:
+                    tag_ids = tag['path_to_tag']
+                    path_to_tag_docs = []
+                    for tag_id in tag_ids:
+                        tag_doc = findSingleDocument("test_db","tags_collection",{"id":tag_id})
+                        path_to_tag_docs.append(tag_doc)
+                    tag['path_to_tag'] = path_to_tag_docs
+                    tags.append(tag)
+                return JsonResponse(json.loads(json.dumps(tags[:10], default=str)), safe=False, status=200)
+            
+            
         except Exception as e:
             return HttpResponse("Suggestion failed. The error is: " + str(e), status=500)
     else:
@@ -554,11 +594,11 @@ def search(request):
         search_term = data['search_term']
         try:
             results = None
-            if search_type == "post by ID":
+            if search_type == "post":
                 results = post_ID_search(search_term)
-            elif search_type == "post by name":
-                results = post_name_search(search_term)
-            elif search_type == "tag by ID":
+            # elif search_type == "post":
+            #     results = post_name_search(search_term)
+            elif search_type == "tag":
                 results = tag_ID_search(search_term)
         
             return JsonResponse(json.loads(json.dumps(results, default=str)), safe=False, status=200)
@@ -613,6 +653,7 @@ def like_user_post(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
 @csrf_exempt
 def save_user_post(request):
     """
@@ -639,6 +680,7 @@ def save_user_post(request):
             return HttpResponse("Failed to save post", status=500)
     else:
         return HttpResponse("Invalid request", status=400)
+
 
 @csrf_exempt
 def verify_user_comment(request):
@@ -731,6 +773,7 @@ def report_user_post(request):
 
 
 def fetch_latest_posts(request):
+    # cache.clear_cache()
     post_2 = findSingleDocument("test_db","posts_collection",{"id":'p2'})
     post_3 = findSingleDocument("test_db","posts_collection",{"id":'p3'})
     cache.addItem_recent_cache(post_2,datetime.datetime.now())
@@ -771,6 +814,7 @@ def fetch_latest_posts(request):
 
 
 def fetch_most_commented_posts(request):
+    # cache.clear_cache()
     post_4 = findSingleDocument("test_db","posts_collection",{"id":'p4'})
     post_6 = findSingleDocument("test_db","posts_collection",{"id":'p6'})
     cache.addItem_comment_cache(post_4,4)
@@ -805,6 +849,7 @@ def fetch_most_commented_posts(request):
             return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
+
 
 cache = CacheImpl(10)
 

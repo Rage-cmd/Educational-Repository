@@ -62,7 +62,7 @@ export default {
       }
     },
     created(){
-      console.log("commentMenu" + this.postModel);
+      console.log("commentMenu" + JSON.stringify(this.postModel));
     }
 }
 </script>

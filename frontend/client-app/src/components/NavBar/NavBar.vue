@@ -41,9 +41,9 @@
                         chips
                         small-chips
                         dense
-                        :items.sync="suggestionOptions"
+                        :items="getSuggestions"
                         @update:search-input="debounceInput($event)"
-                        @input="$emit('searchInput',selectedOption,searchFilter)"
+                        @input="searchHandler"
                         no-filter 
                         >
                         
@@ -120,6 +120,7 @@ export default {
     props:{
         sideMenu:Array,
         user:Object,
+        currentScreen:String,
     },
     data:()=>({
         userDetails:{
@@ -128,7 +129,7 @@ export default {
         drawer: false,
         sideMenuSelection: null,
         navBarOptions:["Home"],
-        items:["Child Search","Tag","Post"],
+        items:["Post","Tag","Child Search"],
         suggestionOptions:[],
         // suggestionOptions:["CN","OS", "Lingo"],
         searchFilter:"",
@@ -139,21 +140,37 @@ export default {
         this.searchFilter=this.items[0];
     },
     computed:{
-        
+        getSuggestions(){
+            return this.$store.state.suggestions;
+        },
     },
-    watcher:{
+    watch:{
         user(){
             console.log(this.user);
+        },
+        currentScreen(val){
+            if(val!=="Search Result"){
+                this.searchFilter=this.items[0];
+            }
         }
     },
     methods:{
         refreshSuggestions(){
-            console.log("check");
-            this.suggestionOptions=[];
+            if(this.searchFilter === this.items[2]){
+                getPostSuggestions("",'child_search').then(
+                    (response)=>{
+                        console.log("suggestions: " + JSON.stringify(response.data));
+                        this.$store.commit('setSuggestions',response.data.tags);
+                    }
+                )
+            }else{
+                console.log("check");
+                this.$store.commit('setSuggestions',[]);
+            }
         },
         debounceInput: _.debounce(function (search) {
             getPostSuggestions(search,this.searchFilter.toLowerCase()).then(res=>{
-                this.suggestionOptions=res.data;
+                this.$store.commit('setSuggestions',res.data);
             })
         }, 1000),
         loginput(val){
@@ -168,11 +185,14 @@ export default {
             }
         },
         getItem(text){
-            return this.suggestionOptions.find(item=>item.name===text[0]);
+            return this.$store.state.suggestions.find(item=>item.name===text[0]);
         },
         optionSelected(item){
             this.selectedOption=item;
         },
+        searchHandler(){
+            this.$emit('searchInput',this.selectedOption,this.searchFilter);
+        }
     }
 }
 </script>

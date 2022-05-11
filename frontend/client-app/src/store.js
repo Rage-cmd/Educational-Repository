@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
       posts: [],
       user:{},
       currentScreen:'',
+      suggestions:[]
     }
   },
   mutations: {
@@ -19,6 +20,9 @@ export const store = new Vuex.Store({
     },
     setUser (state, user) {
         state.user = user
+    },
+    setSuggestions(state, suggestions){
+        state.suggestions = suggestions
     }
   }
 });

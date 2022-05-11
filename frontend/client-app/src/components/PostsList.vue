@@ -3,7 +3,7 @@
     <v-app >
         <v-container>    
         </v-container>
-        <v-container mt-6>
+        <v-container>
             <!-- <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/> -->
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
             <div :key="reloadPosts">

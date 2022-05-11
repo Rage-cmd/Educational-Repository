@@ -2,8 +2,6 @@
 
     <v-app >
         <!-- <NavBar/> -->
-        <v-container>    
-        </v-container>
         <v-container mt-6>
             <v-tabs
                 v-model="selectedTab"

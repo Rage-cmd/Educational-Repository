@@ -17,12 +17,22 @@
         @logout = "logout"
         :user="user"
         @navBarOption="navigate"
-        @searchInput="showSearchResult"/>
+        @searchInput="showSearchResult"
+        :currentScreen="currentScreen"
+        :key="navbarReset"/>
         
         <v-container >
           
         </v-container>
-
+        <v-breadcrumbs class="mt-1" item-text="name" divider="/" :items="navigationPath"
+        v-if="currentScreen==='Search Result'">
+        <template v-slot:item="{ item }">
+          <v-breadcrumbs-item
+          >
+            {{ item.name.toUpperCase() }}
+          </v-breadcrumbs-item>
+        </template>
+        </v-breadcrumbs>
 
         <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen" :user="user"/>
         <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>
@@ -56,7 +66,7 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
-import {getFilteredPosts, yourUploads} from './api.js';
+import {getFilteredPosts, getPostSuggestions, yourUploads} from './api.js';
 import LoginVue from './components/LoginVue.vue';
 import SignupVue from './components/RegisterVue.vue';
 
@@ -88,6 +98,8 @@ export default {
     },
     hideall: true,
     postListKey:true,
+    navigationPath:[{"name":"Home"}],
+    navbarReset:false,
   }),
   methods:{
     async sideMenuSelectHandler(opt){
@@ -129,6 +141,15 @@ export default {
           this.$store.commit('setPosts',response.data);
         }
       );
+      }else{
+        getPostSuggestions(searchterm.id,'child_search').then(
+                    (response)=>{
+                        console.log("suggestions: " + JSON.stringify(response.data));
+                        this.$store.commit('setSuggestions',response.data.tags);
+                        this.$store.commit('setPosts',response.data.posts);
+                        this.navigationPath.push(searchterm);
+                    }
+                )
       }
     }
   },
@@ -136,6 +157,13 @@ export default {
     // getUserDetails('u5').then(response => {
     //     this.user = response.data;
     //   });
-  }
+  },
+  watch:{
+    currentScreen(val){
+        if(val!=="Search Result"){
+            this.navigationPath = [];
+        }
+    }
+  },
 };
 </script>

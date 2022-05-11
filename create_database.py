@@ -47,7 +47,7 @@ users = [
         'password': 'password',
         'access_level': 'moderator',
         'status': 'inactive',
-        'posts': ['p4'],
+        'posts': ['p4','p9'],
         'comments': [],
         'saved_posts': ['p3'],
         'liked_posts': ['p3', 'p2'],
@@ -210,7 +210,7 @@ posts = [
         'tags': ['t4', 't5'],
         'caption': 'P8 Caption',
         'text': 'P8 Text',
-        'author': 'u1',
+        'author': 'u4',
         'upvotes': 35,
         'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
         'is_answered': False,
@@ -221,7 +221,7 @@ posts = [
     {
         "id": "p9",
         "type": "video",
-        "time": "2022-05-11 11:13:22",
+        "time": "2020-01-01T00:00:00Z",
         "tags": [
             "t0",
             "t6",

@@ -31,4 +31,6 @@ urlpatterns = [
     path('top',views.fetch_most_commented_posts),
     path('uploadcomment',views.upload_user_comment),
     path('createtag',views.create_user_tags),
+    path('reportedposts',views.fetch_reported_post),
+    # path('reportedcomments',views.fetch_reported_comment),
 ]

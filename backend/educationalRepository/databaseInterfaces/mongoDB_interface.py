@@ -38,9 +38,11 @@ def deleteDocument(Database, collection, filterObject):
 def deleteDatabase(Database):
     client.drop_database(Database)
 
+
 def createDatabase(Database):
     db = client[Database]
     return db
+
 
 def getNextSequenceValue(Database, collection, offset = 1):
     """
@@ -58,6 +60,7 @@ def getNextSequenceValue(Database, collection, offset = 1):
     for doc in object:
         return int(doc["id"][1:]) + 1
     return offset
+
 
 def updateDocument(Database, collection, filterObject, updateObject):
     """

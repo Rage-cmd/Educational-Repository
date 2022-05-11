@@ -126,7 +126,7 @@ posts = [
         'is_answered': False,
         'is_approved': True,
         'comments': [],
-        'reports': 2
+        'reports': 0
     },
     {
         'id': 'p3',
@@ -141,7 +141,7 @@ posts = [
         'is_answered': False,
         'is_approved': False,
         'comments': ['c3'],
-        'reports': 2
+        'reports': 0
     },
     {
         'id': 'p4',
@@ -156,7 +156,7 @@ posts = [
         'is_answered': False,
         'is_approved': True,
         'comments': [],
-        'reports': 2
+        'reports': 0
     },
     {
         'id': 'p5',
@@ -171,7 +171,7 @@ posts = [
         'is_answered': False,
         'is_approved': True,
         'comments': [],
-        'reports': 2
+        'reports': 0
     },
     {
         'id': 'p6',
@@ -186,7 +186,7 @@ posts = [
         'is_answered': False,
         'is_approved': True,
         'comments': [],
-        'reports': 2
+        'reports': 0
     },
     {
         'id': 'p7',
@@ -201,7 +201,7 @@ posts = [
         'is_answered': False,
         'is_approved': False,
         'comments': [],
-        'reports': 2
+        'reports': 0
     },
     {
         'id': 'p8',
@@ -216,7 +216,7 @@ posts = [
         'is_answered': False,
         'is_approved': False,
         'comments': [],
-        'reports': 2
+        'reports': 0
     },
     {
         "id": "p9",
@@ -433,6 +433,7 @@ main_tree = [
         'drive_id': '12'
     }
 ]
+
 
 # delete database
 deleteDatabase("test_db")

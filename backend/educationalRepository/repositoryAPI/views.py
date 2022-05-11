@@ -433,6 +433,8 @@ def fetch_pending_approvals(request):
                     "name" : author['name'],
                     "profile_picture" : author['profile_picture'],
                 }
+            # sort posts by date
+            posts.sort(key=lambda x: x['date'], reverse=True)
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch pending approvals. The error is: " + str(e), status=500)
@@ -813,6 +815,38 @@ def create_user_tags(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
+
+def fetch_reported_post(request):
+    if request.method == "GET":
+        try:
+            # reports = findAllDocument("test_db","reports_collection",{})
+            reports = findAllDocument("test_db","posts_collection",{"reports" : {"$gt" : 0}})
+            posts = []
+            for report in reports:
+                post = get_detailed_post(report['id'])
+                posts.append(post)
+            return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
+        
+        except Exception as e:
+            return HttpResponse("Failed to fetch reports. The error is: " + str(e), status=500)
+    else:    
+        return HttpResponse("Invalid request", status=400)
+
+
+# def fetch_reported_comment(request):
+#     if request.method == "GET":
+#         try:
+#             reports = findAllDocument("test_db","reports_collection",{})
+#             comments = []
+#             for report in reports:
+#                 if report['type'] == 'comment':
+#                     comment = get_detailed_comment(report['comment_id'])
+#                     comments.append(comment)
+#             return JsonResponse(json.loads(json.dumps(comments, default=str)), safe=False, status=200)
+#         except Exception as e:
+#             return HttpResponse("Failed to fetch reports. The error is: " + str(e), status=500)
+#     else:    
+#         return HttpResponse("Invalid request", status=400)
 
 cache = CacheImpl(10)
 

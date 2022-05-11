@@ -11,10 +11,11 @@ class CacheImpl:
     
     def addItem_recent_cache(self,doc, datetime):
         insertItem = (datetime,doc)
-        if len(self.most_recent_cache.queue) >= self.maxItems:
-            removedItem = (self.most_recent_cache).get()
-            insertItem = max(removedItem,insertItem)
-        (self.most_recent_cache).put(insertItem)
+        if insertItem not in self.most_recent_cache.queue:
+            if len(self.most_recent_cache.queue) >= self.maxItems:
+                removedItem = (self.most_recent_cache).get()
+                insertItem = max(removedItem,insertItem)
+            (self.most_recent_cache).put(insertItem)
 
     
     def getAllItems_recent_cache(self):
@@ -38,10 +39,11 @@ class CacheImpl:
 
     def addItem_comment_cache(self,post, upvotes):
         insertItem = (-upvotes,post)
-        if len(self.most_upvoted_cache.queue) >= self.maxItems:
-            removedItem = (self.most_upvoted_cache).get()
-            insertItem = min(removedItem, insertItem)
-        (self.most_upvoted_cache).put(insertItem)
+        if insertItem not in self.most_upvoted_cache.queue:
+            if len(self.most_upvoted_cache.queue) >= self.maxItems:
+                removedItem = (self.most_upvoted_cache).get()
+                insertItem = min(removedItem, insertItem)
+            (self.most_upvoted_cache).put(insertItem)
 
     def getAllItems_comment_cache(self):
         posts=[]

@@ -66,7 +66,8 @@
       icon>
           <v-icon>mdi-comment-outline</v-icon>
       </v-btn>     -->
-      <CommentDialog :postModel="postModel" :user="user" @verifyComment="verifyComment"/>
+      <CommentDialog :postModel="postModel" :user="user" @verifyComment="verifyComment"
+      @commentPosted="commentPosted"/>
    
       <v-btn
       class="ma-2"
@@ -209,7 +210,7 @@ export default {
         }).catch((error)=>{
           alert(error);
         });
-      }
+      },
   },
   created: function(){
       this.description = this.getDescription(this.postModel);

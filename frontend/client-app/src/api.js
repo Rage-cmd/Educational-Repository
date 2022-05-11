@@ -186,3 +186,12 @@ export const getFilteredPosts = async(search_term,search_type)=>{
     });
     return response;
 }
+
+export const uploadComment = async(text,userid,postid)=>{
+    var response = await axios.post(devServer + 'uploadcomment',{
+        text:text,
+        user_id:userid,
+        post_id:postid,
+    });
+    return response;
+}

@@ -205,25 +205,20 @@ def upload_user_post(request):
         
         print(request.data.keys())
 
-        if request.data['image']:
-            post_details['image_url'] = request.FILES['image']
-            post_details['type'] = 'image'
-        elif request.data['video']:
-            post_details['video_url'] = request.FILES['video']
-            post_details['type'] = 'video'
-        else:
-            post_details['type'] = 'text'
-            
-
-        # if post_details['type'] == 'image':
-        #     post_details['image_url'] = request.FILES['file']
-        # elif post_details['type'] == 'video':
-        #     post_details['video_url'] = request.FILES['file']
+        if 'image' in request.data.keys():
+            if request.data['image'] == '':
+                post_details['type'] = 'text'
+            else:
+                post_details['type'] = 'image'
+                post_details['image_url'] = request.FILES['image']
+        elif 'video' in request.data.keys():
+            if request.data['video'] == '':
+                post_details['type'] = 'text'
+            else:
+                post_details['type'] = 'video'
+                post_details['video_url'] = request.FILES['video']
 
         print(post_details)
-        
-        # print(request.FILES['file'], type(request.FILES['file']))
-        # post_details['image_url'] = request.FILES
 
         # try:
         uploaded_post = upload_post(user_id, post_details,cache)

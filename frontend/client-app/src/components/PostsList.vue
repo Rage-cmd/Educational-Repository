@@ -1,8 +1,8 @@
 <template>
 
     <v-app >
-        <v-container>    
-        </v-container>
+        <!-- <v-container>    
+        </v-container> -->
         <v-container>
             <!-- <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/> -->
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->

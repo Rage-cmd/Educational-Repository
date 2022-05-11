@@ -25,8 +25,7 @@
                     </v-tab-item>
                     
                     <v-tab-item>
-                        <PostTemplate :postModel="sampleMCQPostData"/>
-                        <PostTemplate :postModel="sampleVideoPostData"/>
+                        <PostsList :currentScreen="currentScreen" :user="user"/>
                         
                     </v-tab-item>
             </v-tabs>
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-import PostTemplate from "../components/PostTemplate.vue";
+// import PostTemplate from "../components/PostTemplate.vue";
 // import NavBar from "../components/NavBar/NavBar.vue";
 import PostsList from "./PostsList.vue"
 
@@ -45,7 +44,7 @@ export default ({
         
     },
     components:{
-        PostTemplate,
+        // PostTemplate,
         PostsList,
         // NavBar,
     },

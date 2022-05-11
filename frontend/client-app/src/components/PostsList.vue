@@ -90,6 +90,15 @@ export default ({
                     this.$store.commit('setPosts', response.data);
                 });
             }
+            else if(this.currentScreen === "Most Recent"){
+                await getLatestPosts().then((response)=>{
+                    this.$store.commit('setPosts', response.data);
+                });
+            }else if(this.currentScreen === "Most Commented"){
+                await getMostCommentedPosts().then((response)=>{
+                    this.$store.commit('setPosts', response.data);
+                });
+        }
         },
         async postapproveMethod(post_id){
             await approvepost(post_id).then((response)=>{

@@ -97,7 +97,9 @@ export default {
             formdata.append('user_id',this.user.id);
                 
                 uploadPost(formdata).then(()=>{
-                    alert("Post Uploaded Successfully");
+                    // alert("Post Uploaded Successfully");
+                    this.$store.state.snackbarMessage = "Post Uploaded Successfully";
+                    this.$store.state.snackbar = true;
                     this.$emit('close');
                 }).catch(err=>{
                     alert("Post Upload Failed");

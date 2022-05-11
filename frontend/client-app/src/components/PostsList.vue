@@ -111,8 +111,9 @@ export default ({
             }
         },
         async postapproveMethod(post_id){
-            await approvepost(post_id).then((response)=>{
-                alert(response.data);
+            await approvepost(post_id).then(()=>{
+                this.$store.state.snackbarMessage = "Post Approved";
+                this.$store.state.snackbar = true;
                 this.posts = this.posts.filter(post => post.id != post_id);
             }).catch((error)=>{
                 alert(error);
@@ -124,8 +125,7 @@ export default ({
         },
         postLikeHandler(post_id,user_id){
             console.log("Liking the post")
-            likePost(user_id,post_id).then((response)=>{
-                alert(response.data);
+            likePost(user_id,post_id).then(()=>{
                 var index = this.posts.findIndex((obj=>obj.id===post_id))
                 this.posts[index].upvotes++;  
             }).catch((error)=>{

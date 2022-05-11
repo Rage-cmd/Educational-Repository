@@ -66,7 +66,8 @@ export default {
         },
         createTag(){
             createTag(this.tagModel.name,this.tagModel.parentTag.id).then(() => {
-                alert('Tag created successfully');
+                this.$store.state.snackbarMessage = "Tag created successfully";
+                this.$store.state.snackbar = true;
                 this.$emit('close');
             }).catch(err => {
                 alert('Tag creation failed');

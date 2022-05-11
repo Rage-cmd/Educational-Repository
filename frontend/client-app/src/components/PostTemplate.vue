@@ -180,8 +180,7 @@ export default {
       thumbsupBtnHandler(){
         // this.$emit('postLike',this.postModel.id,this.user.id);
         console.log("Liking the post")
-            likePost(this.user.id,this.postModel.id).then((response)=>{
-                alert(response.data);
+            likePost(this.user.id,this.postModel.id).then(()=>{
                 var index = this.$store.state.posts.findIndex((obj=>obj.id===this.postModel.id))
                 this.$state.state.posts[index].upvotes++;  
             }).catch((error)=>{
@@ -206,8 +205,9 @@ export default {
         this.$emit('verifyComment',commentid);
       },
       reportPostHandler(){
-        reportPost(this.user.id,this.postModel.id).then((response)=>{
-          alert(response.data);
+        reportPost(this.user.id,this.postModel.id).then(()=>{
+          this.$store.state.snackbarMessage = "Post Reported Successfully";
+          this.$store.state.snackbar = true;
         }).catch((error)=>{
           alert(error);
         });

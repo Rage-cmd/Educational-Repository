@@ -50,8 +50,9 @@ export default {
         async upgradeRole(user_id,role){
             console.log("upgrading user" + role);
             await updateRole(user_id,role).then(
-                response=>{
-                    alert(response);
+                ()=>{
+                    this.$store.state.snackbarMessage = "Role updated Successfully";
+                    this.$store.state.snackbar = true;
                     getAllUsers().then(response=>{
                         this.users = response.data;
                         this.userListKey = !this.userListKey;

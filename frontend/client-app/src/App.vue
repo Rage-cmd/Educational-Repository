@@ -33,6 +33,25 @@
           </v-breadcrumbs-item>
         </template>
         </v-breadcrumbs>
+        <v-snackbar
+          v-model="$store.state.snackbar"
+          absolute
+          top
+          light
+        >
+          {{ $store.state.snackbarMessage }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="primary"
+              text
+              v-bind="attrs"
+              @click="$store.state.snackbar = false"
+            >
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
 
         <HomeScreen v-if="currentScreen=='Home' " :currentScreen="currentScreen" :user="user"/>
         <!-- <PendingApprovalsScreen v-if="currentScreen == 'Pending Approvals'" :currentScreen="currentScreen"/>

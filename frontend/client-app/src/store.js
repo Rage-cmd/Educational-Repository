@@ -10,7 +10,9 @@ export const store = new Vuex.Store({
       posts: [],
       user:{},
       currentScreen:'',
-      suggestions:[]
+      suggestions:[],
+      snackbar:false,
+      snackbarMessage:'',
     }
   },
   mutations: {

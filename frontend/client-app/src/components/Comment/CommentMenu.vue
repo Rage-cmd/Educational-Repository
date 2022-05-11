@@ -52,8 +52,9 @@ export default {
     methods:{
       async verifyCommentHandler(){
         await verifyComment(this.comment.id,this.user.id).then(
-          response=>{
-            alert(response.data);
+          ()=>{
+            this.$store.state.snackbarMessage = "Comment verified successfully";
+            this.$store.state.snackbar = true;
             this.$emit('verifyComment',this.comment.id);
           }
         ).catch(error=>{
@@ -63,8 +64,9 @@ export default {
       },
       async reportComment(){
         reportComment(this.comment.id,this.user.id).then(
-          response=>{
-            alert(response.data);
+          ()=>{
+            this.$store.state.snackbarMessage = "Comment reported successfully";
+            this.$store.state.snackbar = true;
           }
         ).catch(error=>{
           alert("Some error occured during comment reporting");

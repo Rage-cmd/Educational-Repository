@@ -327,11 +327,11 @@ def upload_post(user_id, post_details, cache):
         post_doc["tags"].append(new_tag_id)
         # tags.append(new_tag_id)
     
-    if post_details["tag"] == []:
+    if post_details["tag"] == "":
         post_doc["tags"] = ['t0']
 
     parent_folder = tags[-1]
-    
+
     drive_id = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parent_folder})["drive_id"]
     uploaded_file_id = None
     fields = ["id", "name", 'mimeType', 'webViewLink', 'webContentLink']
@@ -342,23 +342,23 @@ def upload_post(user_id, post_details, cache):
         file_name = post_details["image_url"].name
         file_extension = post_details["image_url"].name.split(".")[-1]
         upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + "." + file_extension
-        print(upload_name)
         uploaded_file_id = drive_api.upload_file_IO( upload_name,
                                                      post_details["image_url"],
                                                      fields=fields,
                                                      parent_folder_id=[drive_id])
         
-        post_doc["image_url"] = uploaded_file_id["webContentLink"]
+        post_doc["image_url"] = uploaded_file_id["webViewLink"]
 
     elif post_details["type"] == "video":
-        file_name, file_extension = os.path.splitext(post_details["video_url"])
-        upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + file_extension
-        uploaded_file_id = drive_api.upload_file(upload_name, 
+        # file_name, file_extension = os.path.splitext(post_details["video_url"])
         file_extension = post_details["video_url"].name.split(".")[-1]
         upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + "." + file_extension
+        uploaded_file_id = drive_api.upload_file_IO(upload_name, 
                                                     post_details["video_url"], 
                                                     fields=fields, 
                                                     parent_folder_id=[drive_id])
+        link = uploaded_file_id["webViewLink"].split("view?")[0] + "preview"
+        post_doc["video_url"] = link
 
 
     mongoDB_interface.saveSingleDocument("test_db","posts_collection",post_doc)
@@ -377,7 +377,6 @@ def upload_post(user_id, post_details, cache):
     else:
         maintree_child_doc['drive_id'] = None
 
-    print("CREATED MAIN TREE NODE")
 
     mongoDB_interface.saveSingleDocument("test_db","maintree_collection",maintree_child_doc)
     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
@@ -419,6 +418,10 @@ def insert_tag(tag_name, parents):
             parent_folder_id = [mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parents[-1]})["drive_id"]]
 
         file = drive_api.create_folder(tag_name,parent_folder_id)
+
+        if parents == []:
+            drive_id = file['id']
+            drive_api.add_permission(drive_id, "anyone", "reader")        
 
         main_tree_node_doc = {
             "id": tag_id,

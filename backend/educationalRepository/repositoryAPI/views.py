@@ -78,7 +78,7 @@ def login_creds(request):
         user_document = findSingleDocument("test_db","users_collection",{"email":email,"password":password})
 
         if user_document['is_banned']:
-            return HttpResponse("User is banned", status=400)
+            return HttpResponse("User is banned", status=200)
 
         if user_document:
             return JsonResponse(json.loads(json.dumps(user_document, default=str)), safe=False, status=200)
@@ -194,7 +194,6 @@ def upload_user_post(request):
         }
     """
     if request.method == 'POST':
-        print("------------------------------------------------------------------")
         user_id = request.data['user_id']
 
         post_details = {
@@ -432,9 +431,10 @@ def fetch_pending_approvals(request):
                     "id" : author['id'],
                     "name" : author['name'],
                     "profile_picture" : author['profile_picture'],
+                    "is_banned" : author['is_banned'],
                 }
             # sort posts by date
-            posts.sort(key=lambda x: x['date'], reverse=True)
+            posts.sort(key=lambda x: x['time'], reverse=True)
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch pending approvals. The error is: " + str(e), status=500)
@@ -560,6 +560,7 @@ def search(request):
                             "id" : author['id'],
                             "name" : author['name'],
                             "profile_picture" : author['profile_picture'],
+                            "is_banned" : author['is_banned'],
                         }
                         comments.append(comment)
                     post['comments'] = comments
@@ -788,6 +789,7 @@ def upload_user_comment(request):
                 "id" : comment_author['id'],
                 "name" : comment_author['name'],
                 "profile_picture" : comment_author['profile_picture'],
+                "is_banned" : comment_author['is_banned'],
             }
 
             return JsonResponse(json.loads(json.dumps(comment, default=str)), safe=False, status=200)

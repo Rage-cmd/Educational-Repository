@@ -541,6 +541,7 @@ def get_detailed_post(post_id):
         "id" : author['id'],
         "name" : author['name'],
         "profile_picture" : author['profile_picture'],
+        "is_banned" : author['is_banned'],
     }
     
     for comment_id in post['comments']:
@@ -553,6 +554,7 @@ def get_detailed_post(post_id):
             "id" : comment_author['id'],
             "name" : comment_author['name'],
             "profile_picture" : comment_author['profile_picture'],
+            "is_banned" : comment_author['is_banned'],
         }
     
     post['comments'] = comments

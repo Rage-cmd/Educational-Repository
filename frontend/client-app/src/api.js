@@ -6,15 +6,6 @@ export  const getPosts = async ()=>{
     console.log("This response:" + JSON.stringify(response.data));
   }
 
-export const uploadPost = async (postModel,userid)=>{
-    var response = await axios.post(devServer + 'uploadpost',
-    {
-        post:postModel,
-        userid:userid,
-    })
-    return response;
-}
-
 export const createTag = async (tagModel,userid)=>{
     var response = await axios.post(devServer + 'createtag',{
         tag:tagModel,
@@ -192,6 +183,16 @@ export const uploadComment = async(text,userid,postid)=>{
         text:text,
         user_id:userid,
         post_id:postid,
+    });
+    return response;
+}
+
+export const uploadPost = async(formdata)=>{
+    var response = await axios.post(devServer + 'uploadpost',formdata,
+    {
+      headers: {
+          'Content-Type': 'multipart/form-data'
+      }
     });
     return response;
 }

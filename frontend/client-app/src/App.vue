@@ -44,7 +44,7 @@
 
         <PostsList v-else :currentScreen="currentScreen" :user="user" :key="postListKey"/>
 
-        <CreateUploadDialog/>
+        <CreateUploadDialog :user="user"/>
 
       <!-- <UploadVideoPostScreen />
       <TagCreationScreen />

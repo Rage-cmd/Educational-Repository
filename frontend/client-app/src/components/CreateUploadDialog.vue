@@ -36,7 +36,7 @@
             Text Post
         </v-tab>
           <v-tab-item>
-              <UploadMCQPostScreen/>
+              <UploadMCQPostScreen :user="user"/>
           </v-tab-item>
           <v-tab>
             Create Tag 
@@ -62,6 +62,9 @@ export default {
         UploadVideoPostScreen,
         UploadMCQPostScreen,
         TagCreationScreen,
+    },
+    props:{
+        user:Object
     },
     data: ()=>({
             dialog:false,

@@ -182,6 +182,9 @@ def comment_post(user_id, post_id, comment_text,cache):
         user['comments'].append(comment_id)
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
 
+        notification = user['name'] + " commented on your post \" " + post['caption'] + " \""
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":post['author']},{"$push": {"notifications":notification}})
+
         # cache.addItem_comment_cache(post, post['upvotes'])
         cache.addItem_comment_cache(post, len(post['comments']))
 
@@ -382,6 +385,9 @@ def upload_post(user_id, post_details, cache):
     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
+
+    notification = "Your post \"" + post_doc["caption"] + "\" has been uploaded successfully."
+    mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"notifications":notification}})
 
     cache.addItem_recent_cache(post_doc,datetime.datetime.now())
 

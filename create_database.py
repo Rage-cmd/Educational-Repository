@@ -174,6 +174,21 @@ posts = [
         'reports': 2
     },
     {
+        'id': 'p6',
+        'type': 'text',
+        'time': '2020-01-01T00:00:00Z',
+        'tags': ['t4', 't5'],
+        'caption': 'P5 Caption',
+        'text': 'P5 Text',
+        'author': 'u1',
+        'upvotes': 35,
+        'image_url': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKboCkjXUKztIj7P8a5UjeFn0lAMQSp_TqhQ&usqp=CAU',
+        'is_answered': False,
+        'is_approved': True,
+        'comments': [],
+        'reports': 2
+    },
+    {
         'id': 'p7',
         'type': 'image',
         'time': '2020-01-01T00:00:00Z',

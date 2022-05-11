@@ -35,8 +35,10 @@ def neighbour_suggestions(path):
     if path == "":
         last_node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id": "t0"})
     else:
-        last_node_id = path[-1]
+        last_node_id = path
         last_node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id": last_node_id})
+
+    print("last_node: ", last_node)
 
     for post_id in last_node['children_posts']:
         children_posts.append(mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id}))

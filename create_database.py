@@ -288,7 +288,7 @@ tags = [
     {
         'id': 't6',
         'name': 'Tag 6',
-        'path_to_tag': ['t0','t6'],
+        'path_to_tag': ['t0'],
     }
 ]
 
@@ -298,7 +298,7 @@ main_tree = [
         'name': 'Main 0',
         'children_tags': ['t1', 't6'],
         'children_posts': [],
-        'drive_id': '1CH5V3_1yeWqap1Rdykvb15SLilnUBQKx'
+        'drive_id': '1bCsM4D4cnCA30hF-0myr96Xzw_3oLEcw'
     },
     {
         'id': 't1',
@@ -306,7 +306,7 @@ main_tree = [
         'type': 'tag',
         'children_tags': ['t2', 't3'],
         'children_posts': [],
-        'drive_id': '1fygTkjSRUk75JVXh8fJwZ9DvUauCUpo-'
+        'drive_id': '1mqiX2ujEe6DAb1pWjhb-VlxnXXAHHZos'
     },
     {
         'id': 't2',
@@ -314,7 +314,7 @@ main_tree = [
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p1', 'p2'],
-        'drive_id': '18nvqHH-FhbQVgINTePSIP-sEuYBsE9s6'
+        'drive_id': '1iUAueUD0sYpbE95n4AJUp_98YpchG-gP'
     },
     {
         'id': 't3',
@@ -322,7 +322,7 @@ main_tree = [
         'type': 'tag',
         'children_tags': ['t4', 't5'],
         'children_posts': [],
-        'drive_id': '1_UZa-Oiwf4T9O8RZvo0MMAMxwzNfYPA3'
+        'drive_id': '1MjWWyflk5T6SmiH83FtPnmvDO2miwQEF'
     },
     {
         'id': 't4',
@@ -330,7 +330,7 @@ main_tree = [
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p3'],
-        'drive_id': '1VoAXE3_kAVqyg7cKf6ESVCdhS4xsiV8j'
+        'drive_id': '1cE0zPYMLiCNJ_6zHnCPPKaE-vqmjdzok'
     },
     {
         'id': 't5',
@@ -338,7 +338,7 @@ main_tree = [
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p4', 'p5', 'p6'],
-        'drive_id': '1YPmQs64XCl_AxQNdi5bvBtT353mrqoJP'
+        'drive_id': '1VbxcbhYdk6Kgkl6e_XwBZ7kiGrGOEXlp'
     },
     {
         'id': 'p1',
@@ -394,7 +394,7 @@ main_tree = [
         'type': 'tag',
         'children_tags': [],
         'children_posts': ['p7','p8'],
-        'drive_id': '1twRpsT1Hoo1k2yUF5P-6JUS4CYDdGl6y'
+        'drive_id': '1UwSh_Hl-0yjmd7V4sJFjp_u6NPuLLpVZ'
     },
     {
         'id': 'p7',

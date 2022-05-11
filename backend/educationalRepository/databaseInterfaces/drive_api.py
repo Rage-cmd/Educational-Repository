@@ -347,6 +347,30 @@ def search_file(file_name = None, file_id = None, fields = "id, name", verbose =
 
     return (ids, results)
 
+
+def add_permission(file_id, email_address = "anyone", role = "reader"):
+    """
+    Adds a permission to a file.
+
+    Parameters:
+        file_id (str): File ID of the file to be shared.
+        email_address (str): Email address of the user to be shared.
+        role (str): Role of the user to be shared.
+
+    Returns:
+        None
+    
+    Raises:
+        Exception: If the file is not found.
+    """
+
+    try:
+        # Call the Drive v3 API
+        results = service.permissions().create(fileId=file_id, body={'type': 'anyone', 'role': role, 'emailAddress': email_address}).execute()
+
+    except HttpError as error:
+        print(f'Cannot Add Permission. An error occurred: {error}')
+
 # if __name__ == '__main__':
     
 creds = get_credentials('credentials.json')

@@ -416,6 +416,13 @@ def insert_tag(tag_name, parents):
             "path_to_tag": parents,
         }
 
+        #lowecase string
+
+        children_tags = mongoDB_interface.findAllDocument("test_db","tagtree_collection",{"path_to_tag":parents})
+        for child_tag in children_tags:
+            if tag_name.lower() == child_tag["name"].lower():
+                return child_tag["id"]
+
         mongoDB_interface.saveSingleDocument("test_db","tagtree_collection",tag_doc)
         
         if parents == []:

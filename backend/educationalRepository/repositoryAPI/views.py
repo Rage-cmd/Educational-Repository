@@ -196,7 +196,11 @@ def upload_user_post(request):
     if request.method == 'POST':
         user_id = json.loads(request.data['user_id'])
         post_details = json.loads(request.data['post_details'])
-        post_details['image_url'] = request.FILES['file']
+
+        if post_details['type'] == 'image':
+            post_details['image_url'] = request.FILES['file']
+        elif post_details['type'] == 'video':
+            post_details['video_url'] = request.FILES['file']
 
         print(post_details)
         
@@ -723,34 +727,16 @@ def fetch_latest_posts(request):
     post_3 = findSingleDocument("test_db","posts_collection",{"id":'p3'})
     cache.addItem_recent_cache(post_2,datetime.datetime.now())
     cache.addItem_recent_cache(post_3,datetime.datetime.now())
+    
     if request.method == "GET":
         try:
             posts = cache.getAllItems_recent_cache()
             response_posts = []
-            print(posts)
+    
             for post in posts:
-                comments = []
-                author = findSingleDocument("test_db","users_collection",{"id":post['author']})
-                post['author'] = {
-                    "id" : author['id'],
-                    "name" : author['name'],
-                    "profile_picture" : author['profile_picture'],
-                }
-                
-                for comment_id in post['comments']:
-                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                    comments.append(comment)
+                post = get_detailed_post(post['id'])
+                response_posts.append(post)
 
-                for comment in comments:
-                    comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                    comment['author'] = {
-                        "id" : comment_author['id'],
-                        "name" : comment_author['name'],
-                        "profile_picture" : comment_author['profile_picture'],
-                    }
-                
-                post['comments'] = comments
-                response_posts.append(posts)
             return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)
@@ -769,28 +755,9 @@ def fetch_most_commented_posts(request):
             posts = cache.getAllItems_comment_cache()
             response_posts = []
             for post in posts:
-                comments = []
-                author = findSingleDocument("test_db","users_collection",{"id":post['author']})
-                post['author'] = {
-                    "id" : author['id'],
-                    "name" : author['name'],
-                    "profile_picture" : author['profile_picture'],
-                }
-                
-                for comment_id in post['comments']:
-                    comment = findSingleDocument("test_db","comments_collection",{"id":comment_id})
-                    comments.append(comment)
-
-                for comment in comments:
-                    comment_author = findSingleDocument("test_db","users_collection",{"id":comment['author']})
-                    comment['author'] = {
-                        "id" : comment_author['id'],
-                        "name" : comment_author['name'],
-                        "profile_picture" : comment_author['profile_picture'],
-                    }
-                
-                post['comments'] = comments
-                response_posts.append(posts)
+                print(post['id'])
+                post = get_detailed_post(post['id'])
+                response_posts.append(post)
             return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)

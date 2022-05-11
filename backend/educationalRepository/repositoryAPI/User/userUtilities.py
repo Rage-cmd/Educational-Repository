@@ -301,10 +301,10 @@ def upload_post(user_id, post_details, cache):
     post_doc = {}
     tags = None
     try:
-        tag_tree_node = mongoDB_interface.findSingleDocument("test_db","tagtree_collection",{"id":post_details["tag"]})
+        tag_tree_node = mongoDB_interface.findSingleDocument("test_db","tagtree_collection",{"id":post_details["tag"]['id']})
         tag_tree_node['path_to_tag'].append(tag_tree_node['id'])
         tags = tag_tree_node['path_to_tag']
-
+        print(post_details)
         post_doc = {
             "id": 'p' + str(mongoDB_interface.getNextSequenceValue("test_db","posts_collection")),
             "type": post_details["type"],
@@ -382,6 +382,7 @@ def upload_post(user_id, post_details, cache):
 
 
     mongoDB_interface.saveSingleDocument("test_db","maintree_collection",maintree_child_doc)
+    
     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})

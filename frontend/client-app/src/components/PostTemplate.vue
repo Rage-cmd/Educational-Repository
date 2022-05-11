@@ -182,7 +182,7 @@ export default {
         console.log("Liking the post")
             likePost(this.user.id,this.postModel.id).then(()=>{
                 var index = this.$store.state.posts.findIndex((obj=>obj.id===this.postModel.id))
-                this.$state.state.posts[index].upvotes++;  
+                this.$store.state.posts[index].upvotes++;  
             }).catch((error)=>{
                 alert(error);
             });

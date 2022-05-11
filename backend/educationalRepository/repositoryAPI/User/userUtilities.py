@@ -350,7 +350,7 @@ def upload_post(user_id, post_details, cache):
                                                      fields=fields,
                                                      parent_folder_id=[drive_id])
         
-        post_doc["image_url"] = uploaded_file_id["webViewLink"]
+        post_doc["image_url"] = uploaded_file_id["webContentLink"]
 
     elif post_details["type"] == "video":
         # file_name, file_extension = os.path.splitext(post_details["video_url"])

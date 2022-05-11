@@ -30,7 +30,7 @@
             Video Post 
         </v-tab>
           <v-tab-item>
-              <UploadVideoPostScreen/>
+              <UploadVideoPostScreen :user="user"/>
           </v-tab-item>
         <v-tab>
             Text Post

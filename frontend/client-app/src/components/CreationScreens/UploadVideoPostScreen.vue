@@ -6,37 +6,52 @@
             <v-form width="50%">
                 <v-text-field
                     width="20%"
-                    label="Title"
+                    label="Caption"
+                    name="caption"
+                    v-model="postModel.caption"
                     required
                 ></v-text-field>
 
-                <v-file-input
-                    accept="video/*"
-                    label="Video File"
-                    required
-                ></v-file-input>
+                <div class="container mb-2">
+                    <label>Video File
+                        <input type="file" @change="handleFileUpload( $event )"/>
+                    </label>
+                    <br>
+                </div>
 
                 <v-textarea
                     outlined
                     required
                     name="input-7-4"
                     label="Description"
+                    v-model="postModel.description"
                 ></v-textarea>
 
                 <v-autocomplete 
+                        label="Tags"
                         chips
                         small-chips
                         dense
-                        multiple
-                        :items="suggestionOptions"
-                        label="Tags"
-                        ></v-autocomplete>
+                        :items="suggestions"
+                        v-model="postModel.tags"
+                        @update:search-input="debounceInput($event)"
+                        no-filter
+                >
             
-            
+                    <template v-slot:selection="data">
+                        <v-chip v-bind="data.attrs" small>{{data.item.name}}</v-chip>
+                    </template>
+
+                    <template v-slot:item="data" >
+                        <v-list-item-content >
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                </v-autocomplete>
             <v-card-actions class="d-flex justify-center">
             <v-btn
                 color="primary"
-                @click="reveal = true"
+                @click="postUpload"
             >
                 Post
             </v-btn>
@@ -47,3 +62,54 @@
     </v-card>
 </v-container>
 </template>
+<script>
+
+import _ from 'lodash';
+import { getPostSuggestions, uploadPost } from '../../api';
+
+export default {
+    name:'UploadMCQPostScreen',
+    setup() {
+    },
+    props:{
+        user:Object,
+    },
+    data: ()=>({
+        postModel:{
+            caption:'',
+            image:'',
+            description:'',
+            tags:[]
+        },
+        suggestions:[],
+        file:''
+    }),
+    methods:{
+        postUpload(){
+            let formdata  = new FormData();
+            formdata.append('caption',this.postModel.caption);
+            formdata.append('text',this.postModel.description);
+            formdata.append('tags',JSON.stringify(this.postModel.tags));
+            formdata.append('video',this.file);
+            formdata.append('type',"video");
+            formdata.append('user_id',this.user.id);
+                
+                uploadPost(formdata).then(res=>{
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                });
+        },
+        debounceInput: _.debounce(function (search) {
+            getPostSuggestions(search,'tag').then(res=>{
+                this.suggestions = res.data;
+            })
+        }, 1000),
+        handleFileUpload( event ){
+            this.file = event.target.files[0];
+            if(this.file)
+                console.log("File taken");
+        },
+    }
+}
+</script>

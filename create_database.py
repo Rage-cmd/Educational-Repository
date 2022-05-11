@@ -217,6 +217,26 @@ posts = [
         'is_approved': False,
         'comments': [],
         'reports': 2
+    },
+    {
+        "id": "p9",
+        "type": "video",
+        "time": "2022-05-11 11:13:22",
+        "tags": [
+            "t0",
+            "t6",
+            "t7"
+        ],
+        "caption": "My first Postman Post!",
+        "text": "This post has been uploaded using postman!!",
+        "author": "u4",
+        "comments": [],
+        "is_answered": False,
+        "is_approved": False,
+        "upvotes": 0,
+        "reports": 0,
+        "video_url": "https://drive.google.com/file/d/1tuSqTltmlAT-0-hVtJJqV8JpsQkZ-lDc/preview",
+        "_id": "627b9a55cdf58c7d3c8c9dd3"
     }
 
 ]

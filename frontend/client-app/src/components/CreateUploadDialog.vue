@@ -30,13 +30,13 @@
             Video Post 
         </v-tab>
           <v-tab-item>
-              <UploadVideoPostScreen :user="user" @close="this.dialog=false"/>
+              <UploadVideoPostScreen :user="user" @close="dialog=false"/>
           </v-tab-item>
         <v-tab>
             Text Post
         </v-tab>
           <v-tab-item>
-              <UploadMCQPostScreen :user="user" @close="this.dialog=false"/>
+              <UploadMCQPostScreen :user="user" @close="dialog=false"/>
           </v-tab-item>
           <v-tab>
             Create Tag 

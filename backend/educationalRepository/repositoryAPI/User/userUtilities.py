@@ -182,8 +182,11 @@ def comment_post(user_id, post_id, comment_text,cache):
         user['comments'].append(comment_id)
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
 
+        notification = user['name'] + " commented on your post \" " + post['caption'] + " \""
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":post['author']},{"$push": {"notifications":notification}})
+
         # cache.addItem_comment_cache(post, post['upvotes'])
-        # cache.addItem_comment_cache(post, len(post['comments']))
+        cache.addItem_comment_cache(post, len(post['comments']))
 
         return comment_doc
     except:
@@ -295,12 +298,18 @@ def upload_post(user_id, post_details, cache):
     Returns:
         The document of the created post.
     """
+    post_doc = {}
+    tags = None
     try:
+        tag_tree_node = mongoDB_interface.findSingleDocument("test_db","tagtree_collection",{"id":post_details["tag"]})
+        tag_tree_node['path_to_tag'].append(tag_tree_node['id'])
+        tags = tag_tree_node['path_to_tag']
+
         post_doc = {
             "id": 'p' + str(mongoDB_interface.getNextSequenceValue("test_db","posts_collection")),
             "type": post_details["type"],
             "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "tags": post_details["tags"],
+            "tags": tags,# post_details["tags"],
             "caption": post_details["caption"],
             "text": post_details["text"],
             "author": user_id,
@@ -311,41 +320,48 @@ def upload_post(user_id, post_details, cache):
             "reports": 0,
         }
 
-    except:
-        print("The post details are not in the correct format.")
+    except Exception as e:
+        print("The post details are not in the correct format." + str(e))
     
+
     # if new_tag is not None create a new tag
     if "new_tag" in post_details:
-        new_tag_id = insert_tag(post_details["new_tag"], post_details["tags"])
+        new_tag_id = insert_tag(post_details["new_tag"], tags)
         post_doc["tags"].append(new_tag_id)
+        # tags.append(new_tag_id)
     
-    if post_details["tags"] == []:
-        post_doc["tags"] = ["root"]
-    
-    parent_folder = post_details['tags'][-1]
-    
+    if post_details["tag"] == "":
+        post_doc["tags"] = ['t0']
+
+    parent_folder = tags[-1]
+
     drive_id = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parent_folder})["drive_id"]
     uploaded_file_id = None
     fields = ["id", "name", 'mimeType', 'webViewLink', 'webContentLink']
     fields = ",".join(fields)
     
     if post_details["type"] == "image":
-        file_name, file_extension = os.path.splitext(post_details["image_url"])
-        upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + file_extension
-        uploaded_file_id = drive_api.upload_file( upload_name,
-                                                  post_details["image_url"], 
-                                                  fields=fields, 
-                                                  parent_folder_id=[drive_id]) 
-        post_doc["image_url"] = uploaded_file_id["webContentLink"]
+        # file_name, file_extension = os.path.splitext(post_details["image_url"])
+        file_name = post_details["image_url"].name
+        file_extension = post_details["image_url"].name.split(".")[-1]
+        upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + "." + file_extension
+        uploaded_file_id = drive_api.upload_file_IO( upload_name,
+                                                     post_details["image_url"],
+                                                     fields=fields,
+                                                     parent_folder_id=[drive_id])
+        
+        post_doc["image_url"] = uploaded_file_id["webViewLink"]
 
     elif post_details["type"] == "video":
-        file_name, file_extension = os.path.splitext(post_details["video_url"])
-        upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + file_extension
-        uploaded_file_id = drive_api.upload_file(upload_name, 
+        # file_name, file_extension = os.path.splitext(post_details["video_url"])
+        file_extension = post_details["video_url"].name.split(".")[-1]
+        upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + "." + file_extension
+        uploaded_file_id = drive_api.upload_file_IO(upload_name, 
                                                     post_details["video_url"], 
                                                     fields=fields, 
                                                     parent_folder_id=[drive_id])
-        post_doc["video_url"] = uploaded_file_id["webContentLink"]
+        link = uploaded_file_id["webViewLink"].split("view?")[0] + "preview"
+        post_doc["video_url"] = link
 
 
     mongoDB_interface.saveSingleDocument("test_db","posts_collection",post_doc)
@@ -364,11 +380,14 @@ def upload_post(user_id, post_details, cache):
     else:
         maintree_child_doc['drive_id'] = None
 
-    mongoDB_interface.saveSingleDocument("test_db","maintree_collection",maintree_child_doc)
 
+    mongoDB_interface.saveSingleDocument("test_db","maintree_collection",maintree_child_doc)
     user = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
     user["posts"].append(post_doc["id"])
     mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"posts":user["posts"]}})
+
+    notification = "Your post \"" + post_doc["caption"] + "\" has been uploaded successfully."
+    mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"notifications":notification}})
 
     cache.addItem_recent_cache(post_doc,datetime.datetime.now())
 
@@ -397,11 +416,18 @@ def insert_tag(tag_name, parents):
         }
 
         mongoDB_interface.saveSingleDocument("test_db","tagtree_collection",tag_doc)
-        mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parents[-1]},{"$push": {"children_tags":tag_id}})
+        
+        if parents == []:
+            parent_folder_id = None
+        else:
+            mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parents[-1]},{"$push": {"children_tags":tag_id}})
+            parent_folder_id = [mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parents[-1]})["drive_id"]]
 
-        parent_folder_id = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parents[-1]})["drive_id"]
+        file = drive_api.create_folder(tag_name,parent_folder_id)
 
-        file = drive_api.create_folder(tag_name,[parent_folder_id])
+        if parents == []:
+            drive_id = file['id']
+            drive_api.add_permission(drive_id, "anyone", "reader")        
 
         main_tree_node_doc = {
             "id": tag_id,

@@ -3,6 +3,7 @@ import hashlib
 import re
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 # Create your views here.
 import sys
@@ -154,8 +155,8 @@ def sign_up(request):
     else:
         return HttpResponse("Invalid request", status=400)
 
-
 @csrf_exempt
+@api_view(['POST'])
 def upload_user_post(request):
     """
     Upload a post. The function expects a user id and a dictionary consisiting of post details.
@@ -193,16 +194,20 @@ def upload_user_post(request):
         }
     """
     if request.method == 'POST':
-        print(request)
-        data = JSONParser().parse(request)
-        print(data)
-        user_id = data['user_id']
-        post_details = data['post_details']
-        try:
-            uploaded_post = upload_post(user_id, post_details,cache)
-            return JsonResponse(json.loads(json.dumps(uploaded_post,default=str)), safe=False, status=200)
-        except Exception as e:
-            return HttpResponse("Post upload failed. The error is: " + str(e))
+        user_id = json.loads(request.data['user_id'])
+        post_details = json.loads(request.data['post_details'])
+        post_details['image_url'] = request.FILES['file']
+
+        print(post_details)
+        
+        # print(request.FILES['file'], type(request.FILES['file']))
+        # post_details['image_url'] = request.FILES
+
+        # try:
+        uploaded_post = upload_post(user_id, post_details,cache)
+        return JsonResponse(json.loads(json.dumps(uploaded_post,default=str)), safe=False, status=200)
+        # except Exception as e:
+            # return HttpResponse("Post upload failed. The error is: " + str(e))
     else:
         return HttpResponse("Invalid request")
 
@@ -486,7 +491,13 @@ def suggest(request):
                     tag['path_to_tag'] = path_to_tag_docs
                     tags.append(tag)
                 return JsonResponse(json.loads(json.dumps(tags[:10], default=str)), safe=False, status=200)
-            
+            elif search_type == "child_search":
+                results = neighbour_suggestions(search_term)
+                response = {
+                    "posts": results[0],
+                    "tags": results[1]
+                }
+                return JsonResponse(json.loads(json.dumps(response, default=str)), safe=False, status=200)
             
         except Exception as e:
             return HttpResponse("Suggestion failed. The error is: " + str(e), status=500)

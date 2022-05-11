@@ -8,7 +8,7 @@
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
             <div :key="reloadPosts">
 
-            <PostTemplate v-for="post in getPosts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
+            <PostTemplate  v-for="post in getPosts" :key="post.id" :postModel="post" :currentScreen="currentScreen"
             @approvepost="postapproveMethod"
             :user="user"
             @removePost="removePost"
@@ -23,7 +23,7 @@
 
 <script>
 import PostTemplate from "../components/PostTemplate.vue" ;
-import {yourUploads,approvepost, pendingApprovals, getSavedPosts, likePost, getLatestPosts, getMostCommentedPosts} from '../api.js';
+import {yourUploads,approvepost, pendingApprovals, getSavedPosts, likePost, getLatestPosts, getMostCommentedPosts, getReportedPosts} from '../api.js';
 
 export default ({
     setup() {
@@ -43,6 +43,7 @@ export default ({
     reloadPosts:false,
     }),
     async created(){
+        console.log("postslist " + this.currentScreen);
         if(this.currentScreen==="Your Uploads"){
             await yourUploads(this.user.id).then((response)=>{
                 this.$store.commit('setPosts', response.data);
@@ -66,15 +67,20 @@ export default ({
             await getMostCommentedPosts().then((response)=>{
                 this.$store.commit('setPosts', response.data);
             });
+        }else if(this.currentScreen === "Reported Posts"){
+            await getReportedPosts().then((response)=>{
+                this.$store.commit('setPosts', response.data);
+            });
         }
     },
     computed:{
         getPosts(){
-            return this.$store.state.posts;
+            return this.$store.state.posts.filter(post=>!post.author.is_banned);
         }
     },
     methods:{
         async fetchPostList(){
+            console.log("postslist " + this.currentScreen);
             if(this.currentScreen==="Your Uploads"){
             await yourUploads(this.user.id).then((response)=>{
                 this.$store.commit('setPosts', response.data);
@@ -98,7 +104,11 @@ export default ({
                 await getMostCommentedPosts().then((response)=>{
                     this.$store.commit('setPosts', response.data);
                 });
-        }
+            }else if(this.currentScreen === "Reported Posts"){
+            await getReportedPosts().then((response)=>{
+                this.$store.commit('setPosts', response.data);
+                });
+            }
         },
         async postapproveMethod(post_id){
             await approvepost(post_id).then((response)=>{

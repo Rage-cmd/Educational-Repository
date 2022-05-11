@@ -67,7 +67,7 @@
           <v-icon>mdi-comment-outline</v-icon>
       </v-btn>     -->
       <CommentDialog :postModel="postModel" :user="user" @verifyComment="verifyComment"
-      @commentPosted="commentPosted"/>
+      />
    
       <v-btn
       class="ma-2"
@@ -88,6 +88,7 @@
       </v-btn>
    
     <v-spacer></v-spacer>
+    <span v-if="this.currentScreen === 'Reported Posts'">Reports: {{postModel.reports}}</span>
     <v-icon color="green" v-if="postModel.is_answered">mdi-check-bold</v-icon>
       </v-row>
 
@@ -214,7 +215,7 @@ export default {
   },
   created: function(){
       this.description = this.getDescription(this.postModel);
-      console.log(this.currentScreen);
+      // console.log(this.currentScreen);
   },
   computed:{
     

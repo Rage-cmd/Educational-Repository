@@ -92,9 +92,9 @@ export default {
     },
     currentScreen:"loginScreen",
     sideMenuMap:{
-      "moderator":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List"],
+      "moderator":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List","Reported Posts"],
       "user":["Your Uploads","My Profile", "Saved Posts"],
-      "admin":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List"],
+      "admin":["Your Uploads","My Profile", "Saved Posts","Pending Approvals","Users List","Reported Posts"],
     },
     hideall: true,
     postListKey:true,

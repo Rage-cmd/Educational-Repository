@@ -196,3 +196,8 @@ export const uploadPost = async(formdata)=>{
     });
     return response;
 }
+
+export const getReportedPosts = async()=>{
+    var response = await axios.get(devServer + 'reportedposts');
+    return response;
+}

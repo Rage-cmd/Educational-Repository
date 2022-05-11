@@ -183,7 +183,7 @@ def comment_post(user_id, post_id, comment_text,cache):
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"comments":user['comments']}})
 
         # cache.addItem_comment_cache(post, post['upvotes'])
-        # cache.addItem_comment_cache(post, len(post['comments']))
+        cache.addItem_comment_cache(post, len(post['comments']))
 
         return comment_doc
     except:
@@ -325,6 +325,7 @@ def upload_post(user_id, post_details, cache):
     if "new_tag" in post_details:
         new_tag_id = insert_tag(post_details["new_tag"], tags)
         post_doc["tags"].append(new_tag_id)
+        # tags.append(new_tag_id)
     
     if post_details["tag"] == []:
         post_doc["tags"] = ['t0']
@@ -353,12 +354,12 @@ def upload_post(user_id, post_details, cache):
         file_name, file_extension = os.path.splitext(post_details["video_url"])
         upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + file_extension
         uploaded_file_id = drive_api.upload_file(upload_name, 
+        file_extension = post_details["video_url"].name.split(".")[-1]
+        upload_name = datetime.datetime.now().strftime("%Y%m%d_%H%M%S ") + post_details['caption'] + "." + file_extension
                                                     post_details["video_url"], 
                                                     fields=fields, 
                                                     parent_folder_id=[drive_id])
-        post_doc["video_url"] = uploaded_file_id["webContentLink"]
 
-    print("Done till  IF ELSE statement")
 
     mongoDB_interface.saveSingleDocument("test_db","posts_collection",post_doc)
     mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parent_folder},{"$push": {"children_posts":post_doc["id"]}})

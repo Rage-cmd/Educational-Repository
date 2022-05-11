@@ -7,22 +7,36 @@
                 <v-text-field
                     width="20%"
                     label="Tag Name"
+                    v-model="tagModel.name"
                 ></v-text-field>
 
                 <v-autocomplete 
                         chips
                         small-chips
                         dense
-                        multiple
-                        :items="suggestionOptions"
+                        v-model="tagModel.parentTag"
+                        :items.sync="suggestions"
+                        @update:search-input="debounceInput($event)"
                         label="Tag Heirarchy"
-                ></v-autocomplete>
+                        no-filter
+                >
+                <template v-slot:selection="data">
+                    <v-chip v-bind="data.attrs" small>{{data.item.name}}</v-chip>
+                </template>
+                <template v-slot:item="data" >
+                            <v-list-item-content>
+                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                <v-list-item-subtitle v-html="listToStr(data.item.path_to_tag)"></v-list-item-subtitle>
+                            </v-list-item-content>
+                </template>
+                
+                </v-autocomplete>
             
             </v-form>
             <v-card-actions class="d-flex justify-center">
             <v-btn
                 color="primary"
-                @click="reveal = true"
+                @click="createTag"
             >
                 Create
             </v-btn>
@@ -32,3 +46,36 @@
     </v-card>
 </v-container>
 </template>
+
+<script>
+import _ from 'lodash';
+import { createTag, getPostSuggestions } from '../../api';
+export default {
+    name: 'TagCreationScreen',
+    setup() {
+        
+    },
+    data:() => ({
+        suggestions:[],
+        tagModel:{},
+    }),
+    methods:{
+        listToStr(list){
+
+            return (list.map(tag=>tag.name)).join(' -> ');
+        },
+        createTag(){
+            createTag(this.tagModel.name,this.tagModel.parentTag.id).then(res => {
+                console.log(res);
+            });
+            console.log(this.tagModel);
+
+        },
+        debounceInput: _.debounce(function (search) {
+            getPostSuggestions(search,'tag').then(res=>{
+                this.suggestions = res.data;
+            })
+        }, 1000),
+    }
+}
+</script>

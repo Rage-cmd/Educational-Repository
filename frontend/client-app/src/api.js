@@ -6,10 +6,10 @@ export  const getPosts = async ()=>{
     console.log("This response:" + JSON.stringify(response.data));
   }
 
-export const createTag = async (tagModel,userid)=>{
+export const createTag = async (tagName,tagParentid)=>{
     var response = await axios.post(devServer + 'createtag',{
-        tag:tagModel,
-        userid:userid,
+        name:tagName,
+        tag:tagParentid,
     })
     return response;
 }

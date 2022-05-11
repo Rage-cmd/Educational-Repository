@@ -101,6 +101,7 @@ export default {
             formdata.append('text',this.postModel.description);
             formdata.append('tags',JSON.stringify(this.postModel.tags));
             formdata.append('image',this.file);
+            formdata.append('type',(!this.file)?'text':'image');
             formdata.append('user_id',this.user.id);
                 
                 uploadPost(formdata).then(res=>{

@@ -27,7 +27,7 @@ def neighbour_suggestions(path):
     This function expects a list of main_tree nodes (representing the path searched by the user) and returns the 
     immediate childrens of the last node.
     """
-
+    last_node = None
     
     children_posts = []
     children_tags = []
@@ -35,7 +35,8 @@ def neighbour_suggestions(path):
     if path == "":
         last_node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id": "t0"})
     else:
-        last_node = path[-1]
+        last_node_id = path[-1]
+        last_node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id": last_node_id})
 
     for post_id in last_node['children_posts']:
         children_posts.append(mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id}))

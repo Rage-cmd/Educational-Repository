@@ -746,8 +746,9 @@ def fetch_latest_posts(request):
             response_posts = []
     
             for post in posts:
-                post = get_detailed_post(post['id'])
-                response_posts.append(post)
+                if post["is_approved"] == True:
+                    post = get_detailed_post(post['id'])
+                    response_posts.append(post)
 
             return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
         except Exception as e:
@@ -762,10 +763,12 @@ def fetch_most_commented_posts(request):
         try:
             posts = cache.getAllItems_comment_cache()
             response_posts = []
+
             for post in posts:
-                print(post['id'])
-                post = get_detailed_post(post['id'])
-                response_posts.append(post)
+                if post["is_approved"] == True:
+                    post = get_detailed_post(post['id'])
+                    response_posts.append(post)
+
             return JsonResponse(json.loads(json.dumps(response_posts, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to fetch posts. The error is: " + str(e), status=500)

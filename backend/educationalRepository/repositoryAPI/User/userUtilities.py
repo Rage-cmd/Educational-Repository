@@ -570,3 +570,23 @@ def get_detailed_tag(tag_id):
         path_to_tag_docs.append(tag_doc)
     tag['path_to_tag'] = path_to_tag_docs
     return tag
+
+
+def upload_profile_picture(user_id,file):
+    """
+    Uploads the profile picture of the user.
+
+    Parameters:
+        user_id (str) : The user id of the user.
+        file_id (str) : The id of the file.
+
+    Returns:
+        The document of the user.
+    """
+    try:
+        user_doc = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"profile_picture":file_id}})
+        return user_doc
+    except:
+        print("Could not upload profile picture. Check if the user id is valid.") 
+        return None

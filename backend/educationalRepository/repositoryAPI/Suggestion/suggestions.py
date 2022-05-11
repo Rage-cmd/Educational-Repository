@@ -28,12 +28,14 @@ def neighbour_suggestions(path):
     immediate childrens of the last node.
     """
 
-    last_node = path[-1]
+    
     children_posts = []
     children_tags = []
 
     if path == "":
         last_node = mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id": "t0"})
+    else:
+        last_node = path[-1]
 
     for post_id in last_node['children_posts']:
         children_posts.append(mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id}))

@@ -736,10 +736,6 @@ def report_user_post(request):
 
 def fetch_latest_posts(request):
     # cache.clear_cache()
-    post_2 = findSingleDocument("test_db","posts_collection",{"id":'p2'})
-    post_3 = findSingleDocument("test_db","posts_collection",{"id":'p3'})
-    cache.addItem_recent_cache(post_2,datetime.datetime.now())
-    cache.addItem_recent_cache(post_3,datetime.datetime.now())
 
     if request.method == "GET":
         try:
@@ -759,10 +755,6 @@ def fetch_latest_posts(request):
 
 def fetch_most_commented_posts(request):
     # cache.clear_cache()
-    post_4 = findSingleDocument("test_db","posts_collection",{"id":'p4'})
-    post_6 = findSingleDocument("test_db","posts_collection",{"id":'p6'})
-    cache.addItem_comment_cache(post_4,4)
-    cache.addItem_comment_cache(post_6,2)
     if request.method == "GET":
         try:
             posts = cache.getAllItems_comment_cache()
@@ -815,7 +807,7 @@ def create_user_tags(request):
             if result:
                 return HttpResponse("Tags created successfully", status=200)
             else:
-                return HttpResponse("Failed to create tags. Check if the user exists.", status=200)
+                return HttpResponse("Failed to create tags. Check if the parent exists.", status=200)
         except Exception as e:
             return HttpResponse("Failed to create tags. The error is: " + str(e), status=500)
     else:

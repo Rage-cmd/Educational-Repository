@@ -194,13 +194,31 @@ def upload_user_post(request):
         }
     """
     if request.method == 'POST':
-        user_id = json.loads(request.data['user_id'])
-        post_details = json.loads(request.data['post_details'])
+        print("------------------------------------------------------------------")
+        user_id = request.data['user_id']
 
-        if post_details['type'] == 'image':
-            post_details['image_url'] = request.FILES['file']
-        elif post_details['type'] == 'video':
-            post_details['video_url'] = request.FILES['file']
+        post_details = {
+            "text" : request.data['text'],
+            "caption" : request.data['caption'],
+            "tag" : json.loads(request.data['tags']),
+        }
+        
+        print(request.data.keys())
+
+        if request.data['image']:
+            post_details['image_url'] = request.FILES['image']
+            post_details['type'] = 'image'
+        # elif request.data['video']:
+        #     post_details['video_url'] = request.FILES['video']
+        #     post_details['type'] = 'video'
+        else:
+            post_details['type'] = 'text'
+            
+
+        # if post_details['type'] == 'image':
+        #     post_details['image_url'] = request.FILES['file']
+        # elif post_details['type'] == 'video':
+        #     post_details['video_url'] = request.FILES['file']
 
         print(post_details)
         
@@ -727,7 +745,7 @@ def fetch_latest_posts(request):
     post_3 = findSingleDocument("test_db","posts_collection",{"id":'p3'})
     cache.addItem_recent_cache(post_2,datetime.datetime.now())
     cache.addItem_recent_cache(post_3,datetime.datetime.now())
-    
+
     if request.method == "GET":
         try:
             posts = cache.getAllItems_recent_cache()

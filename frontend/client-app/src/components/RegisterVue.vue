@@ -52,7 +52,7 @@ export default ({
     }),
     methods: {
       async signupuser(){
-          console.log("check");
+        //   console.log("check");
           await signup(this.username,this.email,this.password).then((response)=>{
               if(response.status == 200){
                   this.$emit('successfullLogin',response.data)

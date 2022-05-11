@@ -42,7 +42,7 @@
             Create Tag 
         </v-tab>
           <v-tab-item>
-              <TagCreationScreen @close="this.dialog=false"/>
+              <TagCreationScreen @close="dialog=false"/>
           </v-tab-item>
       </v-tabs>
     </v-dialog>

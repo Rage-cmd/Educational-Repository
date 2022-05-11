@@ -208,9 +208,9 @@ def upload_user_post(request):
         if request.data['image']:
             post_details['image_url'] = request.FILES['image']
             post_details['type'] = 'image'
-        # elif request.data['video']:
-        #     post_details['video_url'] = request.FILES['video']
-        #     post_details['type'] = 'video'
+        elif request.data['video']:
+            post_details['video_url'] = request.FILES['video']
+            post_details['type'] = 'video'
         else:
             post_details['type'] = 'text'
             
@@ -804,6 +804,25 @@ def upload_user_comment(request):
             return JsonResponse(json.loads(json.dumps(comment, default=str)), safe=False, status=200)
         except Exception as e:
             return HttpResponse("Failed to upload comment. The error is: " + str(e), status=500)
+    else:
+        return HttpResponse("Invalid request", status=400)
+
+@csrf_exempt
+def create_user_tags(request):
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        tag_name = data['name']
+        tag_id = data['tag']
+        try:
+            path_to_tag = findSingleDocument("test_db","tagtree_collection",{"id":tag_id})['path_to_tag']
+            path_to_tag.append(tag_id)
+            result = insert_tag(tag_name,path_to_tag)
+            if result:
+                return HttpResponse("Tags created successfully", status=200)
+            else:
+                return HttpResponse("Failed to create tags. Check if the user exists.", status=200)
+        except Exception as e:
+            return HttpResponse("Failed to create tags. The error is: " + str(e), status=500)
     else:
         return HttpResponse("Invalid request", status=400)
 

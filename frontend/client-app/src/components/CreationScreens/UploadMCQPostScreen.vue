@@ -98,7 +98,7 @@ export default {
         postUpload(){
             let formdata  = new FormData();
             formdata.append('caption',this.postModel.caption);
-            formdata.append('description',this.postModel.description);
+            formdata.append('text',this.postModel.description);
             formdata.append('tags',JSON.stringify(this.postModel.tags));
             formdata.append('image',this.file);
             formdata.append('user_id',this.user.id);

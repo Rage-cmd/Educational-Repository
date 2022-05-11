@@ -186,7 +186,7 @@ posts = [
         'is_answered': False,
         'is_approved': True,
         'comments': [],
-        'reports': 0
+        'reports': 5
     },
     {
         'id': 'p7',
@@ -201,7 +201,7 @@ posts = [
         'is_answered': False,
         'is_approved': False,
         'comments': [],
-        'reports': 0
+        'reports': 3
     },
     {
         'id': 'p8',

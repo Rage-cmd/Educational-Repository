@@ -825,6 +825,10 @@ def fetch_reported_post(request):
             for report in reports:
                 post = get_detailed_post(report['id'])
                 posts.append(post)
+            
+            # sort posts by number of reports
+            posts.sort(key=lambda x: x['reports'], reverse=True)
+
             return JsonResponse(json.loads(json.dumps(posts, default=str)), safe=False, status=200)
         
         except Exception as e:

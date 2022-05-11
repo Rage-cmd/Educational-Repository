@@ -65,9 +65,14 @@ export default {
             return (list.map(tag=>tag.name)).join(' -> ');
         },
         createTag(){
-            createTag(this.tagModel.name,this.tagModel.parentTag.id).then(res => {
-                console.log(res);
-            });
+            createTag(this.tagModel.name,this.tagModel.parentTag.id).then(() => {
+                alert('Tag created successfully');
+                this.$emit('close');
+            }).catch(err => {
+                alert('Tag creation failed');
+                console.log(err);
+            }
+            );
             console.log(this.tagModel);
 
         },

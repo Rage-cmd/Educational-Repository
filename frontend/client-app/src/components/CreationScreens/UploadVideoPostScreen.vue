@@ -94,9 +94,11 @@ export default {
             formdata.append('type',"video");
             formdata.append('user_id',this.user.id);
                 
-                uploadPost(formdata).then(res=>{
-                    console.log(res);
+                uploadPost(formdata).then(()=>{
+                    alert('Post Uploaded');
+                    this.$emit('close');
                 }).catch(err=>{
+                    alert('Post Upload Failed');
                     console.log(err);
                 });
         },

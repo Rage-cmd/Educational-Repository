@@ -12,14 +12,6 @@
                     required
                 ></v-text-field>
 
-                <!-- <v-file-input
-                    accept="image/*"
-                    label="Image File"
-                    ref="fileInput"
-                    @change="onFileChange"
-                    required
-                ></v-file-input> -->
-
                 <div class="container mb-2">
                     <label>Image File
                         <input type="file" @change="handleFileUpload( $event )"/>
@@ -104,9 +96,11 @@ export default {
             formdata.append('type',(!this.file)?'text':'image');
             formdata.append('user_id',this.user.id);
                 
-                uploadPost(formdata).then(res=>{
-                    console.log(res);
+                uploadPost(formdata).then(()=>{
+                    alert("Post Uploaded Successfully");
+                    this.$emit('close');
                 }).catch(err=>{
+                    alert("Post Upload Failed");
                     console.log(err);
                 });
         },

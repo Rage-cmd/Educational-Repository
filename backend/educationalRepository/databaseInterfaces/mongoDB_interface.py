@@ -1,7 +1,7 @@
-from cgi import test
+import sys
+
 import pymongo
 from pymongo import MongoClient
-
 
 def getCollection(Database, collection):
     db = client[Database]
@@ -42,7 +42,7 @@ def createDatabase(Database):
     db = client[Database]
     return db
 
-def getNextSequenceValue(Database, collection):
+def getNextSequenceValue(Database, collection, offset = 1):
     """
     Gets the next sequential value of the collection.
 
@@ -57,7 +57,7 @@ def getNextSequenceValue(Database, collection):
     object = col.find().sort([("id", pymongo.DESCENDING)]).limit(1)
     for doc in object:
         return int(doc["id"][1:]) + 1
-    return 1
+    return offset
 
 def updateDocument(Database, collection, filterObject, updateObject):
     """
@@ -75,6 +75,5 @@ def updateDocument(Database, collection, filterObject, updateObject):
     col = getCollection(Database, collection)
     object = col.update_one(filterObject, updateObject)
     return object
-
 
 client = MongoClient()

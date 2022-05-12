@@ -10,7 +10,7 @@ class CacheImpl:
         self.maxItems = maxSize
     
     def addItem_recent_cache(self,doc, datetime):
-        insertItem = (datetime,doc)
+        insertItem = (datetime,doc["id"],doc)
         if insertItem not in self.most_recent_cache.queue:
             if len(self.most_recent_cache.queue) >= self.maxItems:
                 removedItem = (self.most_recent_cache).get()
@@ -21,7 +21,7 @@ class CacheImpl:
     def getAllItems_recent_cache(self):
         posts = []
         for i in range(len(self.most_recent_cache.queue)):
-            posts.append(self.most_recent_cache.queue[i][1])
+            posts.append(self.most_recent_cache.queue[i][2])
         return posts
 
     def addItem_upvote_cache(self,id, upvotes):
@@ -37,8 +37,8 @@ class CacheImpl:
             postIds.append(self.most_upvoted_cache.queue[i][1])
         return postIds
 
-    def addItem_comment_cache(self,post, upvotes):
-        insertItem = (-upvotes,post)
+    def addItem_comment_cache(self,post, no_of_comments):
+        insertItem = (-no_of_comments,post["id"],post)
         if insertItem not in self.most_upvoted_cache.queue:
             if len(self.most_upvoted_cache.queue) >= self.maxItems:
                 removedItem = (self.most_upvoted_cache).get()
@@ -48,7 +48,7 @@ class CacheImpl:
     def getAllItems_comment_cache(self):
         posts=[]
         for i in range(len(self.most_upvoted_cache.queue)):
-            posts.append(self.most_upvoted_cache.queue[i][1])
+            posts.append(self.most_upvoted_cache.queue[i][2])
         return posts
 
 

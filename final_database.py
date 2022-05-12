@@ -738,7 +738,7 @@ maintree_collection = getCollection("test_db","maintree_collection")
 # inserting the documents in the collections
 saveMultipleDocuments("test_db", "users_collection", users)
 saveMultipleDocuments("test_db", "posts_collection", posts)
-saveMultipleDocuments("test_db", "comments_collection", comments)
+# saveMultipleDocuments("test_db", "comments_collection", comments)
 saveMultipleDocuments("test_db", "tagtree_collection", tags)
 saveMultipleDocuments("test_db", "maintree_collection", main_tree)
 

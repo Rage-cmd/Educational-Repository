@@ -348,7 +348,7 @@ def search_file(file_name = None, file_id = None, fields = "id, name", verbose =
     return (ids, results)
 
 
-def add_permission(file_id, email_address = "anyone", role = "reader"):
+def add_permission(file_id, user_type, role = "reader"):
     """
     Adds a permission to a file.
 
@@ -366,7 +366,11 @@ def add_permission(file_id, email_address = "anyone", role = "reader"):
 
     try:
         # Call the Drive v3 API
-        results = service.permissions().create(fileId=file_id, body={'type': 'anyone', 'role': role, 'emailAddress': email_address}).execute()
+        body = {
+            'role': role,
+            'type': user_type
+        }
+        results = service.permissions().create(fileId=file_id,body = body).execute()
 
     except HttpError as error:
         print(f'Cannot Add Permission. An error occurred: {error}')

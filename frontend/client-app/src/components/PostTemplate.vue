@@ -45,7 +45,12 @@
 
     <v-img v-if="postModel.image_url != null && postModel.image_url!=''" :src="postModel.image_url" width="100%"></v-img>
 
-
+      <v-card-subtitle class="ml-4">
+        {{postModel.upvotes}} Likes 
+        <span class="ml-4">{{postModel.comments.length}} Comments </span>
+      </v-card-subtitle>
+    <!-- </v-card-text> -->
+  <v-divider class="mx-4"></v-divider>
     <v-card-text>
       <v-row
         align="center"
@@ -59,6 +64,7 @@
       >
         <v-icon v-if="!thumbsupFilled">mdi-thumb-up-outline</v-icon>
         <v-icon v-else>mdi-thumb-up</v-icon>
+        
       </v-btn>
 
       <!-- <v-btn
@@ -95,6 +101,7 @@
       <div class="my-4 text-subtitle-1 font-weight-bold">
         Description
       </div>
+
 
       <div>
           {{description}}
@@ -182,11 +189,12 @@ export default {
         console.log("Liking the post")
             likePost(this.user.id,this.postModel.id).then(()=>{
                 var index = this.$store.state.posts.findIndex((obj=>obj.id===this.postModel.id))
-                this.$store.state.posts[index].upvotes++;  
+                this.thumbsupFilled = !this.thumbsupFilled;
+                this.$store.state.posts[index].upvotes += this.thumbsupFilled ? 1 : -1;  
             }).catch((error)=>{
                 alert(error);
             });
-        this.thumbsupFilled = !this.thumbsupFilled;
+        
       },
       async bookmarkHandler(){
         this.bookmarkLoading=true;

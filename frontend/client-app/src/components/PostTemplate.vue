@@ -120,7 +120,7 @@
         active-class="deep-purple accent-4 white--text"
         column
       >
-        <v-chip v-for="tag in postModel.tags" :key="tag">{{tag.name}}</v-chip>
+        <v-chip v-for="tag in postModel.tags" :key="tag">{{tag}}</v-chip>
       </v-chip-group>
     </v-card-text>
 

@@ -85,7 +85,7 @@ import CreateUploadDialog from './components/CreateUploadDialog.vue';
 // import TagCreationScreen from './components/CreationScreens/TagCreationScreen.vue';
 import UserListScreen from './components/UserListScreen.vue';
 import MyProfile from './components/MyProfile.vue';
-import {getFilteredPosts, getPostSuggestions, yourUploads} from './api.js';
+import {getFilteredPosts, getPostSuggestions, getUserDetails} from './api.js';
 import LoginVue from './components/LoginVue.vue';
 import SignupVue from './components/RegisterVue.vue';
 
@@ -123,11 +123,17 @@ export default {
   methods:{
     async sideMenuSelectHandler(opt){
       this.currentScreen = opt;
-      yourUploads().then(function(response){
-        console.log(response);
-        }
-      );
-      this.postListKey = !this.postListKey;
+      // yourUploads().then(function(response){
+      //   console.log(response);
+      //   }
+      // );
+
+      // this.postListKey = !this.postListKey;
+      if(this.currentScreen === 'My Profile'){
+        await getUserDetails(this.user.id).then(function(response){
+          this.user =  response.data;
+        });
+      }
     },
     loginuser(user){
       console.log(user);

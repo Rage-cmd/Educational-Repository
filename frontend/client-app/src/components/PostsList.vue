@@ -3,7 +3,7 @@
     <v-app >
         <!-- <v-container>    
         </v-container> -->
-        <v-container>
+        <v-container v-if="$store.state.posts.length !==0">
             <!-- <PostTemplate :postModel="sampleMCQPostData" :currentScreen="currentScreen"/> -->
             <!-- <PostTemplate :postModel="sampleVideoPostData" :currentScreen="currentScreen"/> -->
             <div :key="reloadPosts">
@@ -136,6 +136,12 @@ export default ({
             console.log(comment_id)
             this.fetchPostList();
             // this.postsKey = !this.postsKey;
+        }
+    },
+    watch:{
+        async currentScreen(){
+            console.log("check");
+            await this.fetchPostList();
         }
     }
 

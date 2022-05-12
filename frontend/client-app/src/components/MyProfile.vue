@@ -2,7 +2,9 @@
     <v-app>
       <v-card class="mx-auto mt-15" width="50%" elevation="5">
           <v-row class="pt-8  justify-center" >
-            <v-avatar color="primary" size="150">A</v-avatar>
+            <v-avatar color="primary" size="150">
+                <img :src="user.profile_picture" alt="A">
+            </v-avatar>
           </v-row>
           <v-list >
                <v-card-title class="pb-0 pt-5 justify-center" >{{user.name}}</v-card-title>

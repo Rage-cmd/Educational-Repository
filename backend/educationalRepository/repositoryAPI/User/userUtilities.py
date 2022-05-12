@@ -409,49 +409,52 @@ def insert_tag(tag_name, parents):
 
     """
 
-    try :
-        tag_id = 't' + str(mongoDB_interface.getNextSequenceValue("test_db","tagtree_collection"))
-        tag_doc = {
-            "id": tag_id,
-            "name": tag_name,
-            "path_to_tag": parents,
-        }
+    # try :
+    tag_id = 't' + str(mongoDB_interface.getNextSequenceValue("test_db","tagtree_collection"))
+    tag_doc = {
+        "id": tag_id,
+        "name": tag_name,
+        "path_to_tag": parents,
+    }
 
-        #lowecase string
+    #lowecase string
+    print(tag_doc)
 
-        children_tags = mongoDB_interface.findAllDocument("test_db","tagtree_collection",{"path_to_tag":parents})
-        for child_tag in children_tags:
-            if tag_name.lower() == child_tag["name"].lower():
-                return child_tag["id"]
+    children_tags = mongoDB_interface.findAllDocument("test_db","tagtree_collection",{"path_to_tag":parents})
+    for child_tag in children_tags:
+        if tag_name.lower() == child_tag["name"].lower():
+            return child_tag["id"]
 
-        mongoDB_interface.saveSingleDocument("test_db","tagtree_collection",tag_doc)
-        
-        if parents == []:
-            parent_folder_id = None
-        else:
-            mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parents[-1]},{"$push": {"children_tags":tag_id}})
-            parent_folder_id = [mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parents[-1]})["drive_id"]]
+    mongoDB_interface.saveSingleDocument("test_db","tagtree_collection",tag_doc)
+    
+    if parents == []:
+        parent_folder_id = None
+    else:
+        mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parents[-1]},{"$push": {"children_tags":tag_id}})
+        parent_folder_id = [mongoDB_interface.findSingleDocument("test_db","maintree_collection",{"id":parents[-1]})["drive_id"]]
 
-        file = drive_api.create_folder(tag_name,parent_folder_id)
+    print(tag_name, parent_folder_id)
 
-        if parents == []:
-            drive_id = file['id']
-            drive_api.add_permission(drive_id, "anyone", "reader")        
+    file = drive_api.create_folder(tag_name,parent_folder_id)
+    print(file)
+    if parents == []:
+        drive_id = file['id']
+        drive_api.add_permission(drive_id, "anyone", "reader")        
 
-        main_tree_node_doc = {
-            "id": tag_id,
-            "name": tag_name,
-            "type" : "tag",
-            "children_tags": [],
-            "children_posts": [],
-            'drive_id': file['id'],
-        }
+    main_tree_node_doc = {
+        "id": tag_id,
+        "name": tag_name,
+        "type" : "tag",
+        "children_tags": [],
+        "children_posts": [],
+        'drive_id': file['id'],
+    }
 
-        mongoDB_interface.saveSingleDocument("test_db","maintree_collection",main_tree_node_doc)
-        return tag_id
-    except:
-        print("Could not insert tag. Check if the parents are valid.")
-        return None
+    mongoDB_interface.saveSingleDocument("test_db","maintree_collection",main_tree_node_doc)
+    return tag_id
+    # except:
+    #     print("Could not insert tag. Check if the parents are valid.")
+    #     return None
 
 
 def verify_comment(user_id, comment_id):
@@ -536,6 +539,7 @@ def report_post(user_id,post_id):
 
 def get_detailed_post(post_id):
     comments = []
+    tags = []
     post = mongoDB_interface.findSingleDocument("test_db","posts_collection",{"id":post_id})
     author = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":post['author']})
     post['author'] = {
@@ -558,6 +562,11 @@ def get_detailed_post(post_id):
             "is_banned" : comment_author['is_banned'],
         }
     
+    for tag in post['tags']:
+        tag_doc = mongoDB_interface.findSingleDocument("test_db","tagtree_collection",{"id":tag})
+        tags.append(tag_doc['name'])
+    
+    post['tags'] = tags[1:]
     post['comments'] = comments
     return post 
 

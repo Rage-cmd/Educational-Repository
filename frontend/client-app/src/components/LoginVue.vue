@@ -16,7 +16,7 @@
                         <v-card class="ml-15 mt-15" width="500">
                         <v-card-title>Login</v-card-title>
                         <v-card-text>
-                            <v-text-field v-model="email" prepend-icon="mdi-account-circle" label="Email" clearable></v-text-field>
+                            <v-text-field :rules="emailRules" v-model="email" prepend-icon="mdi-account-circle" label="Email" clearable></v-text-field>
                             <v-text-field v-model="password" prepend-icon="mdi-lock" label="Password" type="password"></v-text-field>
                         </v-card-text>
                         <v-divider></v-divider>
@@ -45,6 +45,9 @@ export default ({
     data: ()=>({
         email: "",
         password: "",
+        emailRules: [ 
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+        ]
     }),
     methods: {
         async validateUser(){

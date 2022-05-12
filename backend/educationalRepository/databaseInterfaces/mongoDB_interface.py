@@ -56,10 +56,14 @@ def getNextSequenceValue(Database, collection, offset = 1):
         getNextSequentialValue("test_db", "users_collection")
     """
     col = getCollection(Database, collection)
-    object = col.find().sort([("id", pymongo.DESCENDING)]).limit(1)
-    for doc in object:
-        return int(doc["id"][1:]) + 1
-    return offset
+    next_id = col.count_documents({})
+    # object = col.find().sort([("id", pymongo.DESCENDING)]).limit(1)
+    # print(object)
+    # print(object[0]['id'])
+    # for doc in object:
+    #     return int(doc["id"][1:]) + 1
+    return next_id + offset
+    # return offset
 
 
 def updateDocument(Database, collection, filterObject, updateObject):

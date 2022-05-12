@@ -585,6 +585,7 @@ def upload_profile_picture(user_id,file):
     """
     try:
         user_doc = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
+        drive_api.upload_file_IO(user_doc['id'],file,None)
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"profile_picture":file_id}})
         return user_doc
     except:

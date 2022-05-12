@@ -75,7 +75,8 @@ export default ({
     },
     computed:{
         getPosts(){
-            return this.$store.state.posts.filter(post=>!post.author.is_banned);
+            this.$store.state.commit('setPosts',this.$store.state.posts.filter(post=>!post.author.is_banned));
+            return this.$store.state.posts;
         }
     },
     methods:{

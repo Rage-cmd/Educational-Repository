@@ -117,7 +117,7 @@ export default {
                     
                     var index = this.$store.state.posts.findIndex(post=>post.id==this.postModel.id);
                     this.$store.state.posts[index].comments.push(res.data);
-                    console.log("comment: " + JSON.stringify(this.$store.state.posts[index]));
+                    console.log("comment: " + JSON.stringify(res.data));
                     this.commentInput="";
                 }
             )

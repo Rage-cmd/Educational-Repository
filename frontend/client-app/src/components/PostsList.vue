@@ -114,7 +114,7 @@ export default ({
             await approvepost(post_id).then(()=>{
                 this.$store.state.snackbarMessage = "Post Approved";
                 this.$store.state.snackbar = true;
-                this.posts = this.posts.filter(post => post.id != post_id);
+                this.$store.commit('setPosts',this.$store.state.posts.filter(post => post.id != post_id));
             }).catch((error)=>{
                 alert(error);
             });

@@ -5,7 +5,7 @@
             color="primary"
             dark
             elevate-on-scroll
-            absolute
+            fixed
             >
                 <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 

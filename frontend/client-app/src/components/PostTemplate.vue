@@ -3,6 +3,8 @@
     :loading="loading"
     class="mx-auto my-12"
     max-width="700"
+    elevation = "10"
+    outlined
   >
     <template slot="progress">
       <v-progress-linear
@@ -12,26 +14,26 @@
       ></v-progress-linear>
     </template>
 
-
-    <v-card-title>{{postModel.caption}}</v-card-title>
+    <div>
+      <v-card-title class="grey lighten-2">{{postModel.caption}}</v-card-title>
+    </div>
     
-    
-    <v-card-text secondary-title>
-       <v-row>
+    <v-card-text dense >
+       <v-row >
         <!-- <v-col cols="10"> -->
-         <v-list width="100%">
-            <v-list-item height="80%" width="100%">
+         <!-- <v-list width="100%"> -->
+            <v-list-item  height="50%" width="100%" dense>
                 <v-list-item-avatar size="25">
                     <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                    <v-list-item-title>{{postModel.author.name}}</v-list-item-title>
+                    <v-list-item-title style="font-size:0.8rem">{{postModel.author.name}}</v-list-item-title>
                     
                 </v-list-item-content>
                 <v-spacer></v-spacer>
-              {{getDate(postModel)}}
+              <span style="font-size:0.8rem">{{getDate(postModel)}} </span>
             </v-list-item>
-         </v-list>
+         <!-- </v-list> -->
        </v-row>
     </v-card-text>
 
@@ -45,7 +47,7 @@
 
     <v-img v-if="postModel.image_url != null && postModel.image_url!=''" :src="postModel.image_url" width="100%"></v-img>
 
-      <v-card-subtitle class="ml-4">
+      <v-card-subtitle >
         {{postModel.upvotes}} Likes 
         <span class="ml-4">{{postModel.comments.length}} Comments </span>
       </v-card-subtitle>

@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { getUserDetails } from '../../api';
 export default {
     setup() {
         
@@ -50,6 +51,12 @@ export default {
     },
     methods:{
         async getNotifications(){
+          getUserDetails(this.user.id).then(response => {
+            this.items = response.data.notifications;
+          }).catch(error => {
+            console.log(error);
+          });
+
         }
     }
 }

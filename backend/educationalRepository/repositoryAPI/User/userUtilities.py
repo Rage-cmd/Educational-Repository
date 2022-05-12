@@ -363,6 +363,7 @@ def upload_post(user_id, post_details, cache):
         link = uploaded_file_id["webViewLink"].split("view?")[0] + "preview"
         post_doc["video_url"] = link
 
+    print(post_doc)
 
     mongoDB_interface.saveSingleDocument("test_db","posts_collection",post_doc)
     mongoDB_interface.updateDocument("test_db","maintree_collection",{"id":parent_folder},{"$push": {"children_posts":post_doc["id"]}})
@@ -572,7 +573,7 @@ def get_detailed_tag(tag_id):
     return tag
 
 
-def upload_profile_picture(user_id,file):
+def upload_profile_picture(file_name,user_id,file):
     """
     Uploads the profile picture of the user.
 
@@ -583,11 +584,20 @@ def upload_profile_picture(user_id,file):
     Returns:
         The document of the user.
     """
-    try:
-        user_doc = mongoDB_interface.findSingleDocument("test_db","users_collection",{"id":user_id})
-        drive_api.upload_file_IO(user_doc['id'],file,None)
-        mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$set": {"profile_picture":file_id}})
-        return user_doc
-    except:
-        print("Could not upload profile picture. Check if the user id is valid.") 
-        return None
+    # try:
+    print("file_name: ",file_name)
+    # get extension
+    extension = file_name.split(".")[-1]
+    new_name = user_id + "." + extension
+
+    fields = ["id", "name", 'mimeType', 'webViewLink', 'webContentLink']
+    fields = ",".join(fields)
+
+
+    uploaded_pic = drive_api.upload_file_IO(new_name,file,fields = fields, parent_folder_id= None)
+    drive_api.add_permission(file_id=uploaded_pic['id'],role="reader",user_type="anyone")
+    
+    return uploaded_pic["webContentLink"]
+    # except:
+    #     print("Could not upload profile picture. Check if the user id is valid.") 
+    #     return None

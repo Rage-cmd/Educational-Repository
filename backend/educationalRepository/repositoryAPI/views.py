@@ -258,7 +258,7 @@ def approve_user_post(request):
         data = JSONParser().parse(request)
         post_id = data['post_id']
         try:
-            approve_post(post_id)
+            approve_post(post_id,cache)
             return HttpResponse("Post approved successfully.", status=200)
         except Exception as e:
             return HttpResponse("Post approval failed. The error is: " + str(e), status=500)
@@ -504,8 +504,9 @@ def suggest(request):
                 posts =[]
 
                 for post in results:
-                    post = get_detailed_post(post['id'])
-                    posts.append(post)
+                    if post['is_approved'] == True:
+                        post = get_detailed_post(post['id'])
+                        posts.append(post)
 
                 return JsonResponse(json.loads(json.dumps(posts[:10], default=str)), safe=False, status=200)
 
@@ -521,6 +522,7 @@ def suggest(request):
                     tag['path_to_tag'] = path_to_tag_docs
                     tags.append(tag)
                 return JsonResponse(json.loads(json.dumps(tags[:10], default=str)), safe=False, status=200)
+            
             elif search_type == "child_search":
                 results = neighbour_suggestions(search_term)
                 response = {

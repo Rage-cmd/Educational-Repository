@@ -3,6 +3,8 @@ import sys
 sys.path.append("..")
 
 import databaseInterfaces.mongoDB_interface as mongoDB_interface
+# import Caching.cache_impl as cache_impl
+import datetime
 
 def ban_user_mod(user_id):
     """
@@ -46,7 +48,7 @@ def unban_user_mod(user_id):
         return False
 
 
-def approve_post(post_id):
+def approve_post(post_id,cache):
     """
     Approve a post. The function expects a user id and a post id. 
 
@@ -65,6 +67,8 @@ def approve_post(post_id):
         user_id = post['author']
         mongoDB_interface.updateDocument("test_db","users_collection",{"id":user_id},{"$push": {"notifications":notification}})
         
+        cache.addItem_recent_cache(post,datetime.datetime.now())
+
         return True
     except:
         print("Error in approving post. Check if the post with the id: " + post_id + " exists.")

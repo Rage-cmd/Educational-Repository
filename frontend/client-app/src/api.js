@@ -22,12 +22,13 @@ export const login = async (email,password)=>{
     return response;
 }
 
-export const signup = async (username,email,password)=>{
-    var response = await axios.post(devServer + 'signup',{
-        "username":username,
-        "email":email,
-        "password":password
-    });
+export const signup = async (formdata)=>{
+    var response = await axios.post(devServer + 'signup',formdata,
+    {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+            }
+            });
     return response;
 }
 

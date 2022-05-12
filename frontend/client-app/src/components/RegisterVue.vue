@@ -20,6 +20,12 @@
                             <v-text-field prepend-icon="mdi-email" label="Email" v-model="email" clearable></v-text-field>
                             <v-text-field prepend-icon="mdi-lock" label="Password" v-model="password" type="password"></v-text-field>
                             <v-text-field prepend-icon="mdi-lock" label="Confirm Password" type="password"></v-text-field>
+                            <div class="container mb-2">
+                                <label>Profile Picture
+                                    <input type="file" @change="handleFileUpload( $event )"/>
+                                </label>
+                                <br>
+                            </div>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-actions>
@@ -49,11 +55,17 @@ export default ({
         email:"",
         username:"",
         password:"",
+        file:'',
     }),
     methods: {
       async signupuser(){
         //   console.log("check");
-          await signup(this.username,this.email,this.password).then((response)=>{
+          let formdata = new FormData();
+            formdata.append('username',this.username);
+            formdata.append('email',this.email);
+            formdata.append('password',this.password);
+            formdata.append('profile_picture',this.file);
+          await signup(formdata).then((response)=>{
               if(response.status == 200){
                   this.$emit('successfullLogin',response.data)
               }else{
@@ -61,7 +73,12 @@ export default ({
               }
           }
           );
-      }  
+      },
+      handleFileUpload( event ){
+            this.file = event.target.files[0];
+            if(this.file)
+                console.log("File taken");
+        },  
     },
 
 })

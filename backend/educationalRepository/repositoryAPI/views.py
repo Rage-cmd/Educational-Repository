@@ -100,6 +100,7 @@ def retrieve_password(password_hash):
 
 # saves the new user in the database
 @csrf_exempt
+@api_view(['POST'])
 def sign_up(request):
     """
     Sign up a new user.
@@ -119,15 +120,23 @@ def sign_up(request):
 
     """
     if request.method == 'POST':
-        data = JSONParser().parse(request)
-        name = data['username']
-        hashed_password = make_password_hash(data['password'])
-        email = data['email']
+        # data = JSONParser().parse(request)
+        print(request)
+        name = request.data['username']
+        hashed_password = make_password_hash(request.data['password'])
+        email = request.data['email']
+
+        profile_picture = request.FILES['profile_picture']
 
         all_users = findAllDocument("test_db","users_collection",{})
         emails = []
         for user in all_users:
             emails.append(user['email'])
+        
+        # check email string for validity
+        # if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        #     return HttpResponse("Invalid email", status=400)
+
         
         if email in emails:
             return HttpResponse("Email already exists.", status=400)
@@ -149,8 +158,9 @@ def sign_up(request):
             "no_of_bans": 0,
             "is_banned": False,
         }
-
-        result = saveSingleDocument("test_db","users_collection",user_document)
+        profile_pic_link = upload_profile_picture(request.FILES['profile_picture'].name, user_document['id'], profile_picture)
+        user_document['profile_picture'] = profile_pic_link
+        saveSingleDocument("test_db","users_collection",user_document)
         return JsonResponse(json.loads(json.dumps(user_document, default=str)), safe=False, status=200)
     else:
         return HttpResponse("Invalid request", status=400)
@@ -193,6 +203,7 @@ def upload_user_post(request):
             }
         }
     """
+    print(request)
     if request.method == 'POST':
         user_id = request.data['user_id']
 
